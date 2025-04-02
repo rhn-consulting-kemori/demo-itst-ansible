@@ -4,7 +4,7 @@
 # - result_manager_url
 # - test_result_seq, test_id, test_group, test_pipeline, simulation_date
 - name: run pipeline_summary 
-  hosts: local
+  hosts: localhost
   tasks:
     - name: Run pipeline_summary
       ansible.builtin.uri:
