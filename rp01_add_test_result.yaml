@@ -24,4 +24,4 @@
 
     - name: debug
       ansible.builtin.debug:
-        var: result.test_result_seq
+        var: result
