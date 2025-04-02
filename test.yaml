@@ -1,5 +1,5 @@
 - name: Test Playbook
-  hosts: all
+  hosts: localhost
   tasks:
     - name: debug
       ansible.builtin.debug:
@@ -15,3 +15,8 @@
         host: "{{ api_url }}"
         api_key: "{{ api_token }}"
       register: cluster_version_info
+
+    - name: print
+      ansible.builtin.debug:
+        msg:
+          version: cluster_version_info
