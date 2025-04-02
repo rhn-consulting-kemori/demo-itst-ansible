@@ -3,4 +3,4 @@
   tasks:
     - name: echo
       ansible.builtin.debug:
-        msg:: "test OK!"
+        msg: "test OK!"
