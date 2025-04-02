@@ -1,0 +1,6 @@
+- name: Test Playbook
+  hosts: localhost
+  tasks:
+    - name: echo
+      ansible.builtin.debug:
+        msg:: "test OK!"
