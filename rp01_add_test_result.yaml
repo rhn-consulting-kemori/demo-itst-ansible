@@ -11,6 +11,7 @@
         url: https://{{ result_manager_url }}/api/test_result
         method: POST
         body_format: json
+        status_code: 201
         headers:
           Content-Type: application/json
         body: |-
