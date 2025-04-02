@@ -26,4 +26,4 @@
 
     - name: debug
       ansible.builtin.debug:
-        var: result
+        var: result.json
