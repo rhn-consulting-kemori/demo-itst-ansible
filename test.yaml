@@ -18,5 +18,4 @@
 
     - name: print
       ansible.builtin.debug:
-        msg:
-          version: cluster_version_info
+        var: cluster_version_info
