@@ -1,0 +1,24 @@
+---
+# Playbook rp04_run_test_result_summary
+# Parameter: 
+# - result_manager_url
+# - test_result_seq
+- name: Run test_result_summary 
+  hosts: local
+  tasks:
+    - name: Run test_result_summary
+      ansible.builtin.uri:
+        url: https://{{ result_manager_url }}/api/test_result_summary
+        method: POST
+        body_format: json
+        headers:
+          Content-Type: application/json
+        body: |-
+          {
+            "test_result_seq": {{ test_result_seq }}
+          }
+      register: result
+
+    - name: debug
+      ansible.builtin.debug:
+        var: result
