@@ -1,0 +1,5 @@
+---
+all:
+  vars:
+    result_manager_url: result-manager-demo-report.apps.rosa.rosa-6hxjb.nnh2.p3.openshiftapps.com
+    google_chat_url: https://chat.googleapis.com/v1/spaces/AAAAuMnSfNM/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=eCRjT9Czb0EZcH660UwCzQ2EuGJl6QhJIVwhWJVM0Zk
