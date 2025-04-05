@@ -1,11 +1,56 @@
 ---
-# Delete ROSA NameSpace
-# Parameter namespace_name
+# ev04_create_database
+# Create Database
+# Parameter 
 - hosts: localhost
   tasks:
-    - name: Delete a NameSpace
+    - name: Create Database Deployment
       kubernetes.core.k8s:
-        name: "{{ namespace_name }}"
-        api_version: v1
-        kind: Namespace
-        state: absent
+        state: present
+        definition:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            namespace: "{{ namespace_name }}"
+            name: "{{ database_app_name }}"
+          space:
+            replicas: 1
+            template:
+              metadata:
+                labels:
+                  app: postgresql
+              spec:
+                containers:
+                  - name: postgresql
+                    image: postgresql:15-el8
+                    imagePullPolicy: "IfNotPresent"
+                    ports:
+                      - containerPort: 5432
+                    env:
+                      - name: POSTGRESQL_USER
+                        value: "{{ pg_user }}"
+                      - name: POSTGRESQL_DATABASE
+                        value: "{{ pg_database }}"
+                      - name: POSTGRESQL_PASSWORD
+                        value: "{{ pg_password }}"
+
+    - name: Create Database Service
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: "{{ database_app_name }}"
+            namespace: "{{ namespace_name }}"
+            labels:
+              app: postgresql
+          spec:
+            type: NodePort
+          ports:
+            - name: postgresql-port
+              protocol: TCP
+              port: 5432
+              targetPort: 5432
+          selector:
+            app: postgresql
