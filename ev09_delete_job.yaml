@@ -2,7 +2,8 @@
 # Playbook ev09_delete_job
 # Delete Job
 # Parameter: 
-# - namespace_name, job_name
+# * job_name
+# - namespace_name
 - hosts: localhost
   tasks:
     - name: Delete Jobs
