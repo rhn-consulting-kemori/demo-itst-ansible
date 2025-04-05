@@ -34,7 +34,7 @@
                       - name: DB_SERVERNAME
                         value: "{{ db_server_name }}"
                       - name: DB_PORTNUMBER
-                        value: "{{ pg_port }}"
+                        value: "5432"
                 imagePullSecrets:
                   - name: "{{ image_pull_secret_name }}"
 
