@@ -27,7 +27,7 @@
               spec:
                 containers:
                   - name: postgresql
-                    image: postgresql:15-el8
+                    image: openshift/postgresql:15-el8
                     imagePullPolicy: "IfNotPresent"
                     ports:
                       - containerPort: 5432
@@ -52,10 +52,10 @@
               app: postgresql
           spec:
             type: NodePort
-          ports:
-            - name: postgresql-port
-              protocol: TCP
-              port: 5432
-              targetPort: 5432
-          selector:
-            app: postgresql
+            ports:
+              - name: postgresql-port
+                protocol: TCP
+                port: 5432
+                targetPort: 5432
+            selector:
+              app: postgresql
