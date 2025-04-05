@@ -1,7 +1,8 @@
 ---
-# ev04_create_database
+# Playbook ev04_create_database
 # Create Database
-# Parameter namespace_name, database_app_name, pg_user, pg_database, pg_password
+# Parameter: 
+# - namespace_name, database_app_name, pg_user, pg_database, pg_password
 - hosts: localhost
   tasks:
     - name: Create Database Deployment

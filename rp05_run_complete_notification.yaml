@@ -1,8 +1,8 @@
 ---
 # Playbook rp05_run_complete_notification
 # Parameter: 
-# - google_chat_url
-# - text
+# * google_chat_url
+# * text
 - name: run complete_notification
   hosts: localhost
   tasks:

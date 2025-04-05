@@ -1,8 +1,8 @@
 ---
 # Playbook rp01_add_test_result
 # Parameter: 
+# * test_id, test_name, test_description
 # - result_manager_url
-# - test_id, test_name, test_description
 - name: add _test_result 
   hosts: localhost
   tasks:

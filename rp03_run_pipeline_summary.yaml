@@ -1,8 +1,8 @@
 ---
 # Playbook rp03_run_pipeline_summary
 # Parameter: 
+# * test_result_seq, test_id, test_group, test_pipeline, simulation_date
 # - result_manager_url
-# - test_result_seq, test_id, test_group, test_pipeline, simulation_date
 - name: run pipeline_summary 
   hosts: localhost
   tasks:

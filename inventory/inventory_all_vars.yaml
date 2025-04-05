@@ -8,3 +8,4 @@ all:
     pg_user: test
     pg_database: test
     pg_password: test
+    pg_port: 5432
