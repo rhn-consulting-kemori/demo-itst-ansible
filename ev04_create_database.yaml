@@ -15,6 +15,9 @@
             name: "{{ database_app_name }}"
           space:
             replicas: 1
+            selector:
+              matchLabels:
+                app: postgresql
             template:
               metadata:
                 labels:
