@@ -76,7 +76,7 @@
       kubernetes.core.k8s:
         state: present
         definition:
-          apiVersion: v1
+          apiVersion: route.openshift.io/v1
           kind: Route
           metadata:
             name: "{{ online_app_name }}"
