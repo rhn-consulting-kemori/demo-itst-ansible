@@ -27,7 +27,7 @@
               spec:
                 containers:
                   - name: postgresql
-                    image: openshift/postgresql:15-el8
+                    image: registry.redhat.io/rhel8/postgresql-15:latest
                     imagePullPolicy: "IfNotPresent"
                     ports:
                       - containerPort: 5432
@@ -51,11 +51,14 @@
             labels:
               app: postgresql
           spec:
-            type: NodePort
+            type: ClusterIP
             ports:
-              - name: postgresql-port
+              - name: 5432-tcp
                 protocol: TCP
                 port: 5432
                 targetPort: 5432
+            sessionAffinity: None
             selector:
               app: postgresql
+          status:
+            loadBalancer: {}
