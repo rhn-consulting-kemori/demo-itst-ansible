@@ -11,6 +11,14 @@
         dest: ~/report-viewer.yaml
         mode: '0664'
 
+    - name: cat file
+      shell: cat ~/report-viewer.yaml
+      register: cat_file
+
+    - name: echo file body
+      debug:
+        msg: "{{ cat_file.stdout }}"
+
     - name: Online App Deployment
       kubernetes.core.k8s:
         state: present
