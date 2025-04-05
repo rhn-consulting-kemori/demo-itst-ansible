@@ -7,7 +7,7 @@
         dest: /tmp/checkout
 
     - name: cat file
-      shell: cat /tmp/checkout/demo-itst-test/README.md
+      shell: cat /tmp/checkout/README.md
       register: cat_file
 
     - name: echo file body
