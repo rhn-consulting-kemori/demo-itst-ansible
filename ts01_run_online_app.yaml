@@ -2,96 +2,21 @@
 # Playbook ts01_run_online_app
 # Run Online App
 # Parameter: 
-# * online_app_name, online_app_port
-# - namespace_name, pg_user, pg_database, pg_password, pg_port
+# * online_yaml
 - hosts: localhost
   tasks:
+    - name: Download Yaml
+      ansible.builtin.get_url:
+        url: https://github.com/rhn-consulting-kemori/demo-itst-test/blob/main/report-pipeline/test_scenario/online_run/report-viewer.yaml
+        dest: ~/report-viewer.yaml
+        mode: '0664'
+
     - name: Online App Deployment
       kubernetes.core.k8s:
         state: present
-        definition:
-          apiVersion: apps/v1
-          kind: Deployment
-          metadata:
-            namespace: "{{ namespace_name }}"
-            name: "{{ online_app_name }}"
-            labels:
-              app: "{{ online_app_name }}"
-          spec:
-            replicas: 1
-            selector:
-              matchLabels:
-                app: "{{ online_app_name }}"
-            template:
-              metadata:
-                labels:
-                  app: "{{ online_app_name }}"
-              spec:
-                containers:
-                  - name: "{{ online_app_name }}"
-                    image: quay.io/rhn_consulting_kemori/{{ online_app_name }}
-                    imagePullPolicy: "IfNotPresent"
-                    ports:
-                      - containerPort: 8088
-                        protocol: TCP
-                    env:
-                      - name: DB_HOST
-                        value: "{{ database_app_name }}.{{ namespace_name }}.svc.cluster.local"
-                      - name: DB_NAME
-                        value: "{{ pg_database }}"
-                      - name: DB_PASS
-                        value: "{{ pg_password }}"
-                      - name: DB_PORT
-                        value: "{{ pg_port }}"
-                      - name: DB_USER
-                        value: "{{ pg_user }}"  
-                imagePullSecrets:
-                  - name: "{{ image_pull_secret_name }}"
+        src: ~/report-viewer.yaml
 
-    - name: Online App Service
-      kubernetes.core.k8s:
-        state: present
-        definition:
-          apiVersion: v1
-          kind: Service
-          metadata:
-            name: "{{ online_app_name }}"
-            namespace: "{{ namespace_name }}"
-            labels:
-              app: "{{ online_app_name }}"
-          spec:
-            type: ClusterIP
-            ports:
-              - name: 8088-tcp
-                protocol: TCP
-                port: 8088
-                targetPort: 8088
-            sessionAffinity: None
-            selector:
-              app: "{{ online_app_name }}"
-          status:
-            loadBalancer: {}
-
-    - name: Online App Route
-      kubernetes.core.k8s:
-        state: present
-        definition:
-          apiVersion: route.openshift.io/v1
-          kind: Route
-          metadata:
-            name: "{{ online_app_name }}"
-            namespace: "{{ namespace_name }}"
-            labels:
-              app: "{{ online_app_name }}"
-          spec:
-            host: "{{ online_app_name }}-{{ namespace_name }}.{{ openshift-domain }}"
-            to:
-              kind: Service
-              name: "{{ online_app_name }}"
-              weight: 100
-            port:
-              targetPort: 8088-tcp
-            tls:
-              termination: edge
-              insecureEdgeTerminationPolicy: Redirect
-            wildcardPolicy: None
+    - name: Delete tmp file
+      ansible.builtin.file:
+        path: ~/report-viewer.yaml
+        state: absent
