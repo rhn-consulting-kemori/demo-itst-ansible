@@ -32,7 +32,7 @@
                     image: quay.io/rhn_consulting_kemori/{{ online_app_name }}
                     imagePullPolicy: "IfNotPresent"
                     ports:
-                      - containerPort: "{{ online_app_port }}"
+                      - containerPort: 8088
                         protocol: TCP
                     env:
                       - name: DB_HOST
@@ -45,6 +45,8 @@
                         value: "{{ pg_port }}"
                       - name: DB_USER
                         value: "{{ pg_user }}"  
+                imagePullSecrets:
+                  - name: "{{ image_pull_secret_name }}"
 
     - name: Online App Service
       kubernetes.core.k8s:
@@ -60,10 +62,10 @@
           spec:
             type: ClusterIP
             ports:
-              - name: "{{ online_app_port }}-tcp"
+              - name: 8088-tcp
                 protocol: TCP
-                port: "{{ online_app_port }}"
-                targetPort: "{{ online_app_port }}"
+                port: 8088
+                targetPort: 8088
             sessionAffinity: None
             selector:
               app: "{{ online_app_name }}"
@@ -88,7 +90,7 @@
               name: "{{ online_app_name }}"
               weight: 100
             port:
-              targetPort: "{{ online_app_port }}-tcp"
+              targetPort: 8088-tcp
             tls:
               termination: edge
               insecureEdgeTerminationPolicy: Redirect
