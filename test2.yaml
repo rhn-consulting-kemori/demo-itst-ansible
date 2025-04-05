@@ -1,0 +1,15 @@
+- name: Test Playbook
+  hosts: localhost
+  tasks:
+    - name: cat file
+      shell: cat /tmp/checkout/README.md
+      register: cat_file
+
+    - name: echo file body
+      debug:
+        msg: "{{ cat_file.stdout }}"
+
+    - name: ディレクトリーを削除する
+      ansible.builtin.file:
+        path: /tmp/checkout
+        state: absent
