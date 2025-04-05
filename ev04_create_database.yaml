@@ -1,5 +1,4 @@
 ---
-# Playbook ev02_delete_namespace
 # Delete ROSA NameSpace
 # Parameter namespace_name
 - hosts: localhost

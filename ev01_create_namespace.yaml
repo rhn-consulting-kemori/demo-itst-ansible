@@ -1,4 +1,5 @@
 ---
+# Playbook ev01_create_namespace
 # Create ROSA NameSpace
 # Parameter namespace_name
 - hosts: localhost

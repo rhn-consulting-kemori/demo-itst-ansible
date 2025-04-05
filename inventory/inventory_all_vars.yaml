@@ -3,3 +3,4 @@ all:
   vars:
     result_manager_url: result-manager-demo-report.apps.rosa.rosa-6hxjb.nnh2.p3.openshiftapps.com
     namespace_name: demo-itst
+    image_pull_secret_name: quayio
