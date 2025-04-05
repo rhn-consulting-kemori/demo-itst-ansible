@@ -13,11 +13,8 @@
           metadata:
             namespace: "{{ namespace_name }}"
             name: "{{ database_app_name }}"
-          space:
+          spec:
             replicas: 1
-            selector:
-              matchLabels:
-                app: postgresql
             template:
               metadata:
                 labels:
