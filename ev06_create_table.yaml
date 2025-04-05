@@ -9,6 +9,7 @@
   tasks:
     - name: Create Table
       kubernetes.core.k8s:
+        state: present
         definition:
           apiVersion: batch/v1
           kind: Job
