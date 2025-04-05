@@ -7,7 +7,7 @@
   tasks:
     - name: Download Yaml
       ansible.builtin.get_url:
-        url: https://github.com/rhn-consulting-kemori/demo-itst-test/blob/main/report-pipeline/test_scenario/online_run/report-viewer.yaml
+        url: https://raw.githubusercontent.com/rhn-consulting-kemori/demo-itst-test/refs/heads/main/report-pipeline/test_scenario/online_run/report-viewer.yaml
         dest: ~/report-viewer.yaml
         mode: '0664'
 
