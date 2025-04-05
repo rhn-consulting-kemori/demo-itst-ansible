@@ -32,7 +32,7 @@
                       - name: DB_PASSWORD
                         value: "{{ pg_password }}"
                       - name: DB_SERVERNAME
-                        value: "{{ db_server_name }}"
+                        value: "{{ database_app_name }}.{{ namespace_name }}.svc.cluster.local"
                       - name: DB_PORTNUMBER
                         value: "{{ pg_port }}"
                 imagePullSecrets:
