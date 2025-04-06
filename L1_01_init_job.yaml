@@ -15,6 +15,6 @@
       ansible.builtin.import_tasks:
         file: test3.yaml
       vars:
-        test_id: "{{ pipeline_vars[test_id] }}"
-        test_name: "{{ pipeline_vars[test_name] }}"
-        test_description : "{{ pipeline_vars[test_description] }}"
+        test_id: "{{ pipeline_vars.test_id }}"
+        test_name: "{{ pipeline_vars.test_name }}"
+        test_description : "{{ pipeline_vars.test_description }}"
