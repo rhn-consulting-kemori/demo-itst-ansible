@@ -6,5 +6,11 @@
         repo: 'https://github.com/rhn-consulting-kemori/demo-itst-test.git'
         dest: /tmp/demo-itst-test
 
-    - name: Include a play after another play
-      ansible.builtin.import_playbook: test2.yaml
+    - name: include_vars {{ item }} to tmp_vars
+      include_vars: 
+        file: /tmp/demo-itst-test/report-pipeline/pipeline.yaml
+        name: tmp_vars
+
+    - name: print vars
+      debug:
+        msg: "{{ tmp_vars }}"
