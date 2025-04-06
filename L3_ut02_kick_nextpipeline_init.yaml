@@ -1,7 +1,26 @@
 ---
-- name: select integer values
+# L3_ut02_kick_nextpipeline_init
+# [(seq: 2, type: environment, name: environment-workflow)]
+- name: Select Next Pipeline
   debug:
-    msg: '{{ pipelines | selectattr("seq", "defined") | selectattr("seq", "eq", seq + 1) }}'
+    var: next_pipeline
+  vars:
+    next_pipeline: '{{ pipelines | selectattr("seq", "defined") | selectattr("seq", "eq", seq + 1) }}'
+  register: next_pipeline
 
-# register pipelines[seq]:
-# (seq: 2, type: environment, name: environment-workflow)
+- name: Kick Next Pipeline
+  ansible.builtin.uri:
+    url: https://{{ result_manager_url }}/api/test_result
+    method: POST
+    body_format: json
+    status_code: 201
+    headers:
+      Content-Type: application/json
+    body: |-
+      {
+        "test_id": "{{ test_id }}",
+        "test_name": "{{ test_name }}",
+        "test_description": "{{ test_description }}"
+      }
+  register: result
+  # when で条件指定して、次のパイプラインをキックする。 

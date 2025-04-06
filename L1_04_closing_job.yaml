@@ -1,0 +1,39 @@
+---
+# L1_04_closing_job
+# Parameter: 
+# * test_id, test_result_seq
+# -F google_chat_url
+# -I pipeline_repo_domain, pipeline_repo_name, result_manager_url, report_viewer_url
+# +P pipeline_vars
+- name: Closing-Job 
+  hosts: localhost
+  tasks:
+    - name: Git clone
+      ansible.builtin.import_tasks:
+        file: L3_ut01_gitclone.yaml
+
+    - name: Delete NameSpace
+      ansible.builtin.import_tasks:
+        file: L3_ev02_delete_namespace.yaml
+      vars:
+        namespace_name: "{{ pipeline_vars.namespace_name }}"
+      when: pipeline_vars.parameters.closing.environment_remove
+
+    - name: Report Pipeline Summary
+      ansible.builtin.import_tasks:
+        file: L3_rp03_run_pipeline_summary.yaml
+      vars:
+        test_group: "クロージング"
+        test_pipeline: "環境スクラップ"
+        simulation_date : ""
+      when: pipeline_vars.parameters.closing.environment_remove
+
+    - name: Report Test Result Summary
+      ansible.builtin.import_tasks:
+        file: L3_rp04_run_test_result_summary.yaml
+  
+    - name: Complete Notification
+      ansible.builtin.import_tasks:
+        file: L3_rp05_run_complete_notification.yaml
+      vars:
+        text: "テスト完了しました。\ntest_result_seq={{ test_result_seq }}, test_id={{ test_id }}\nhttps://{{ report_viewer_url }}/report?test_result_seq={{ test_result_seq }}"

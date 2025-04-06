@@ -1,0 +1,17 @@
+---
+# L3_rp05_run_complete_notification
+# Parameter: 
+# * text
+# * google_chat_url
+- name: notification
+  ansible.builtin.uri:
+    url: "{{ google_chat_url }}"
+    method: POST
+    body_format: json
+    headers:
+      Content-Type: application/json
+    body: |-
+      {
+        "text": "{{ text }}"
+      }
+  register: result

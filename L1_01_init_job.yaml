@@ -11,16 +11,16 @@
       ansible.builtin.import_tasks:
         file: L3_ut01_gitclone.yaml
 
-    #- name: Add test_result
-    #  ansible.builtin.import_tasks:
-    #    file: L3_rp01_add_test_result
-    #  vars:
-    #    test_id: "{{ pipeline_vars.test_id }}"
-    #    test_name: "{{ pipeline_vars.test_name }}"
-    #    test_description : "{{ pipeline_vars.test_description }}"
+    - name: Add test_result
+      ansible.builtin.import_tasks:
+        file: L3_rp01_add_test_result.yaml
+      vars:
+        test_id: "{{ pipeline_vars.test_id }}"
+        test_name: "{{ pipeline_vars.test_name }}"
+        test_description : "{{ pipeline_vars.test_description }}"
 
     - name: Next Pipeline Kick
       ansible.builtin.import_tasks:
-        file: L3_ut02_kick_nextpipeline_init
+        file: L3_ut02_kick_nextpipeline_init.yaml
       vars:
         seq: 1

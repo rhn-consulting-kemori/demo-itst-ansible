@@ -1,12 +1,14 @@
 ---
 all:
   vars:
+    openshift-domain: apps.rosa.rosa-6hxjb.nnh2.p3.openshiftapps.com
     result_manager_url: result-manager-demo-report.apps.rosa.rosa-6hxjb.nnh2.p3.openshiftapps.com
-    namespace_name: demo-itst
+    report_viewer_url: report-viewer-demo-report.apps.rosa.rosa-6hxjb.nnh2.p3.openshiftapps.com
     image_pull_secret_name: quayio
     database_app_name: postgresql
     pg_user: test
     pg_database: test
     pg_password: test
     pg_port: "5432"
-    openshift-domain: apps.rosa.rosa-6hxjb.nnh2.p3.openshiftapps.com
+    pipeline_repo_domain: rhn-consulting-kemori
+    pipeline_repo_name: demo-itst-test
