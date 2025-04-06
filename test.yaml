@@ -14,3 +14,7 @@
     - name: print vars
       debug:
         msg: "{{ tmp_vars }}"
+
+    - name: Include task list in play
+      ansible.builtin.import_tasks:
+        file: test2.yaml
