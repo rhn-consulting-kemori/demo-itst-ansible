@@ -1,0 +1,7 @@
+---
+- name: select integer values
+  debug:
+    msg: '{{ pipelines | selectattr("seq", "defined") | selectattr("seq", "eq", seq + 1) }}'
+
+# register pipelines[seq]:
+# (seq: 2, type: environment, name: environment-workflow)

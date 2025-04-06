@@ -1,0 +1,31 @@
+---
+# L3_rp01_add_test_result
+# Parameter: 
+# * test_id, test_name, test_description
+# - result_manager_url
+# + test_result_seq
+- name: Add test_result
+  ansible.builtin.uri:
+    url: https://{{ result_manager_url }}/api/test_result
+    method: POST
+    body_format: json
+    status_code: 201
+    headers:
+      Content-Type: application/json
+    body: |-
+      {
+        "test_id": "{{ test_id }}",
+        "test_name": "{{ test_name }}",
+        "test_description": "{{ test_description }}"
+      }
+  register: result
+
+- name: debug
+  ansible.builtin.debug:
+    var: result.json
+
+- name: Set test_result_seq
+  set_stats:
+    data:
+      test_result_seq: "{{ result.json.test_result_seq }}"
+    aggregate: false
