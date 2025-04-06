@@ -1,0 +1,95 @@
+---
+# Playbook ev10_deploy_report-viewer
+# Parameter: 
+# * namespace_name
+- hosts: localhost
+  tasks:
+    - name: Deploy report-viewer
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            namespace: "{{ namespace_name }}"
+            name: report-viewer
+            labels:
+              app: report-viewer
+          spec:
+            replicas: 1
+            selector:
+              matchLabels:
+                app: report-viewer
+            template:
+              metadata:
+                labels:
+                  app: report-viewer
+              spec:
+                containers:
+                  - name: report-viewer
+                    image: quay.io/rhn_consulting_kemori/report-viewer
+                    imagePullPolicy: "IfNotPresent"
+                    ports:
+                      - containerPort: 8088
+                        protocol: TCP
+                    env:
+                      - name: DB_HOST
+                        value: postgresql.{{ namespace_name }}.svc.cluster.local
+                      - name: DB_NAME
+                        value: "{{ pg_database }}"
+                      - name: DB_PASS
+                        value: "{{ pg_password }}"
+                      - name: DB_PORT
+                        value: '{{ pg_port }}'
+                      - name: DB_USER
+                        value: "{{ pg_user }}"  
+                imagePullSecrets:
+                  - name: quayio
+
+    - name: Service report-viewer
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: report-viewer
+            namespace: "{{ namespace_name }}"
+            labels:
+              app: report-viewer
+          spec:
+            type: ClusterIP
+            ports:
+              - name: 8088-tcp
+                protocol: TCP
+                port: 8088
+                targetPort: 8088
+            sessionAffinity: None
+            selector:
+              app: report-viewer
+          status:
+            loadBalancer: {}
+
+    - name: Route report-viewer
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: route.openshift.io/v1
+          kind: Route
+          metadata:
+            name: report-viewer
+            namespace: "{{ namespace_name }}"
+            labels:
+              app: report-viewer
+          spec:
+            host: report-viewer-{{ namespace_name }}.{{ openshift-domain }}
+            to:
+              kind: Service
+              name: report-viewer
+              weight: 100
+            port:
+              targetPort: 8088-tcp
+            tls:
+              termination: edge
+              insecureEdgeTerminationPolicy: Redirect
+            wildcardPolicy: None
