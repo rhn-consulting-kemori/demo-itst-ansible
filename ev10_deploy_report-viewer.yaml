@@ -82,7 +82,7 @@
             labels:
               app: report-viewer
           spec:
-            host: report-viewer-{{ namespace_name }}.{{ openshift-domain }}
+            host: report-viewer-{{ namespace_name }}.{{ openshift_domain }}
             to:
               kind: Service
               name: report-viewer
