@@ -1,0 +1,20 @@
+---
+# L1_01_init_job
+# Parameter: 
+# * pipeline_repo_domain, pipeline_repo_name, test_id
+# - result_manager_url
+# + pipeline_vars
+- name: Init-Job 
+  hosts: localhost
+  tasks:
+    - name: Git clone
+      ansible.builtin.import_tasks:
+        file: L3_ut01_gitclone.yaml
+
+    - name: Add test_result
+      ansible.builtin.import_tasks:
+        file: test3.yaml
+      vars:
+        test_id: "{{ pipeline_vars[test_id] }}"
+        test_name: "{{ pipeline_vars[test_name] }}"
+        test_description : "{{ pipeline_vars[test_description] }}"
