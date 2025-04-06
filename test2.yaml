@@ -2,7 +2,7 @@
   hosts: localhost
   tasks:
     - name: cat file
-      shell: cat /tmp/checkout/README.md
+      shell: cat /tmp/demo-itst-test/report-pipeline/pipeline.yaml
       register: cat_file
 
     - name: echo file body
@@ -11,5 +11,5 @@
 
     - name: ディレクトリーを削除する
       ansible.builtin.file:
-        path: /tmp/checkout
+        path: /tmp/demo-itst-test
         state: absent

@@ -4,17 +4,7 @@
     - name: Git Clone
       ansible.builtin.git:
         repo: 'https://github.com/rhn-consulting-kemori/demo-itst-test.git'
-        dest: /tmp/checkout/demo-itst-test
+        dest: /tmp/demo-itst-test
 
-    - name: cat file
-      shell: cat /tmp/checkout/demo-itst-test/report-pipeline/test_scenario/online_run/report-viewer.yaml
-      register: cat_file
-
-    - name: echo file body
-      debug:
-        msg: "{{ cat_file.stdout }}"
-
-    - name: ディレクトリーを削除する
-      ansible.builtin.file:
-        path: /tmp/checkout/demo-itst-test
-        state: absent
+    - name: Include a play after another play
+      ansible.builtin.import_playbook: test2.yaml
