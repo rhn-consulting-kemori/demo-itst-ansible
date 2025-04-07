@@ -21,6 +21,8 @@
 
     - name: Next Pipeline Kick
       ansible.builtin.import_tasks:
-        file: L3_ut02_kick_nextpipeline_init.yaml
+        file: L3_ut02_kick_nextpipeline.yaml
       vars:
         seq: 1
+        test_id: "{{ pipeline_vars.test_id }}"
+        test_result_seq: "{{ result.json.test_result_seq }}"

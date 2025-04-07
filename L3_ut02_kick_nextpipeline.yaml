@@ -1,0 +1,25 @@
+---
+# L3_ut02_kick_nextpipeline
+# Parameter:
+# * seq, test_id, test_result_seq
+- name: Select Next Pipeline
+  debug:
+    var: next_pipeline
+  vars:
+    next_pipeline: '{{ pipeline_vars.pipelines | selectattr("seq", "defined") | selectattr("seq", "eq", seq + 1) }}'
+  register: search_result
+
+- name: If type == environment
+  debug:
+    msg: 'type=environment, seq={{ search_result.next_pipeline.seq }}, name={{ search_result.next_pipeline.name }}, test_result_seq={{ test_result_seq }}, test_id={{ test_id }}'
+  when: search_result.next_pipeline.type == "environment"
+
+- name: If type == test_scenario
+  debug:
+    msg: 'type=test_scenario, seq={{ search_result.next_pipeline.seq }}, name={{ search_result.next_pipeline.name }}, test_result_seq={{ test_result_seq }}, test_id={{ test_id }}'
+  when: search_result.next_pipeline.type == "test_scenario"
+
+- name: If type == closing
+  debug:
+    msg: 'type=closing, seq={{ search_result.next_pipeline.seq }}, name={{ search_result.next_pipeline.name }}, test_result_seq={{ test_result_seq }}, test_id={{ test_id }}'
+  when: search_result.next_pipeline.type == "closing"
