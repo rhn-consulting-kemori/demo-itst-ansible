@@ -14,7 +14,7 @@
           Content-Type: application/json
         body: |-
           {
-            "test_result_seq": {{ test_result_seq }},
+            "test_result_seq": "{{ test_result_seq }}",
             "test_id": "{{ test_id }}",
             "test_group": "{{ test_group }}",
             "test_pipeline": "{{ test_pipeline }}",
