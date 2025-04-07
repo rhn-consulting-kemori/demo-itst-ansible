@@ -32,7 +32,7 @@
         test_task: "NameSpace削除"
         simulation_date: ""
         start_time: "{{ l3_ev02_start_timestamp.start_timestamp }}"
-        end_time: "{{ l3_ev02_end_timestamp.l3_ev02_end_timestamp }}"
+        end_time: "{{ l3_ev02_end_timestamp.end_timestamp }}"
         test_result: "OK"
         evidence_link: "-"
         sw_category: ""
