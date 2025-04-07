@@ -36,4 +36,4 @@
       ansible.builtin.import_tasks:
         file: L3_rp05_run_complete_notification.yaml
       vars:
-        text: "テスト完了しました。\ntest_result_seq={{ test_result_seq }}, test_id={{ test_id }}\nhttps://{{ report_viewer_url }}/report?test_result_seq={{ test_result_seq }}"
+        text: "[test_result_seq={{ test_result_seq }}, test_id={{ test_id }}]\nテスト完了しました。\nhttps://{{ report_viewer_url }}/report?test_result_seq={{ test_result_seq }}"

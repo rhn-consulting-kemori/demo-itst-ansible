@@ -17,6 +17,6 @@
       }
   register: result
 
-- name: debug
+- name: Show test_result_summary
   ansible.builtin.debug:
     var: result.json
