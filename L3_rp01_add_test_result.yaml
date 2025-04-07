@@ -23,17 +23,3 @@
 - name: debug
   ansible.builtin.debug:
     var: result.json
-
-- name: debug
-  ansible.builtin.debug:
-    var: result.json.test_result_seq
-
-- name: Set test_result_seq
-  set_stats:
-    data:
-      test_result_seq: "{{ result.json.test_result_seq }}"
-    aggregate: false
-
-- name: debug
-  ansible.builtin.debug:
-    var: test_result_seq

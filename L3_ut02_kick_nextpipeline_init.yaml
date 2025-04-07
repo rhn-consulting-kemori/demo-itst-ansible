@@ -10,7 +10,8 @@
 
 - name: Show test_result_seq
   debug:
-    var: test_result_seq
+    var: result.json.test_result_seq
+
 # - name: Kick Next Pipeline
 #  ansible.builtin.uri:
 #    url: https://{{ result_manager_url }}/api/test_result
