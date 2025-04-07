@@ -16,3 +16,14 @@
     - name: Show pipeline
       debug:
         var: nextpipeline
+
+    - name: Select Next Pipeline2
+      debug:
+        var: next_pipeline2
+      vars:
+        next_pipeline2: '{{ pipeline_vars.pipelines | selectattr("seq", "defined") | selectattr("seq", "eq", 2) }}'
+      register: output
+
+    - name: Show output
+      debug:
+        var: output
