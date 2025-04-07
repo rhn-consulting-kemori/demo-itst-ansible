@@ -8,6 +8,11 @@
 
     - name: Select Next Pipeline
       debug:
-        msg: 'seq={{ item.seq }}, type={{ item.type }}, name={{ item.name }}'
+        var: item
       with_items: '{{ pipeline_vars.pipelines }}'
       when: item.seq == 2
+      register: nextpipeline
+    
+    - name: Show pipeline
+      debug:
+        var: nextpipeline.item
