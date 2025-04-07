@@ -1,41 +1,13 @@
-- name: Test Playbook
+# [(seq: 2, type: environment, name: environment-workflow)]
+- name: Init-Job 
   hosts: localhost
   tasks:
-    - name: Start timestamp
-      ansible.builtin.debug:
-        var: start_timestamp
-      vars:
-        start_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
-      register: l3_ev02_start_timestamp
-
-    - name: End timestamp
-      ansible.builtin.debug:
-        var: end_timestamp
-      vars:
-        end_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
-      register: l3_ev02_end_timestamp
-
-    - name: print vars
-      debug:
-        msg: "{{ l3_ev02_start_timestamp }}"
-
-    - name: print vars
-      debug:
-        msg: "{{ l3_ev02_end_timestamp }}"
-
-    - name: Add test_task NG
+    - name: Git clone
       ansible.builtin.import_tasks:
-        file: L3_rp02_add_test_task.yaml
-      vars:
-        test_group: "クロージング"
-        test_pipeline: "環境スクラップ"
-        test_task: "NameSpace削除"
-        simulation_date: ""
-        start_time: "{{ l3_ev02_start_timestamp.start_timestamp }}"
-        end_time: "{{ l3_ev02_end_timestamp.end_timestamp }}"
-        test_result: "OK"
-        evidence_link: "-"
-        sw_category: ""
-        sw_id: ""
-        sw_name: ""
-        sw_version: ""
+        file: L3_ut01_gitclone.yaml
+
+    - name: Select Next Pipeline
+      debug:
+        msg: 'seq={{ item.seq }}, type={{ item.type }}, name={{ item.name }}'
+      with_items: '{{ pipeline_vars.pipelines }}'
+      when: item.seq == 2
