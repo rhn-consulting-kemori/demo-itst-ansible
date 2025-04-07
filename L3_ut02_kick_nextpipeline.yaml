@@ -11,18 +11,18 @@
 
 - name: If type == environment
   debug:
-    msg: 'type={{ item.seq }}, seq={{ item.seq }}, name={{ item.name }}, test_result_seq={{ test_result_seq }}, test_id={{ test_id }}'
+    msg: 'type={{ item.type }}, seq={{ item.seq }}, name={{ item.name }}, test_result_seq={{ test_result_seq }}, test_id={{ test_id }}'
   with_items: '{{ search_result.next_pipeline }}'
   when: item.type == "environment"
 
 - name: If type == test_scenario
   debug:
-    msg: 'type={{ item.seq }}, seq={{ item.seq }}, name={{ item.name }}, test_result_seq={{ test_result_seq }}, test_id={{ test_id }}'
+    msg: 'type={{ item.type }}, seq={{ item.seq }}, name={{ item.name }}, test_result_seq={{ test_result_seq }}, test_id={{ test_id }}'
   with_items: '{{ search_result.next_pipeline }}'
   when: item.type == "test_scenario"
 
 - name: If type == closing
   debug:
-    msg: 'type={{ item.seq }}, seq={{ item.seq }}, name={{ item.name }}, test_result_seq={{ test_result_seq }}, test_id={{ test_id }}'
+    msg: 'type={{ item.type }}, seq={{ item.seq }}, name={{ item.name }}, test_result_seq={{ test_result_seq }}, test_id={{ test_id }}'
   with_items: '{{ search_result.next_pipeline }}'
   when: item.type == "closing"

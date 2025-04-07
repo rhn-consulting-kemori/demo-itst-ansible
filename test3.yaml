@@ -1,29 +1,6 @@
-# [(seq: 2, type: environment, name: environment-workflow)]
 - name: Init-Job 
   hosts: localhost
-  tasks:
-    - name: Git clone
-      ansible.builtin.import_tasks:
-        file: L3_ut01_gitclone.yaml
-
-    - name: Select Next Pipeline
+  tasks:      
+    - name: Show Message
       debug:
-        var: item
-      register: nextpipeline
-      with_items: '{{ pipeline_vars.pipelines }}'
-      when: item.seq == 2
-      
-    - name: Show pipeline
-      debug:
-        var: nextpipeline
-
-    - name: Select Next Pipeline2
-      debug:
-        var: next_pipeline2
-      vars:
-        next_pipeline2: '{{ pipeline_vars.pipelines | selectattr("seq", "defined") | selectattr("seq", "eq", 2) }}'
-      register: output
-
-    - name: Show output
-      debug:
-        var: output
+        msg: "test_id={{ test_id }}, test_result_seq={{ test_result_seq }}"
