@@ -9,10 +9,10 @@
     - name: Select Next Pipeline
       debug:
         var: item
+      register: nextpipeline
       with_items: '{{ pipeline_vars.pipelines }}'
       when: item.seq == 2
-      register: nextpipeline
-    
+      
     - name: Show pipeline
       debug:
         var: nextpipeline
