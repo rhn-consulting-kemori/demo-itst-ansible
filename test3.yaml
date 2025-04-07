@@ -5,14 +5,14 @@
       ansible.builtin.debug:
         var: start_timestamp
       vars:
-        start_timestamp: '{{ lookup(''pipe'', ''date "+%Y/%m/%d %H:%M:%S"'') }}'
+        start_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
       register: l3_ev02_start_timestamp
 
     - name: End timestamp
       ansible.builtin.debug:
         var: end_timestamp
       vars:
-        end_timestamp: '{{ lookup(''pipe'', ''date "+%Y/%m/%d %H:%M:%S"'') }}'
+        end_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
       register: l3_ev02_end_timestamp
 
     - name: print vars
@@ -31,8 +31,8 @@
         test_pipeline: "環境スクラップ"
         test_task: "NameSpace削除"
         simulation_date: ""
-        start_time: "{{ l3_ev02_start_timestamp }}"
-        end_time: "{{ l3_ev02_end_timestamp }}"
+        start_time: "{{ l3_ev02_start_timestamp.start_timestamp }}"
+        end_time: "{{ l3_ev02_end_timestamp.l3_ev02_end_timestamp }}"
         test_result: "OK"
         evidence_link: "-"
         sw_category: ""
