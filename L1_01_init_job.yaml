@@ -1,8 +1,8 @@
 ---
 # L1_01_init_job
 # Parameter: 
-# * pipeline_repo_domain, pipeline_repo_name, test_id
-# - result_manager_url
+# * test_id
+# - result_manager_url, pipeline_repo_domain, pipeline_repo_name
 # + pipeline_vars, test_result_seq
 - name: Init-Job 
   hosts: localhost

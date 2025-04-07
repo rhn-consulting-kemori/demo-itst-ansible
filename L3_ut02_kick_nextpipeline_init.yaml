@@ -8,19 +8,22 @@
     next_pipeline: '{{ pipelines | selectattr("seq", "defined") | selectattr("seq", "eq", seq + 1) }}'
   register: next_pipeline
 
-- name: Kick Next Pipeline
-  ansible.builtin.uri:
-    url: https://{{ result_manager_url }}/api/test_result
-    method: POST
-    body_format: json
-    status_code: 201
-    headers:
-      Content-Type: application/json
-    body: |-
-      {
-        "test_id": "{{ test_id }}",
-        "test_name": "{{ test_name }}",
-        "test_description": "{{ test_description }}"
-      }
-  register: result
-  # when で条件指定して、次のパイプラインをキックする。 
+- name: Show test_result_seq
+  debug:
+    var: test_result_seq
+# - name: Kick Next Pipeline
+#  ansible.builtin.uri:
+#    url: https://{{ result_manager_url }}/api/test_result
+#    method: POST
+#    body_format: json
+#    status_code: 201
+#    headers:
+#      Content-Type: application/json
+#    body: |-
+#      {
+#        "test_id": "{{ test_id }}",
+#        "test_name": "{{ test_name }}",
+#        "test_description": "{{ test_description }}"
+#      }
+#  register: result
+#  # when で条件指定して、次のパイプラインをキックする。 
