@@ -27,7 +27,7 @@
     # OK
     - name: Add test_task
       ansible.builtin.import_tasks:
-        file: L3_rp02_add_test_task
+        file: L3_rp02_add_test_task.yaml
       vars:
         test_group: "クロージング"
         test_pipeline: "環境スクラップ"
@@ -46,7 +46,7 @@
     # NG
     - name: Add test_task
       ansible.builtin.import_tasks:
-        file: L3_rp02_add_test_task
+        file: L3_rp02_add_test_task.yaml
       vars:
         test_group: "クロージング"
         test_pipeline: "環境スクラップ"
