@@ -15,4 +15,4 @@
     
     - name: Show pipeline
       debug:
-        var: nextpipeline.item
+        var: nextpipeline
