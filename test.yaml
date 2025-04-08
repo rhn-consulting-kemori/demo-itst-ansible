@@ -1,20 +1,24 @@
 - name: Test Playbook
   hosts: localhost
   tasks:
-    - name: Git Clone
-      ansible.builtin.git:
-        repo: 'https://github.com/rhn-consulting-kemori/demo-itst-test.git'
-        dest: /tmp/demo-itst-test
+    - name: Run test api
+      ansible.builtin.uri:
+        url: https://controller.nht4t.sandbox2861.opentlc.com/api/controller/v2/job_templates/22/launch
+        method: POST
+        body_format: json
+        status_code: 200
+        headers:
+          Content-Type: application/json
+          Authorization: Bearer {{ ansible_token }}
+        body: |-
+          {
+            "extra_vars": {
+              "test_id": "EX-E001-00000002",
+              "test_result_seq": "6"
+            }
+          }
+      register: result
 
-    - name: include_vars {{ item }} to tmp_vars
-      include_vars: 
-        file: /tmp/demo-itst-test/report-pipeline/pipeline.yaml
-        name: tmp_vars
-
-    - name: print vars
-      debug:
-        msg: "{{ tmp_vars }}"
-
-    - name: Include task list in play
-      ansible.builtin.import_tasks:
-        file: test2.yaml
+    - name: Show test_result_summary
+      ansible.builtin.debug:
+        var: result.json
