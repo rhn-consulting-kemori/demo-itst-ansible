@@ -1,24 +1,31 @@
 - name: Test Playbook
   hosts: localhost
   tasks:
-    - name: Run test api
-      ansible.builtin.uri:
-        url: https://controller.example.com:8501/api/controller/v2/job_templates/22/launch/
-        method: POST
-        body_format: json
-        status_code: 200
-        headers:
-          Content-Type: application/json
-          Authorization: Bearer {{ ansible_token }}
-        body: |-
-          {
-            "extra_vars": {
-              "test_id": "{{ test_id }}",
-              "test_result_seq": "{{ test_result_seq }}"
-            }
-          }
-      register: result
+    - name: handle the error
+      block:
+        - name: Run test api
+          ansible.builtin.uri:
+            url: https://controller.nht4t.sandbox2861.opentlc.com/api/controller/v2/job_templates/22/launch/
+            method: POST
+            body_format: json
+            status_code: 200
+            headers:
+              Content-Type: application/json
+              Authorization: Bearer {{ ansible_token }}
+            body: |-
+              {
+                "extra_vars": {
+                  "test_id": "{{ test_id }}",
+                  "test_result_seq": "{{ test_result_seq }}"
+                }
+              }
+          register: result
 
-    - name: Show test_result_summary
-      ansible.builtin.debug:
-        var: result.json
+        - name: Show test_result_summary
+          ansible.builtin.debug:
+            var: result.json
+
+      rescue:
+        - name: Show error data
+          ansible.builtin.debug:
+            var: result
