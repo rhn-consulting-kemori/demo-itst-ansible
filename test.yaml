@@ -3,7 +3,7 @@
   tasks:
     - name: Run test api
       ansible.builtin.uri:
-        url: https://controller.nht4t.sandbox2861.opentlc.com/api/controller/v2/job_templates/22/launch
+        url: https://controller.nht4t.sandbox2861.opentlc.com/api/controller/v2/job_templates/22/launch/
         method: POST
         body_format: json
         status_code: 200
@@ -13,8 +13,8 @@
         body: |-
           {
             "extra_vars": {
-              "test_id": "EX-E001-00000002",
-              "test_result_seq": "6"
+              "test_id": "{{ test_id }}",
+              "test_result_seq": "{{ test_result_seq }}"
             }
           }
       register: result
