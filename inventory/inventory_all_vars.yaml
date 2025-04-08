@@ -13,8 +13,8 @@ all:
     pipeline_repo_domain: rhn-consulting-kemori
     pipeline_repo_name: demo-itst-test
     aap_controller_url: https://controller.nht4t.sandbox2861.opentlc.com
-    environment_pipeline_number:
-    test_scenario_pipeline_number:
-    closing_pipeline_number: 21
+    environment_pipeline_number: 26
+    test_scenario_pipeline_number: 26
+    closing_pipeline_number: 24
     # ansible_token:
     # google_chat_url:
