@@ -1,0 +1,18 @@
+- name: Mock Workflow
+  hosts: localhost
+  tasks:      
+    - name: Show Parameter
+      debug:
+        msg: "test_id={{ test_id }}, test_result_seq={{ test_result_seq }}, seq={{ seq }}, name={{ name }}"
+
+    - name: Git clone
+      ansible.builtin.import_tasks:
+        file: L3_ut01_gitclone.yaml
+
+    - name: Next Pipeline Kick
+      ansible.builtin.import_tasks:
+        file: L3_ut02_kick_nextpipeline.yaml
+      vars:
+        seq: "{{ seq }}"
+        test_id: "{{ test_id }}"
+        test_result_seq: "{{ test_result_seq }}"

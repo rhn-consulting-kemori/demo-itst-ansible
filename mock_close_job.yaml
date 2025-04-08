@@ -1,6 +1,6 @@
-- name: Init-Job 
+- name: Mock Close Job
   hosts: localhost
   tasks:      
-    - name: Show Message
+    - name: Show Parameter
       debug:
         msg: "test_id={{ test_id }}, test_result_seq={{ test_result_seq }}"
