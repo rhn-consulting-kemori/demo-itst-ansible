@@ -28,4 +28,4 @@
       rescue:
         - name: Show error data
           ansible.builtin.debug:
-            var: result.json
+            msg: status={{ result.status }}, {{ result.msg }}
