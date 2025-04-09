@@ -20,3 +20,4 @@
           kafka_request: "{{ pipeline_vars.parameters.environment.kafka }}"
           create_table_request: "{{ pipeline_vars.parameters.environment.create_table }}"
           insert_table_request: "{{ pipeline_vars.parameters.environment.insert_table }}"
+        aggregate: false
