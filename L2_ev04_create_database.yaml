@@ -1,0 +1,115 @@
+---
+# L2_ev04_create_database
+# Create Database
+# Parameter: 
+# * namespace_name
+# - database_app_name, pg_user, pg_database, pg_password
+- name: Create Database
+  hosts: localhost
+  tasks:
+    - name: Start timestamp
+      ansible.builtin.debug:
+        var: start_timestamp
+      vars:
+        start_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
+      register: l2_ev04_start_timestamp
+
+    - name: Create Database
+      block:
+        - name: Create Database Deployment
+          kubernetes.core.k8s:
+            state: present
+            definition:
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                namespace: "{{ namespace_name }}"
+                name: "{{ database_app_name }}"
+                labels:
+                  app: postgresql
+              spec:
+                replicas: 1
+                selector:
+                  matchLabels:
+                    app: postgresql
+                template:
+                  metadata:
+                    labels:
+                      app: postgresql
+                  spec:
+                    containers:
+                      - name: postgresql
+                        image: registry.redhat.io/rhel8/postgresql-15:latest
+                        imagePullPolicy: "IfNotPresent"
+                        ports:
+                          - containerPort: 5432
+                        env:
+                          - name: POSTGRESQL_USER
+                            value: "{{ pg_user }}"
+                          - name: POSTGRESQL_DATABASE
+                            value: "{{ pg_database }}"
+                          - name: POSTGRESQL_PASSWORD
+                            value: "{{ pg_password }}"
+
+        - name: Create Database Service
+          kubernetes.core.k8s:
+            state: present
+            definition:
+              apiVersion: v1
+              kind: Service
+              metadata:
+                name: "{{ database_app_name }}"
+                namespace: "{{ namespace_name }}"
+                labels:
+                  app: postgresql
+              spec:
+                type: ClusterIP
+                ports:
+                  - name: 5432-tcp
+                    protocol: TCP
+                    port: 5432
+                    targetPort: 5432
+                sessionAffinity: None
+                selector:
+                  app: postgresql
+              status:
+                loadBalancer: {}
+
+        - name: Set test_result
+          ansible.builtin.debug:
+            var: test_result
+          vars:
+            test_result: "OK"
+          register: l2_ev04_result
+
+      rescue:
+        - name: Set test_result
+          ansible.builtin.debug:
+            var: test_result
+          vars:
+            test_result: "NG"
+          register: l2_ev04_result
+        
+    - name: End timestamp
+      ansible.builtin.debug:
+        var: end_timestamp
+      vars:
+        end_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
+      register: l2_ev04_end_timestamp
+
+    - name: Add test_task OK
+      ansible.builtin.import_tasks:
+        file: L3_rp02_add_test_task.yaml
+      vars:
+        test_group: "環境立上"
+        test_pipeline: "環境構築"
+        test_task: "Database作成"
+        simulation_date: ""
+        start_time: "{{ l2_ev04_start_timestamp.start_timestamp }}"
+        end_time: "{{ l2_ev04_end_timestamp.end_timestamp }}"
+        test_result: "{{ l2_ev04_result.test_result }}"
+        evidence_link: "-"
+        sw_category: ""
+        sw_id: ""
+        sw_name: ""
+        sw_version: ""
