@@ -3,7 +3,8 @@
 # Create ROSA NameSpace
 # Parameter: 
 # - namespace_name
-- hosts: localhost
+- name: Create NameSpace
+  hosts: localhost
   tasks:
     block:
       - name: Start timestamp
