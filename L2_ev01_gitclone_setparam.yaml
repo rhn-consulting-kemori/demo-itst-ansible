@@ -1,0 +1,22 @@
+# L2_ev01_gitclone_setparam
+# Parameter: 
+# * test_id
+# - result_manager_url, pipeline_repo_domain, pipeline_repo_name
+# + pipeline_vars
+- name: Gitclone and Set Parameter 
+  hosts: localhost
+  tasks:
+    - name: Git clone
+      ansible.builtin.import_tasks:
+        file: L3_ut01_gitclone.yaml
+
+    - name: Set Parameter
+      set_stats:
+        data:
+          namespace_name: "{{ pipeline_vars.namespace_name }}"
+          create_table_image: "{{ pipeline_vars.parameters.environment.create_table_image }}"
+          insert_table_image: "{{ pipeline_vars.parameters.environment.insert_table_image }}"
+          database_request: "{{ pipeline_vars.parameters.environment.database }}"
+          kafka_request: "{{ pipeline_vars.parameters.environment.kafka }}"
+          create_table_request: "{{ pipeline_vars.parameters.environment.create_table }}"
+          insert_table_request: "{{ pipeline_vars.parameters.environment.insert_table }}"
