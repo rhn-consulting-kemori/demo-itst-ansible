@@ -5,11 +5,6 @@
 # - namespace_name
 - name: Create NameSpace
   hosts: localhost
-  vars:
-    test_group: "環境立上"
-    test_pipeline: "環境構築"
-    test_task: "NameSpace作成"
-
   tasks:
     - name: Start timestamp
       ansible.builtin.debug:
@@ -53,9 +48,9 @@
       ansible.builtin.import_tasks:
         file: L3_rp02_add_test_task.yaml
       vars:
-        test_group: "{{ test_group }}"
-        test_pipeline: "{{ test_pipeline }}"
-        test_task: "{{ test_task }}"
+        test_group: "環境立上"
+        test_pipeline: "環境構築"
+        test_task: "NameSpace作成"
         simulation_date: ""
         start_time: "{{ l2_ev02_start_timestamp.start_timestamp }}"
         end_time: "{{ l2_ev02_end_timestamp.end_timestamp }}"
