@@ -15,6 +15,7 @@
       register: l2_ev04_start_timestamp
 
     - name: Create Database
+      when: database_request
       block:
         - name: Create Database Deployment
           kubernetes.core.k8s:
@@ -98,6 +99,7 @@
       register: l2_ev04_end_timestamp
 
     - name: Add test_task OK
+      when: database_request
       ansible.builtin.import_tasks:
         file: L3_rp02_add_test_task.yaml
       vars:

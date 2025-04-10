@@ -16,6 +16,7 @@
       register: l2_ev05_start_timestamp
 
     - name: Create Table
+      when: create_table_request
       block:
         - name: Create Table
           kubernetes.core.k8s:
@@ -71,6 +72,7 @@
       register: l2_ev05_end_timestamp
 
     - name: Add test_task OK
+      when: create_table_request
       ansible.builtin.import_tasks:
         file: L3_rp02_add_test_task.yaml
       vars:
