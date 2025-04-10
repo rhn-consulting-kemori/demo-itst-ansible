@@ -1,0 +1,26 @@
+# L1_03_test_scenario_wf
+# Parameter: 
+# * test_id, test_result_seq, seq, name
+# - result_manager_url, pipeline_repo_domain, pipeline_repo_name
+# + pipeline_vars
+- name: Start Scenario
+  # namespace_name
+  ansible.builtin.import_playbook: L2_st01_start_scenario.yaml
+
+- name: Run Online App
+  ansible.builtin.import_playbook: L2_st02_run_online_app.yaml
+
+- name: Data Entry
+  ansible.builtin.import_playbook: L2_st03_data_entry.yaml
+
+- name: Run Batch
+  ansible.builtin.import_playbook: L2_st04_run_batch.yaml
+
+- name: Assert Result
+  ansible.builtin.import_playbook: L2_st05_assert_result.yaml
+
+- name: Stop Online App
+  ansible.builtin.import_playbook: L2_st06_stop_online_app.yaml
+
+- name: End Scenario
+  ansible.builtin.import_playbook: L2_st07_end_scenario.yaml

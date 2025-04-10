@@ -1,0 +1,18 @@
+# L2_st01_start_scenario
+# Parameter: 
+# * test_id, name
+# - pipeline_repo_domain, pipeline_repo_name
+# + pipeline_vars
+- name: Start Scenario
+  hosts: localhost
+  tasks:
+    - name: Git clone
+      ansible.builtin.import_tasks:
+        file: L3_ut01_gitclone.yaml
+
+    - name: Set Parameter
+      set_stats:
+        data:
+          namespace_name: "{{ pipeline_vars.namespace_name }}"
+          simulation_date: "{{ name | regex_replace('D', '') }}"
+        aggregate: false
