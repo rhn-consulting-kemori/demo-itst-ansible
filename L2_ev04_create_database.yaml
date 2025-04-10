@@ -2,7 +2,7 @@
 # L2_ev04_create_database
 # Create Database
 # Parameter: 
-# * namespace_name
+# * namespace_name, database_request
 # - database_app_name, pg_user, pg_database, pg_password
 - name: Create Database
   hosts: localhost

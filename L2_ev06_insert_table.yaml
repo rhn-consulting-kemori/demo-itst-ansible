@@ -2,7 +2,7 @@
 # L2_ev06_insert_table
 # Insert Table
 # Parameter: 
-# * namespace_name, insert_table_image
+# * namespace_name, insert_table_image, insert_table_request
 # - database_app_name, image_pull_secret_name
 # - pg_user, pg_password, pg_port
 - name: Insert Table
@@ -16,6 +16,7 @@
       register: l2_ev06_start_timestamp
 
     - name: Insert Table
+      when: insert_table_request
       block:
         - name: Insert Table
           kubernetes.core.k8s:
@@ -71,6 +72,7 @@
       register: l2_ev06_end_timestamp
 
     - name: Add test_task OK
+      when: insert_table_request
       ansible.builtin.import_tasks:
         file: L3_rp02_add_test_task.yaml
       vars:

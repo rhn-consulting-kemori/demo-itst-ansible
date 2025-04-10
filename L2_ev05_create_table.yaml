@@ -2,7 +2,7 @@
 # L2_ev05_create_table
 # Create Table
 # Parameter: 
-# * namespace_name, create_table_image
+# * namespace_name, create_table_image, create_table_request
 # - database_app_name, image_pull_secret_name
 # - pg_user, pg_password, pg_port
 - name: Create Table
