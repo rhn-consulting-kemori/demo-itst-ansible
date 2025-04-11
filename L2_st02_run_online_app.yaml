@@ -1,0 +1,25 @@
+# L2_st02_run_online_app
+# Parameter: 
+# * test_id, name, namespace_name, simulation_date 
+# - pipeline_repo_domain, pipeline_repo_name
+# + pipeline_vars
+- name: Start Scenario
+  hosts: localhost
+  tasks:
+    - name: Git clone
+      ansible.builtin.import_tasks:
+        file: L3_ut01_gitclone.yaml
+
+    - name: Find yaml files
+      ansible.builtin.find:
+        paths: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/{{ name }}/p1_run_online_app
+        patterns: "*.yaml"
+        file_type: file
+      register: found_files
+
+    - name: Display configuration files
+      debug:
+        msg: "{{ item.mode }} {{ item.uid }} {{ item.gid }} {{ item.size }} {{ item.mtime }} {{ item.path }}"
+      loop: "{{ found_files.files }}"
+      loop_control:
+        label: "{{ item.path }}"
