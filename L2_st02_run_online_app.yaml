@@ -6,20 +6,71 @@
 - name: Start Scenario
   hosts: localhost
   tasks:
+    # Git clone
     - name: Git clone
       ansible.builtin.import_tasks:
         file: L3_ut01_gitclone.yaml
 
-    - name: Find yaml files
+    # Find j2 file
+    - name: Find j2 files
+      ansible.builtin.find:
+        paths: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p1_run_online_app
+        patterns: "*.j2"
+        file_type: file
+      register: found_files
+
+    # template replace
+    - name: Replace Template to Yaml
+      template:
+        src: "{{ item.path }}"
+        dest: "{{ item.path | regex_replace('.j2', '.yaml') }}"
+      vars:
+        openshift_domain: "{{ openshift_domain }}"
+        namespace_name: "{{ namespace_name }}"
+        image_pull_secret_name: "{{ image_pull_secret_name }}"
+        pipeline_repo_domain: "{{ pipeline_repo_domain }}"
+        database_app_name: "{{ database_app_name }}"
+        pg_user: "{{ pg_user }}"
+        pg_database: "{{ pg_database }}"
+        pg_password: "{{ pg_password }}"
+        pg_port: "{{ pg_port }}"
+      loop: "{{ found_files.files }}"
+      loop_control:
+        label: "{{ item.path }}"
+
+    # Find Yaml file
+    - name: Find Yaml files
       ansible.builtin.find:
         paths: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p1_run_online_app
         patterns: "*.yaml"
         file_type: file
-      register: found_files
-
-    - name: Display configuration files
-      debug:
-        msg: "{{ item.mode }} {{ item.uid }} {{ item.gid }} {{ item.size }} {{ item.mtime }} {{ item.path }}"
-      loop: "{{ found_files.files }}"
+      register: yaml_files
+    
+    - name: Print Yaml
+      ansible.builtin.debug:
+        var: item.path
+      loop: "{{ yaml_files.files }}"
       loop_control:
         label: "{{ item.path }}"
+
+    # SW condition
+
+    #- name: Run Online App
+    #  ansible.builtin.import_tasks:
+    #    file: L3_st01_apply_openshift.yaml
+    #  vars:
+    #    source_yaml_path: "{{ item.path }}"
+    #    test_result_seq: "{{ test_result_seq }}"
+    #    test_id: "{{ test_id }}"
+    #    test_group: "テストシナリオ"
+    #    test_pipeline: "オンライン立上"
+    #    test_task: "オンライン立上"
+    #    simulation_date: "{{ simulation_date }}"
+    #    evidence_link: "-"
+    #    sw_category: "オンライン"
+    #    sw_id: ""
+    #    sw_name: ""
+    #    sw_version: ""
+    #  loop: "{{ found_files.files }}"
+    #  loop_control:
+    #    label: "{{ item.path }}"

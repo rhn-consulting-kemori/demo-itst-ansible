@@ -1,7 +1,7 @@
 ---
 all:
   vars:
-    openshift-domain: apps.rosa.rosa-vpfgs.o0sn.p3.openshiftapps.com
+    openshift_domain: apps.rosa.rosa-vpfgs.o0sn.p3.openshiftapps.com
     result_manager_url: result-manager-demo-report.apps.rosa.rosa-vpfgs.o0sn.p3.openshiftapps.com
     report_viewer_url: report-viewer-demo-report.apps.rosa.rosa-vpfgs.o0sn.p3.openshiftapps.com
     image_pull_secret_name: quayio
