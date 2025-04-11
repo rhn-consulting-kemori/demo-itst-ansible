@@ -12,7 +12,7 @@
 
     - name: Find yaml files
       ansible.builtin.find:
-        paths: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/{{ name }}/p1_run_online_app
+        paths: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p1_run_online_app
         patterns: "*.yaml"
         file_type: file
       register: found_files
