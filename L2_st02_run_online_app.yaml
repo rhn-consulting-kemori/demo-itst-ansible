@@ -28,7 +28,7 @@
         openshift_domain: "{{ openshift_domain }}"
         namespace_name: "{{ namespace_name }}"
         image_pull_secret_name: "{{ image_pull_secret_name }}"
-        pipeline_repo_domain: "{{ pipeline_repo_domain }}"
+        # pipeline_repo_domain: "{{ pipeline_repo_domain }}"
         database_app_name: "{{ database_app_name }}"
         pg_user: "{{ pg_user }}"
         pg_database: "{{ pg_database }}"
