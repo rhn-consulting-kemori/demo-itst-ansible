@@ -1,6 +1,6 @@
 # L2_ut01_apply_yaml
 # Parameter: 
-# * test_id, source_j2_path, namespace_name
+# * test_id, namespace_name, source_j2_path
 - name: Apply Yaml
   hosts: localhost
   tasks:
@@ -19,4 +19,13 @@
         file: L3_ut03_template_j2.yaml
       vars:
         source_j2_path: "{{ source_j2_path }}"
+        source_yaml_path: "{{ source_j2_path | regex_replace('.j2', '.yaml') }}"
+
+    # Apply OpenShift Yaml
+    # * source_j2_path
+    # + l3_st01_result: start_timestamp, end_timestamp, test_result
+    - name: Apply OpenShift Yaml
+      ansible.builtin.import_tasks:
+        file: L3_st01_apply_openshift.yaml
+      vars:
         source_yaml_path: "{{ source_j2_path | regex_replace('.j2', '.yaml') }}"
