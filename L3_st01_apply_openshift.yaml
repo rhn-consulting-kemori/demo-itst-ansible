@@ -40,7 +40,7 @@
     end_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
   register: l3_st01_result_end
 
-- name: Search for all Pods labelled app=web
+- name: Search Pods
   kubernetes.core.k8s_info:
     kind: Pod
     namespace: "{{ namespace_name }}"
@@ -50,4 +50,4 @@
 
 - name: Print Result
   ansible.builtin.debug:
-    var: l3_st01_result_pod
+    msg: "name={{ l3_st01_result_pod.status.containerStatuses.name }}, phase={{ l3_st01_result_pod.status.phase }}, imageID={{ l3_st01_result_pod.status.containerStatuses.imageID }}, image={{ l3_st01_result_pod.status.containerStatuses.image }}"
