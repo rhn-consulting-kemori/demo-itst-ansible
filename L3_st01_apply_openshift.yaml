@@ -50,4 +50,20 @@
 
 - name: Print Result
   ansible.builtin.debug:
-    msg: "name={{ l3_st01_result_pod.status.containerStatuses.name }}, phase={{ l3_st01_result_pod.status.phase }}, imageID={{ l3_st01_result_pod.status.containerStatuses.imageID }}, image={{ l3_st01_result_pod.status.containerStatuses.image }}"
+    var: l3_st01_result_pod.resources.api_version
+
+- name: Print Result
+  ansible.builtin.debug:
+    var: l3_st01_result_pod.resources.kind
+
+- name: Print Result
+  ansible.builtin.debug:
+    var: l3_st01_result_pod.resources.metadata
+
+- name: Print Result
+  ansible.builtin.debug:
+    var: l3_st01_result_pod.resources.spec
+
+- name: Print Result
+  ansible.builtin.debug:
+    var: l3_st01_result_pod.resources.status
