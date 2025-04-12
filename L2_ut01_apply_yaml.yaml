@@ -39,6 +39,10 @@
       ansible.builtin.import_tasks:
         file: L3_st02_get_sw_version.yaml
 
+    - name: Debug
+      ansible.builtin.debug:
+        var: l3_st01_result_testresult
+
     # Add test_task
     - name: Add test_task
       ansible.builtin.import_tasks:
