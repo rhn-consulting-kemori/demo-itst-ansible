@@ -1,12 +1,13 @@
+---
 # L2_ut01_apply_yaml
 # Parameter: 
 # * test_id, namespace_name, app_name, source_j2_path
+# * test_result_seq, test_group, test_pipeline, test_task, simulation_date, sw_category 
 - name: Apply Yaml
   hosts: localhost
   tasks:
     # Git clone
     # * test_id
-    # - pipeline_repo_domain, pipeline_repo_name
     # + pipeline_vars
     - name: Git clone
       ansible.builtin.import_tasks:
@@ -23,9 +24,37 @@
 
     # Apply OpenShift Yaml
     # * source_j2_path, app_name, namespace_name
-    # + l3_st01_result: start_timestamp, end_timestamp, test_result
+    # + l3_st01_result_start.start_timestamp, l3_st01_result_end.end_timestamp, l3_st01_result_testresult.test_result
+    # + l3_st01_result_podname.podname, l3_st01_result_imageid.imageid, l3_st01_result_image.image, l3_st01_result_phase.phase
     - name: Apply OpenShift Yaml
       ansible.builtin.import_tasks:
         file: L3_st01_apply_openshift.yaml
       vars:
         source_yaml_path: "{{ source_j2_path | regex_replace('.j2', '.yaml') }}"
+
+    # Get Software Version
+    # * l3_st01_result_imageid.imageid
+    # + l3_st02_result_sw_id_version.image_obj[0]/[1]
+    - name: Get Software Version
+      ansible.builtin.import_tasks:
+        file: L3_st02_get_sw_version.yaml
+
+    # Add test_task
+    - name: Add test_task
+      ansible.builtin.import_tasks:
+        file: L3_rp02_add_test_task.yaml
+      vars:
+        test_result_seq: "{{ test_result_seq }}"
+        test_id: "{{ test_id }}"
+        test_group: "{{ test_group }}"
+        test_pipeline: "{{ test_pipeline }}"
+        test_task: "{{ test_task }}"
+        simulation_date: "{{ simulation_date }}"
+        start_time: "{{ l3_st01_result_start.start_timestamp }}"
+        end_time: "{{ l3_st01_result_end.end_timestamp }}"
+        test_result: "{{ l3_st01_result_testresult.test_result }}"
+        evidence_link: "-"
+        sw_category: "{{ sw_category }}"
+        sw_id: "{{ l3_st02_result_sw_id_version.image_obj[0] }}"
+        sw_name: "{{ app_name }}"
+        sw_version: "{{ l3_st02_result_sw_id_version.image_obj[1] }}"
