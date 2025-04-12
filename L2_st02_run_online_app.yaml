@@ -26,7 +26,7 @@
 
     # Delegate apply task
     - name: Run Online App
-      ansible.builtin.import_tasks:
+      ansible.builtin.include_tasks:
         file: L3_st00_apply_task.yaml
       vars:
         source_j2_path: "{{ item.path }}"
