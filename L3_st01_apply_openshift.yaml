@@ -40,6 +40,13 @@
     end_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
   register: l3_st01_result_end
 
+- name: Search for all Pods labelled app=web
+  kubernetes.core.k8s_info:
+    kind: Pod
+    label_selectors:
+      - app = report-viewer
+  register: l3_st01_result_pod
+
 - name: Print Result
   ansible.builtin.debug:
-    var: l3_st01_result_apply
+    var: l3_st01_result_pod
