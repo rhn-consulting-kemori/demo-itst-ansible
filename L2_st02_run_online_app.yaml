@@ -41,3 +41,12 @@
       loop: "{{ found_files.files }}"
       loop_control:
         label: "{{ item.path }}"
+
+    # Report Summary
+    - name: Report Pipeline Summary
+      ansible.builtin.import_tasks:
+        file: L3_rp03_run_pipeline_summary.yaml
+      vars:
+        test_group: "テストシナリオ"
+        test_pipeline: "オンライン立上"
+        simulation_date : "{{ simulation_date }}"
