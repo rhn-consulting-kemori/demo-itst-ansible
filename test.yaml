@@ -1,31 +1,20 @@
 - name: Test Playbook
   hosts: localhost
   tasks:
-    - name: handle the error
-      block:
-        - name: Run test api
-          ansible.builtin.uri:
-            url: https://controller.nht4t.sandbox2861.opentlc.com/api/controller/v2/job_templates/22/launch/
-            method: POST
-            body_format: json
-            status_code: 201
-            headers:
-              Content-Type: application/json
-              Authorization: Bearer {{ ansible_token }}
-            body: |-
-              {
-                "extra_vars": {
-                  "test_id": "{{ test_id }}",
-                  "test_result_seq": "{{ test_result_seq }}"
-                }
-              }
-          register: result
-
-        - name: Show test_result_summary
-          ansible.builtin.debug:
-            var: result.json
-
-      rescue:
-        - name: Show error data
-          ansible.builtin.debug:
-            msg: status={{ result.status }}, {{ result.msg }}
+    - name: Git clone
+      ansible.builtin.import_tasks:
+        file: L3_ut01_gitclone.yaml
+    
+    - name: Search for string
+      lineinfile:
+        path: "/tmp/demo-itst-test/EX-E001-00000003/test_scenario/D2025-03-12/p1_run_online_app/report-viewer.j2"
+        line: "app: "
+        state: present
+      check_mode: true
+      register: result
+      changed_when: false
+      failed_when: "'line replaced' in result.msg"
+      
+    - name: Show result
+      debug:
+        var: result
