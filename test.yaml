@@ -5,16 +5,11 @@
       ansible.builtin.import_tasks:
         file: L3_ut01_gitclone.yaml
     
-    - name: Search for string
-      lineinfile:
-        path: "/tmp/demo-itst-test/EX-E001-00000003/test_scenario/D2025-03-12/p1_run_online_app/report-viewer.j2"
-        line: "app: "
-        state: present
-      check_mode: true
-      register: result
-      changed_when: false
-      failed_when: "'line replaced' in result.msg"
+    - name: Check httpd.con
+      shell: grep -E "app:" /tmp/demo-itst-test/EX-E001-00000003/test_scenario/D2025-03-12/p1_run_online_app/report-viewer.j2
+      register: grep_result
+      failed_when: grep_result.rc not in [0]
       
     - name: Show result
       debug:
-        var: result
+        var: grep_result
