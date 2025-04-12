@@ -50,6 +50,6 @@
 
 - name: Print Result
   ansible.builtin.debug:
-    msg: "name={{ item.status.containerStatuses[0].name }}, imageID={{ item.status.containerStatuses[0].imageID }}, image={{ item.status.containerStatuses[0].image }}, phase={{ item.status.phase }}"
+    var: "{{ item.status }}"
   loop: "{{ l3_st01_result_pod.resources }}"
 
