@@ -10,6 +10,10 @@
     start_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
   register: l3_st01_result
 
+- name: Print Result Start
+  ansible.builtin.debug:
+    var: l3_st01_result
+
 - name: Apply block
   block:
     - name: Apply Yaml
@@ -17,6 +21,10 @@
         state: present
         src: "{{ source_yaml_path }}"
       register: l3_st01_result
+
+    - name: Print Result Apply Yaml
+      ansible.builtin.debug:
+        var: l3_st01_result
 
     - name: Set test_result
       ansible.builtin.debug:
