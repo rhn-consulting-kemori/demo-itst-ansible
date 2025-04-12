@@ -51,7 +51,7 @@
 
     - name: Print Pod
       ansible.builtin.debug:
-        var: l3_st01_result_pod
+        var: l3_st01_result_pod.resources[0].status
 
     - name: Set test_result
       ansible.builtin.debug:

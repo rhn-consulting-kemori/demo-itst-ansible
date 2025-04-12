@@ -10,7 +10,7 @@
     dest: "{{ source_yaml_path }}"
 
 # Cat Yaml
-- name: Return motd to registered var
+- name: cat yaml
   ansible.builtin.command: cat {{ source_yaml_path }}
   register: l3_ut03_result
     
