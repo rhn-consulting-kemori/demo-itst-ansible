@@ -1,6 +1,6 @@
 # L3_st01_apply_openshift
 # Parameter:
-# * source_yaml_path
+# * source_yaml_path, app_name
 # + l3_st01_result
 # + -> start_timestamp, end_timestamp, test_result
 - name: Start timestamp
@@ -12,11 +12,36 @@
 
 - name: Apply block
   block:
+    # * source_yaml_path
     - name: Apply Yaml
       kubernetes.core.k8s:
         state: present
         src: "{{ source_yaml_path }}"
       register: l3_st01_result_apply
+
+    # * namespace_name, app_name
+    - name: Search Pods
+      kubernetes.core.k8s_info:
+        kind: Pod
+        namespace: "{{ namespace_name }}"
+        label_selectors:
+          - "app = {{ app_name }}"
+      register: l3_st01_result_pod
+
+    # Display Podname
+    - name: Display Podname
+      ansible.builtin.debug:
+        var: l3_st01_result_pod.resources[0].metadata.name
+
+    #- name: Wait till the Pod is created
+    #  kubernetes.core.k8s_info:
+    #    kind: Pod
+    #    wait: yes
+    #    name: l3_st01_result_pod.resources[0].metadata.name
+    #    namespace: "{{ namespace_name }}"
+    #    wait_sleep: 10
+    #    wait_timeout: 360
+    #  register: l3_st01_result_pod
 
     - name: Set test_result
       ansible.builtin.debug:
@@ -39,16 +64,3 @@
   vars:
     end_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
   register: l3_st01_result_end
-
-- name: Search Pods
-  kubernetes.core.k8s_info:
-    kind: Pod
-    namespace: "{{ namespace_name }}"
-    label_selectors:
-      - app = report-viewer
-  register: l3_st01_result_pod
-
-- name: Print Result
-  ansible.builtin.debug:
-    var: item.status
-  loop: "{{ l3_st01_result_pod.resources }}"
