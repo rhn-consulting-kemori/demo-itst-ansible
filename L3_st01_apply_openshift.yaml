@@ -68,3 +68,7 @@
 - name: End timestamp
   set_fact:
     end_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
+
+- name: print vars
+  debug:
+    msg: "podname={{ podname }}, phase={{ phase }}, imageid={{ imageid }}, image={{ image }}"

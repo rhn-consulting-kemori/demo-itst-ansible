@@ -1,6 +1,6 @@
 # L2_st02_run_online_app
 # Parameter: 
-# * test_id, name, namespace_name, simulation_date 
+# * test_id, test_result_seq, name, simulation_date
 # - pipeline_repo_domain, pipeline_repo_name
 # + pipeline_vars
 - name: Start Scenario
@@ -19,41 +19,25 @@
         file_type: file
       register: found_files
 
-    # template replace
-    - name: Replace Template to Yaml
-      template:
-        src: "{{ item.path }}"
-        dest: "{{ item.path | regex_replace('.j2', '.yaml') }}"
+    # app_name
+    - name: set app_name
+      set_fact: 
+        app_name: "report-viewer"
+
+    # Delegate apply task
+    - name: Run Online App
+      ansible.builtin.import_tasks:
+        file: L3_st00_apply_task.yaml
+      vars:
+        source_j2_path: "{{ item.path }}"
+        namespace_name: "{{ pipeline_vars.namespace_name }}"
+        test_result_seq: "{{ test_result_seq }}"
+        test_id: "{{ test_id }}"
+        test_group: "テストシナリオ"
+        test_pipeline: "オンライン立上"
+        test_task: "{{ app_name }}"
+        simulation_date: "{{ simulation_date }}"
+        sw_category: "オンライン"
       loop: "{{ found_files.files }}"
       loop_control:
         label: "{{ item.path }}"
-
-    # Find Yaml file
-    - name: Find Yaml files
-      ansible.builtin.find:
-        paths: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p1_run_online_app
-        patterns: "*.yaml"
-        file_type: file
-      register: yaml_files
-
-    # SW condition
-
-    #- name: Run Online App
-    #  ansible.builtin.import_tasks:
-    #    file: L3_st01_apply_openshift.yaml
-    #  vars:
-    #    source_yaml_path: "{{ item.path }}"
-    #    test_result_seq: "{{ test_result_seq }}"
-    #    test_id: "{{ test_id }}"
-    #    test_group: "テストシナリオ"
-    #    test_pipeline: "オンライン立上"
-    #    test_task: "オンライン立上"
-    #    simulation_date: "{{ simulation_date }}"
-    #    evidence_link: "-"
-    #    sw_category: "オンライン"
-    #    sw_id: ""
-    #    sw_name: ""
-    #    sw_version: ""
-    #  loop: "{{ found_files.files }}"
-    #  loop_control:
-    #    label: "{{ item.path }}"
