@@ -1,21 +1,13 @@
 ---
 # L3_st01_apply_openshift
 # Parameter:
-# * source_yaml_path, app_name
+# * source_yaml_path, namespace_name, app_name
 # ---
-# + l3_st01_result_start.start_timestamp
-# + l3_st01_result_podname.podname
-# + l3_st01_result_imageid.imageid
-# + l3_st01_result_image.image
-# + l3_st01_result_phase.phase
-# + l3_st01_result_testresult.test_result
-# + l3_st01_result_end.end_timestamp
+# + start_timestamp, end_timestamp, test_result
+# + podname, imageid, image, phase
 - name: Start timestamp
-  ansible.builtin.debug:
-    var: start_timestamp
-  vars:
+  set_fact: 
     start_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
-  register: l3_st01_result_start
 
 - name: Apply block
   block:
@@ -25,7 +17,6 @@
       kubernetes.core.k8s:
         state: present
         src: "{{ source_yaml_path }}"
-      register: l3_st01_result_apply
 
     # Search Pods
     # * namespace_name, app_name
@@ -39,53 +30,35 @@
 
     # Get Podname
     - name: Get Podname
-      ansible.builtin.debug:
-        var: podname
-      vars:
+      set_fact: 
         podname: "{{ l3_st01_result_pod.resources[0].metadata.name }}"
-      register: l3_st01_result_podname
 
     # Wait Pod Creation
     - name: Wait till the Pod is created
       kubernetes.core.k8s_info:
         kind: Pod
         wait: yes
-        name: "{{ l3_st01_result_podname.podname }}"
+        name: "{{ podname }}"
         namespace: "{{ namespace_name }}"
         wait_sleep: 10
         wait_timeout: 360
       register: l3_st01_result_pod
 
     - name: Get imageID
-      ansible.builtin.debug:
-        var: imageid
-      vars:
+      set_fact: 
         imageid: "{{ l3_st01_result_pod.resources[0].status.containerStatuses[0].imageID }}"
-      register: l3_st01_result_imageid
-
-    - name: Get image
-      ansible.builtin.debug:
-        var: image
-      vars:
         image: "{{ l3_st01_result_pod.resources[0].status.containerStatuses[0].image }}"
-      register: l3_st01_result_image
-
-    - name: Get phase
-      ansible.builtin.debug:
-        var: phase
-      vars:
         phase: "{{ l3_st01_result_pod.resources[0].status.phase }}"
-      register: l3_st01_result_phase
 
     - name: Set test_result OK
       set_fact:
         test_result: "OK"
-      when: l3_st01_result_phase.phase == "Succeeded" or l3_st01_result_phase.phase == "Running"
+      when: phase == "Succeeded" or phase == "Running"
 
     - name: Set test_result NG
       set_fact:
         test_result: "NG"
-      when: l3_st01_result_phase.phase != "Succeeded" and l3_st01_result_phase.phase != "Running"
+      when: phase != "Succeeded" and phase != "Running"
 
   rescue:
     - name: Set test_result NG
@@ -93,8 +66,5 @@
         test_result: "NG"
 
 - name: End timestamp
-  ansible.builtin.debug:
-    var: end_timestamp
-  vars:
+  set_fact:
     end_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
-  register: l3_st01_result_end

@@ -24,8 +24,8 @@
 
     # Apply OpenShift Yaml
     # * source_j2_path, app_name, namespace_name
-    # + l3_st01_result_start.start_timestamp, l3_st01_result_end.end_timestamp, l3_st01_result_testresult.test_result
-    # + l3_st01_result_podname.podname, l3_st01_result_imageid.imageid, l3_st01_result_image.image, l3_st01_result_phase.phase
+    # + start_timestamp, end_timestamp, test_result
+    # + podname, imageid, image, phase
     - name: Apply OpenShift Yaml
       ansible.builtin.import_tasks:
         file: L3_st01_apply_openshift.yaml
@@ -33,8 +33,8 @@
         source_yaml_path: "{{ source_j2_path | regex_replace('.j2', '.yaml') }}"
 
     # Get Software Version
-    # * l3_st01_result_imageid.imageid
-    # + l3_st02_result_sw_id_version.image_obj[0]/[1]
+    # * imageid
+    # + sw_id, sw_name, sw_version
     - name: Get Software Version
       ansible.builtin.import_tasks:
         file: L3_st02_get_sw_version.yaml
@@ -50,11 +50,11 @@
         test_pipeline: "{{ test_pipeline }}"
         test_task: "{{ test_task }}"
         simulation_date: "{{ simulation_date }}"
-        start_time: "{{ l3_st01_result_start.start_timestamp }}"
-        end_time: "{{ l3_st01_result_end.end_timestamp }}"
+        start_time: "{{ start_timestamp }}"
+        end_time: "{{ end_timestamp }}"
         test_result: "{{ test_result }}"
         evidence_link: "-"
         sw_category: "{{ sw_category }}"
-        sw_id: "{{ l3_st02_result_sw_id_version.image_obj[0] }}"
-        sw_name: "{{ app_name }}"
-        sw_version: "{{ l3_st02_result_sw_id_version.image_obj[1] }}"
+        sw_id: "{{ sw_id }}"
+        sw_name: "{{ sw_name }}"
+        sw_version: "{{ sw_version }}"

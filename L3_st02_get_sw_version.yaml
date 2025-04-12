@@ -1,10 +1,11 @@
 # L3_st02_get_sw_version
 # Parameter:
-# * l3_st01_result_imageid.imageid
-# + l3_st02_result_sw_id_version.image_obj[0]/[1]
+# * imageid
+# + sw_id, sw_name, sw_version
 - name: split version
-  ansible.builtin.debug:
-    var: image_obj
+  set_fact: 
+    sw_id: image_obj[0]
+    sw_name: "{{ app_name }}"
+    sw_version: image_obj[1]
   vars:
     image_obj: "{{ l3_st01_result_imageid.imageid | split('@') }}"
-  register: l3_st02_result_sw_id_version
