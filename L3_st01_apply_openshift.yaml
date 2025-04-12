@@ -50,6 +50,5 @@
 
 - name: Print Result
   ansible.builtin.debug:
-    var: "{{ item.status }}"
+    var: item.status
   loop: "{{ l3_st01_result_pod.resources }}"
-
