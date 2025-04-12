@@ -1,8 +1,15 @@
+---
 # L3_st01_apply_openshift
 # Parameter:
 # * source_yaml_path, app_name
-# + l3_st01_result
-# + -> start_timestamp, end_timestamp, test_result
+# ---
+# + l3_st01_result_start.start_timestamp
+# + l3_st01_result_podname.podname
+# + l3_st01_result_imageid.imageid
+# + l3_st01_result_image.image
+# + l3_st01_result_phase.phase
+# + l3_st01_result_testresult.test_result
+# + l3_st01_result_end.end_timestamp
 - name: Start timestamp
   ansible.builtin.debug:
     var: start_timestamp
@@ -70,15 +77,24 @@
         phase: "{{ l3_st01_result_pod.resources[0].status.phase }}"
       register: l3_st01_result_phase
 
-    - name: Set test_result
+    - name: Set test_result OK
       ansible.builtin.debug:
         var: test_result
       vars:
         test_result: "OK"
       register: l3_st01_result_testresult
+      when: l3_st01_result_phase.phase == "Succeeded" or l3_st01_result_phase.phase == 'Running'
   
+    - name: Set test_result NG
+      ansible.builtin.debug:
+        var: test_result
+      vars:
+        test_result: "NG"
+      register: l3_st01_result_testresult
+      when: l3_st01_result_phase.phase != "Succeeded" and l3_st01_result_phase.phase != 'Running'
+
   rescue:
-    - name: Set test_result
+    - name: Set test_result NG
       ansible.builtin.debug:
         var: test_result
       vars:
