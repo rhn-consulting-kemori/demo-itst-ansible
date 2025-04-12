@@ -1,0 +1,22 @@
+# L2_ut01_apply_yaml
+# Parameter: 
+# * test_id, source_j2_path, namespace_name
+- name: Apply Yaml
+  hosts: localhost
+  tasks:
+    # Git clone
+    # * test_id
+    # - pipeline_repo_domain, pipeline_repo_name
+    # + pipeline_vars
+    - name: Git clone
+      ansible.builtin.import_tasks:
+        file: L3_ut01_gitclone.yaml
+
+    # Template j2 to yaml
+    # * source_j2_path
+    - name: Template j2 to yaml
+      ansible.builtin.import_tasks:
+        file: L3_ut03_template_j2.yaml
+      vars:
+        source_j2_path: "{{ source_j2_path }}"
+        source_yaml_path: "{{ source_j2_path | regex_replace('.j2', '.yaml') }}"

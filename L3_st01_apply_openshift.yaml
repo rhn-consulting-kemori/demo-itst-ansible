@@ -1,14 +1,14 @@
 # L3_st01_apply_openshift
 # Parameter:
-# * source_yaml_path, test_result_seq, test_id
-# * test_group, test_pipeline, test_task, simulation_date, evidence_link
-# * sw_category, sw_id, sw_name, sw_version
+# * source_yaml_path
+# + l3_st01_result
+# + -> start_timestamp, end_timestamp, test_result
 - name: Start timestamp
   ansible.builtin.debug:
     var: start_timestamp
   vars:
     start_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
-  register: l3_st01_start_timestamp
+  register: l3_st01_result
 
 - name: Apply block
   block:
@@ -16,7 +16,7 @@
       kubernetes.core.k8s:
         state: present
         src: "{{ source_yaml_path }}"
-      register: l3_st01_apply_result
+      register: l3_st01_result
 
     - name: Set test_result
       ansible.builtin.debug:
@@ -33,31 +33,13 @@
         test_result: "NG"
       register: l3_st01_result
 
-  always:
-    - name: Print Result
-      ansible.builtin.debug:
-        var: l3_st01_apply_result
-
 - name: End timestamp
   ansible.builtin.debug:
     var: end_timestamp
   vars:
     end_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
-  register: l3_st01_end_timestamp
+  register: l3_st01_result
 
-- name: Add test_task
-  ansible.builtin.import_tasks:
-    file: L3_rp02_add_test_task.yaml
-  vars:
-    test_group: "{{ test_group }}"
-    test_pipeline: "{{ test_pipeline }}"
-    test_task: "{{ test_task }}"
-    simulation_date: "{{ simulation_date }}"
-    start_time: "{{ l3_st01_start_timestamp.start_timestamp }}"
-    end_time: "{{ l3_st01_end_timestamp.end_timestamp }}"
-    test_result: "{{ l3_st01_result.test_result }}"
-    evidence_link: "{{ evidence_link }}"
-    sw_category: "{{ sw_category }}"
-    sw_id: "{{ sw_id }}"
-    sw_name: "{{ sw_name }}"
-    sw_version: "{{ sw_version }}"
+- name: Print Result
+  ansible.builtin.debug:
+    var: l3_st01_result

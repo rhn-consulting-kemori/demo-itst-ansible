@@ -24,16 +24,6 @@
       template:
         src: "{{ item.path }}"
         dest: "{{ item.path | regex_replace('.j2', '.yaml') }}"
-      #vars:
-        #openshift_domain: "{{ openshift_domain }}"
-        #namespace_name: "{{ namespace_name }}"
-        #image_pull_secret_name: "{{ image_pull_secret_name }}"
-        # pipeline_repo_domain: "{{ pipeline_repo_domain }}"
-        #database_app_name: "{{ database_app_name }}"
-        #pg_user: "{{ pg_user }}"
-        #pg_database: "{{ pg_database }}"
-        #pg_password: "{{ pg_password }}"
-        #pg_port: "{{ pg_port }}"
       loop: "{{ found_files.files }}"
       loop_control:
         label: "{{ item.path }}"
@@ -45,13 +35,6 @@
         patterns: "*.yaml"
         file_type: file
       register: yaml_files
-    
-    - name: Print Yaml
-      ansible.builtin.debug:
-        var: item.path
-      loop: "{{ yaml_files.files }}"
-      loop_control:
-        label: "{{ item.path }}"
 
     # SW condition
 

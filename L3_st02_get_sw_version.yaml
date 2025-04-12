@@ -1,0 +1,5 @@
+# L3_st02_get_sw_version
+# Parameter:
+# * source_yaml_path
+# + l3_st02_result
+# + -> sw_category, sw_id, sw_name, sw_version
