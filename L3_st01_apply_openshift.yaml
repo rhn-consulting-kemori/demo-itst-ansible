@@ -49,9 +49,26 @@
         wait_timeout: 360
       register: l3_st01_result_pod
 
-    - name: Print Pod
+    - name: Get imageID
       ansible.builtin.debug:
-        var: l3_st01_result_pod.resources[0].status
+        var: imageid
+      vars:
+        imageid: "{{ l3_st01_result_pod.resources[0].status.containerStatuses[0].imageID }}"
+      register: l3_st01_result_imageid
+
+    - name: Get image
+      ansible.builtin.debug:
+        var: image
+      vars:
+        image: "{{ l3_st01_result_pod.resources[0].status.containerStatuses[0].image }}"
+      register: l3_st01_result_image
+
+    - name: Get phase
+      ansible.builtin.debug:
+        var: phase
+      vars:
+        phase: "{{ l3_st01_result_pod.resources[0].status.phase }}"
+      register: l3_st01_result_phase
 
     - name: Set test_result
       ansible.builtin.debug:
