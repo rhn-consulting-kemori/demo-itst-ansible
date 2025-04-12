@@ -8,7 +8,7 @@
     var: start_timestamp
   vars:
     start_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
-  register: l3_st01_result.start_timestamp
+  register: l3_st01_result_start
 
 - name: Apply block
   block:
@@ -16,14 +16,14 @@
       kubernetes.core.k8s:
         state: present
         src: "{{ source_yaml_path }}"
-      register: l3_st01_result.apply_yaml
+      register: l3_st01_result_apply
 
     - name: Set test_result
       ansible.builtin.debug:
         var: test_result
       vars:
         test_result: "OK"
-      register: l3_st01_result.test_result
+      register: l3_st01_result_testresult
   
   rescue:
     - name: Set test_result
@@ -31,15 +31,15 @@
         var: test_result
       vars:
         test_result: "NG"
-      register: l3_st01_result.test_result
+      register: l3_st01_result_testresult
 
 - name: End timestamp
   ansible.builtin.debug:
     var: end_timestamp
   vars:
     end_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
-  register: l3_st01_result.end_timestamp
+  register: l3_st01_result_end
 
 - name: Print Result
   ansible.builtin.debug:
-    var: l3_st01_result
+    var: l3_st01_result_apply
