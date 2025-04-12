@@ -39,10 +39,6 @@
       ansible.builtin.import_tasks:
         file: L3_st02_get_sw_version.yaml
 
-    - name: Debug
-      ansible.builtin.debug:
-        var: l3_st01_result_testresult
-
     # Add test_task
     - name: Add test_task
       ansible.builtin.import_tasks:
@@ -56,7 +52,7 @@
         simulation_date: "{{ simulation_date }}"
         start_time: "{{ l3_st01_result_start.start_timestamp }}"
         end_time: "{{ l3_st01_result_end.end_timestamp }}"
-        test_result: "{{ l3_st01_result_testresult.test_result }}"
+        test_result: "{{ test_result }}"
         evidence_link: "-"
         sw_category: "{{ sw_category }}"
         sw_id: "{{ l3_st02_result_sw_id_version.image_obj[0] }}"

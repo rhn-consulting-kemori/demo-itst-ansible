@@ -78,28 +78,19 @@
       register: l3_st01_result_phase
 
     - name: Set test_result OK
-      ansible.builtin.debug:
-        var: test_result
-      vars:
+      set_fact:
         test_result: "OK"
-      register: l3_st01_result_testresult
-      when: l3_st01_result_phase.phase == "Succeeded" or l3_st01_result_phase.phase == 'Running'
-  
+      when: l3_st01_result_phase.phase == "Succeeded" or l3_st01_result_phase.phase == "Running"
+
     - name: Set test_result NG
-      ansible.builtin.debug:
-        var: test_result
-      vars:
+      set_fact:
         test_result: "NG"
-      register: l3_st01_result_testresult
-      when: l3_st01_result_phase.phase != "Succeeded" and l3_st01_result_phase.phase != 'Running'
+      when: l3_st01_result_phase.phase != "Succeeded" and l3_st01_result_phase.phase != "Running"
 
   rescue:
     - name: Set test_result NG
-      ansible.builtin.debug:
-        var: test_result
-      vars:
+      set_fact:
         test_result: "NG"
-      register: l3_st01_result_testresult
 
 - name: End timestamp
   ansible.builtin.debug:
