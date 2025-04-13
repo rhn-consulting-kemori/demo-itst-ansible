@@ -14,4 +14,4 @@
       debug:
         msg: "app-name={{ serch_line[1] }}"
       vars:
-        serch_line: "{{ grep_result.stdout_lines[0] | trim | split(':') }}"
+        serch_line: "{{ grep_result.stdout_lines[0] | split(':') | trim }}"
