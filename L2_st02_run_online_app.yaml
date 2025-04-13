@@ -1,3 +1,4 @@
+---
 # L2_st02_run_online_app
 # Parameter: 
 # * test_id, test_result_seq, name, simulation_date
@@ -19,11 +20,6 @@
         file_type: file
       register: found_files
 
-    # app_name
-    - name: set app_name
-      set_fact: 
-        app_name: "report-viewer"
-
     # Delegate apply task
     - name: Run Online App
       ansible.builtin.include_tasks:
@@ -35,7 +31,6 @@
         test_id: "{{ test_id }}"
         test_group: "テストシナリオ"
         test_pipeline: "オンライン立上"
-        test_task: "{{ app_name }}"
         simulation_date: "{{ simulation_date }}"
         sw_category: "オンライン"
       loop: "{{ found_files.files }}"

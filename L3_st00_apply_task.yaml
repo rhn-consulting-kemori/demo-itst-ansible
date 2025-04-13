@@ -1,7 +1,7 @@
 ---
 # L3_st00_apply_task
 # Parameter: 
-# * test_id, test_result_seq, namespace_name, app_name, source_j2_path
+# * test_id, test_result_seq, namespace_name, source_j2_path
 # * test_group, test_pipeline, test_task, simulation_date, sw_category 
 # -----
 # Template j2 to yaml
@@ -12,6 +12,13 @@
   vars:
     source_j2_path: "{{ source_j2_path }}"
     source_yaml_path: "{{ source_j2_path | regex_replace('.j2', '.yaml') }}"
+
+# Get appname
+# * source_j2_path
+# + app_name
+- name: Get appname
+  ansible.builtin.import_tasks:
+    file: L3_st03_get_app_name
 
 # Apply OpenShift Yaml
 # * source_j2_path, app_name, namespace_name
@@ -38,7 +45,7 @@
     test_id: "{{ test_id }}"
     test_group: "{{ test_group }}"
     test_pipeline: "{{ test_pipeline }}"
-    test_task: "{{ test_task }}"
+    test_task: "{{ app_name }}"
     simulation_date: "{{ simulation_date }}"
     start_time: "{{ start_timestamp }}"
     end_time: "{{ end_timestamp }}"
