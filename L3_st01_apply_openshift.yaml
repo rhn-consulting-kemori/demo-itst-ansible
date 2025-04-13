@@ -25,7 +25,7 @@
         kind: Pod
         namespace: "{{ namespace_name }}"
         label_selectors:
-          - "app = {{ app_name }}"
+          - "{{ pod_search_type }} = {{ app_name }}"
       register: l3_st01_result_pod
 
     # Debug
