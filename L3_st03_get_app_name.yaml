@@ -18,10 +18,6 @@
   debug:
     var: app_name
 
-- name: Set pod_search_type
-  set_fact: 
-    pod_search_type: "app"
-
 - name: Search Kind-Job
   shell: grep -E "{{ search_word }}" {{ source_j2_path }}
   vars:
@@ -33,3 +29,8 @@
   set_fact: 
     pod_search_type: "job-name"
   when: grep_result.stdout_lines | length > 0
+
+- name: Set pod_search_type
+  set_fact: 
+    pod_search_type: "app"
+  when: grep_result.stdout_lines | length == 0
