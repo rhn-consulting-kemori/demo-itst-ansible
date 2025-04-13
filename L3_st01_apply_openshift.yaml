@@ -38,6 +38,16 @@
       set_fact: 
         podname: "{{ l3_st01_result_pod.resources[0].metadata.name }}"
 
+    - name: Set pod_wait_condition job
+      set_fact: 
+        pod_wait_condition: Ready
+      when: pod_search_type != "job-name"
+
+    - name: Set pod_wait_condition pod
+      set_fact: 
+        pod_wait_condition: Complete
+      when: pod_search_type == "job-name"
+
     # Wait Pod Creation
     - name: Wait till the Pod is created
       kubernetes.core.k8s_info:
@@ -46,7 +56,9 @@
         name: "{{ podname }}"
         namespace: "{{ namespace_name }}"
         wait_sleep: 10
-        wait_timeout: 360
+        wait_timeout: 120
+        wait_condition:
+          type: "{{ pod_search_type }}"
       register: l3_st01_result_pod
 
     - name: Get imageID
