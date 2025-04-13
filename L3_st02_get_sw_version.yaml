@@ -8,4 +8,4 @@
     sw_name: "{{ app_name }}"
     sw_version: image_obj[1]
   vars:
-    image_obj: "{{ l3_st01_result_imageid.imageid | split('@') }}"
+    image_obj: "{{ imageid | split('@') }}"
