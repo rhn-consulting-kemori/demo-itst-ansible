@@ -18,7 +18,7 @@
 # + app_name
 - name: Get appname
   ansible.builtin.import_tasks:
-    file: L3_st03_get_app_name
+    file: L3_st03_get_app_name.yaml
 
 # Apply OpenShift Yaml
 # * source_j2_path, app_name, namespace_name
