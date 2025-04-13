@@ -28,11 +28,6 @@
           - "{{ pod_search_type }} = {{ app_name }}"
       register: l3_st01_result_pod
 
-    # Debug
-    - name: Debug podname
-      debug:
-        var: l3_st01_result_pod
-
     # Get Podname
     - name: Get Podname
       set_fact: 
