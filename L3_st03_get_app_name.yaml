@@ -25,6 +25,10 @@
   register: grep_result_kind_job
   failed_when: no
 
+- name: Show Grep result
+  debug:
+    var: grep_result_kind_job
+
 - name: Set pod_search_type
   set_fact: 
     pod_search_type: "job-name"
