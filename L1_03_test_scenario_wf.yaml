@@ -14,7 +14,7 @@
   ansible.builtin.import_playbook: L2_st03_data_entry.yaml
 
 - name: Run Batch
-  ansible.builtin.import_playbook: L2_st04_run_batch.yaml
+  ansible.builtin.import_playbook: L2_st04_run_batch_app.yaml
 
 - name: Assert Result
   ansible.builtin.import_playbook: L2_st05_assert_result.yaml
