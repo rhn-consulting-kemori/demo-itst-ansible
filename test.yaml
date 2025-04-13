@@ -12,4 +12,6 @@
       
     - name: Show result
       debug:
-        var: grep_result
+        msg: "app-name={{ serch_line[1] }}"
+      vars:
+        serch_line: "{{ grep_result.stdout_lines[0] | trim | split(':') }}"
