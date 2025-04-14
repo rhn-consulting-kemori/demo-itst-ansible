@@ -1,0 +1,18 @@
+---
+# L3_st05_call_api
+# Parameter: 
+# * call_api_url, call_api_method, ok_response_code, call_api_data
+- name: Call API
+  ansible.builtin.uri:
+    url: "{{ call_api_url }}"
+    method: "{{ call_api_method }}"
+    body_format: json
+    status_code: "{{ ok_response_code }}"
+    headers:
+      Content-Type: application/json
+    body: "{{ call_api_data }}"
+  register: result
+
+- name: Print Response
+  ansible.builtin.debug:
+    var: result.json
