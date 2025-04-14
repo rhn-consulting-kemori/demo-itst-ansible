@@ -40,7 +40,7 @@
         name: "{{ podname }}"
         namespace: "{{ namespace_name }}"
       register: l3_st01_result_pod
-      until: l3_st01_result_pod.resources[0].status.phase == {{ phase_criteria }}
+      until: l3_st01_result_pod.resources[0].status.phase == "{{ phase_criteria }}"
       retries: 5
       delay: 10
 
@@ -53,12 +53,12 @@
     - name: Set test_result OK
       set_fact:
         test_result: "OK"
-      when: phase == {{ phase_criteria }}
+      when: phase == "{{ phase_criteria }}"
 
     - name: Set test_result NG
       set_fact:
         test_result: "NG"
-      when: phase != {{ phase_criteria }}
+      when: phase != "{{ phase_criteria }}"
 
   rescue:
     - name: Set test_result NG
