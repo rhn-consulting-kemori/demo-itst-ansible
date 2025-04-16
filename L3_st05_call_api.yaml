@@ -34,7 +34,7 @@
   block:
     - name: Call API Unit
       ansible.builtin.include_tasks:
-        file: L3_st05_call_api_unit.yaml
+        file: L3_st06_call_api_unit.yaml
       vars:
         call_api_data: "{{ data_item }}"
       loop: "{{ call_api_vars.data_list }}"
