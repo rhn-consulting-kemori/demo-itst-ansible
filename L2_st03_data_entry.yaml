@@ -25,7 +25,7 @@
       ansible.builtin.include_tasks:
         file: L3_st05_call_api.yaml
       vars:
-        source_j2_path: "{{ item.path }}"
+        source_j2_path: "{{ api_file.path }}"
         namespace_name: "{{ pipeline_vars.namespace_name }}"
         test_result_seq: "{{ test_result_seq }}"
         test_id: "{{ test_id }}"
@@ -34,7 +34,8 @@
         simulation_date: "{{ simulation_date }}"
       loop: "{{ found_files.files }}"
       loop_control:
-        label: "{{ item.path }}"
+        loop_var: api_file
+        label: "{{ api_file.path }}"
 
     # Report Summary
     - name: Report Pipeline Summary

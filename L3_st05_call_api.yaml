@@ -36,8 +36,10 @@
       ansible.builtin.import_tasks:
         file: L3_st05_call_api_unit.yaml
       vars:
-        call_api_data: "{{ item }}"
+        call_api_data: "{{ data_item }}"
       loop: "{{ call_api_vars.data_list }}"
+      loop_control:
+        loop_var: data_item
     
   rescue:
     - name: Set test_result NG
