@@ -1,18 +1,70 @@
 ---
 # L3_st05_call_api
 # Parameter: 
-# * call_api_url, call_api_method, ok_response_code, call_api_data
-- name: Call API
-  ansible.builtin.uri:
-    url: "{{ call_api_url }}"
-    method: "{{ call_api_method }}"
-    body_format: json
-    status_code: "{{ ok_response_code }}"
-    headers:
-      Content-Type: application/json
-    body: "{{ call_api_data }}"
-  register: result
+# * source_j2_path, namespace_name
+# * test_result_seq, test_id, test_group, test_pipeline, simulation_date
+# -----
+# Template j2 to yaml
+# * source_j2_path
+- name: Template j2 to yaml
+  ansible.builtin.import_tasks:
+    file: L3_ut03_template_j2.yaml
+  vars:
+    source_j2_path: "{{ source_j2_path }}"
+    source_yaml_path: "{{ source_j2_path | regex_replace('.j2', '.yaml') }}"
 
-- name: Print Response
-  ansible.builtin.debug:
-    var: result.json
+# Include Vars
+# * source_j2_path
+- name: include_vars
+  include_vars: 
+    file: "{{ source_j2_path | regex_replace('.j2', '.yaml') }}"
+    name: call_api_vars
+
+- name: Start timestamp
+  set_fact: 
+    start_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
+
+- name: Set test_result OK
+  set_fact:
+    test_result: "OK"
+
+# Call API
+# * call_api_url, call_api_method, ok_response_code, data_list
+- name: Call API block
+  block:
+    - name: Call API Unit
+      ansible.builtin.import_tasks:
+        file: L3_st05_call_api_unit.yaml
+      vars:
+        call_api_data: "{{ item }}"
+      loop: "{{ call_api_vars.data_list }}"
+    
+  rescue:
+    - name: Set test_result NG
+      set_fact:
+        test_result: "NG"
+
+- name: End timestamp
+  set_fact:
+    end_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
+
+# Add test_task
+# * test_result_seq, test_id, test_group, test_pipeline, simulation_date
+- name: Add test_task
+  ansible.builtin.import_tasks:
+    file: L3_rp02_add_test_task.yaml
+  vars:
+    test_result_seq: "{{ test_result_seq }}"
+    test_id: "{{ test_id }}"
+    test_group: "{{ test_group }}"
+    test_pipeline: "{{ test_pipeline }}"
+    test_task: "{{ call_api_vars.data_entry_name }}"
+    simulation_date: "{{ simulation_date }}"
+    start_time: "{{ start_timestamp }}"
+    end_time: "{{ end_timestamp }}"
+    test_result: "{{ test_result }}"
+    evidence_link: "-"
+    sw_category: ""
+    sw_id: ""
+    sw_name: ""
+    sw_version: ""

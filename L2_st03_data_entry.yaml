@@ -30,9 +30,8 @@
         test_result_seq: "{{ test_result_seq }}"
         test_id: "{{ test_id }}"
         test_group: "テストシナリオ"
-        test_pipeline: "バッチ処理"
+        test_pipeline: "データ投入"
         simulation_date: "{{ simulation_date }}"
-        sw_category: "バッチ"
       loop: "{{ found_files.files }}"
       loop_control:
         label: "{{ item.path }}"
@@ -43,5 +42,5 @@
         file: L3_rp03_run_pipeline_summary.yaml
       vars:
         test_group: "テストシナリオ"
-        test_pipeline: "バッチ処理"
+        test_pipeline: "データ投入"
         simulation_date : "{{ simulation_date }}"
