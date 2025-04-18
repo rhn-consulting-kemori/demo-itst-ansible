@@ -20,7 +20,7 @@
         file_type: file
       register: found_files
 
-    # Data Entry
+    # Data Entry API
     - name: Data Entry API
       ansible.builtin.include_tasks:
         file: L3_st05_call_api.yaml
@@ -36,6 +36,7 @@
       loop_control:
         loop_var: api_file
         label: "{{ api_file.path }}"
+      when: "'api_data-' in api_file.path"
 
     # Report Summary
     - name: Report Pipeline Summary
