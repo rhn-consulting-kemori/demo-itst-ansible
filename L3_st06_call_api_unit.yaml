@@ -2,6 +2,10 @@
 # L3_st06_call_api_unit
 # Parameter: 
 # * call_api_data
+- name: Print Response
+  ansible.builtin.debug:
+    var: call_api_data
+
 - name: Call API
   ansible.builtin.uri:
     url: "{{ call_api_vars.call_api_url }}"
