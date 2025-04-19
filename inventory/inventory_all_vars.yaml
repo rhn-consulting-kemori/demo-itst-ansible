@@ -14,8 +14,8 @@ all:
     pipeline_repo_domain: rhn-consulting-kemori
     pipeline_repo_name: demo-itst-test
     aap_controller_url: https://controller.nht4t.sandbox2861.opentlc.com # Change your Ansible Environment
-    environment_pipeline_number: 30   # WorkFlow Number: L1_wf02_environment
-    test_scenario_pipeline_number: 39 # WorkFlow Number: L1_wf03_test_scenario
-    closing_pipeline_number: 21       # WorkFlow Number: L1_wf04_closing
+    environment_pipeline_number: 71   # WorkFlow Number: L1_wf02_environment
+    test_scenario_pipeline_number: 72 # WorkFlow Number: L1_wf03_test_scenario
+    closing_pipeline_number: 73       # WorkFlow Number: L1_wf04_closing
     ansible_token: manual setup       # ToDo
     google_chat_url: manual setup     # ToDo
