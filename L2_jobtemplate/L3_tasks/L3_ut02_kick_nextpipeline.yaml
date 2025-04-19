@@ -63,7 +63,7 @@
 # Closing kick
 - name: REST CALL for closing pipeline
   ansible.builtin.uri:
-    url: "{{ aap_controller_url }}/api/controller/v2/job_templates/{{ closing_pipeline_number }}/launch/"
+    url: "{{ aap_controller_url }}/api/controller/v2/workflow_job_templates/{{ closing_pipeline_number }}/launch/"
     method: POST
     body_format: json
     status_code: 201
