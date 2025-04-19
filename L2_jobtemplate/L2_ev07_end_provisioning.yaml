@@ -1,0 +1,35 @@
+---
+# JobTemplate: L2_ev07_end_provisioning
+# Survey: test_id, test_result_seq, seq(Integer)
+# Inventry: 
+# - result_manager_url, pipeline_repo_domain, pipeline_repo_name
+# - google_chat_url, aap_controller_url, ansible_token
+# - environment_pipeline_number, test_scenario_pipeline_number, closing_pipeline_number
+- name: End Provisioning 
+  hosts: localhost
+  tasks:
+    - name: Git clone
+      ansible.builtin.import_tasks:
+        file: L3_ut01_gitclone.yaml
+
+    - name: Report Pipeline Summary
+      ansible.builtin.import_tasks:
+        file: L3_rp03_run_pipeline_summary.yaml
+      vars:
+        test_group: "環境立上"
+        test_pipeline: "環境構築"
+        simulation_date : ""
+
+    - name: Complete Notification
+      ansible.builtin.import_tasks:
+        file: L3_rp05_run_complete_notification.yaml
+      vars:
+        text: "[test_result_seq={{ test_result_seq }}, test_id={{ test_id }}]\n環境構築が完了しました。\nhttps://{{ report_viewer_url }}/report?test_result_seq={{ test_result_seq }}"
+
+    - name: Next Pipeline Kick
+      ansible.builtin.import_tasks:
+        file: L3_ut02_kick_nextpipeline.yaml
+      vars:
+        seq: "{{ seq }}"
+        test_id: "{{ test_id }}"
+        test_result_seq: "{{ test_result_seq }}"

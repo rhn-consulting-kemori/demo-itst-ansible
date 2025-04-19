@@ -1,0 +1,25 @@
+---
+# WorkFlow: L1_wf00_create_demo_report
+# Create Enviromment to demo-report 
+# Survey: -
+# Extra vars: namespace_name, create_table_image, insert_table_image
+- name: L2_rp01_create_namespace
+  ansible.builtin.import_playbook: L2_rp01_create_namespace.yaml
+
+- name: L2_rp02_create_secret
+  ansible.builtin.import_playbook: L2_rp02_create_secret.yaml
+
+- name: L3_rp03_create_database
+  ansible.builtin.import_playbook: L3_rp03_create_database.yaml
+
+- name: L2_rp04_create_table
+  ansible.builtin.import_playbook: L2_rp04_create_table.yaml
+
+- name: L2_rp05_insert_table
+  ansible.builtin.import_playbook: L2_rp05_insert_table.yaml
+
+- name: L2_rp06_deploy_report-viewer
+  ansible.builtin.import_playbook: L2_rp06_deploy_report-viewer.yaml
+
+- name: L2_rp07_deploy_result-manager
+  ansible.builtin.import_playbook: L2_rp07_deploy_result-manager.yaml

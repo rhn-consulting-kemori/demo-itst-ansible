@@ -1,20 +1,21 @@
 ---
+# demo-itst-inventory
 all:
   vars:
-    openshift_domain: apps.rosa.rosa-vpfgs.o0sn.p3.openshiftapps.com
-    result_manager_url: result-manager-demo-report.apps.rosa.rosa-vpfgs.o0sn.p3.openshiftapps.com
-    report_viewer_url: report-viewer-demo-report.apps.rosa.rosa-vpfgs.o0sn.p3.openshiftapps.com
+    openshift_domain: apps.rosa.rosa-vpfgs.o0sn.p3.openshiftapps.com # Change your Rosa Environment
+    result_manager_url: result-manager-demo-report.apps.rosa.rosa-vpfgs.o0sn.p3.openshiftapps.com # Change your Rosa Environment
+    report_viewer_url: report-viewer-demo-report.apps.rosa.rosa-vpfgs.o0sn.p3.openshiftapps.com # Change your Rosa Environment
     image_pull_secret_name: quayio
     database_app_name: postgresql
     pg_user: test
     pg_database: test
     pg_password: test
-    pg_port: "5432"
+    pg_port: '5432'
     pipeline_repo_domain: rhn-consulting-kemori
     pipeline_repo_name: demo-itst-test
-    aap_controller_url: https://controller.nht4t.sandbox2861.opentlc.com
-    environment_pipeline_number: 26
-    test_scenario_pipeline_number: 39
-    closing_pipeline_number: 24
-    # ansible_token:
-    # google_chat_url:
+    aap_controller_url: https://controller.nht4t.sandbox2861.opentlc.com # Change your Ansible Environment
+    environment_pipeline_number: 30   # WorkFlow Number: L1_wf02_environment
+    test_scenario_pipeline_number: 39 # WorkFlow Number: L1_wf03_test_scenario
+    closing_pipeline_number: 21       # WorkFlow Number: L1_wf04_closing
+    ansible_token: manual setup       # ToDo
+    google_chat_url: manual setup     # ToDo

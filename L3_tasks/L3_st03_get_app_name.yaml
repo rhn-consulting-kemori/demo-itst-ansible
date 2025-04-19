@@ -1,0 +1,44 @@
+---
+# Tasks: L3_st03_get_app_name
+# Extra vars: source_j2_path
+# Output: app_name, search_word, pod_search_type, phase_criteria
+- name: Search app text
+  shell: grep -E "app:" {{ source_j2_path }}
+  register: grep_result
+  failed_when: grep_result.rc not in [0]
+
+- name: set app_name
+  set_fact: 
+    app_name: "{{ serch_line[1] | trim }}"
+  vars:
+    serch_line: "{{ grep_result.stdout_lines[0] | split(':') }}"
+
+- name: Show app_name
+  debug:
+    var: app_name
+
+- name: Set pod_search_type app
+  set_fact: 
+    pod_search_type: "app"
+
+- name: Search Kind-Job
+  shell: grep -E "{{ search_word }}" {{ source_j2_path }}
+  vars:
+    search_word: "kind: Job"
+  register: grep_result_kind_job
+  failed_when: no
+
+- name: Set pod_search_type job-name
+  set_fact: 
+    pod_search_type: "job-name"
+  loop: '{{ grep_result_kind_job.stdout_lines }}'
+
+- name: Set phase_criteria Succeeded
+  set_fact: 
+    phase_criteria: "Succeeded"
+  when: pod_search_type == "job-name"
+
+- name: Set phase_criteria Running
+  set_fact: 
+    phase_criteria: "Running"
+  when: pod_search_type != "job-name"

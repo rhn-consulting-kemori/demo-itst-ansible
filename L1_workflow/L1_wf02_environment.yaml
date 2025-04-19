@@ -1,0 +1,26 @@
+---
+# WorkFlow: L1_wf02_environment
+# Survey: test_id, test_result_seq, seq, name
+# Inventry: result_manager_url, pipeline_repo_domain, pipeline_repo_name
+- name: Gitclone & Set Paramete
+  # namespace_name, create_table_image, insert_table_image
+  ansible.builtin.import_playbook: L2_ev01_gitclone_setparam.yaml
+
+- name: Create NameSpace
+  ansible.builtin.import_playbook: L2_ev02_create_namespace.yaml
+
+- name: Create Secret
+  ansible.builtin.import_playbook: L2_ev03_create_secret.yaml
+
+- name: Create Database
+  ansible.builtin.import_playbook: L2_ev04_create_database.yaml
+
+- name: Create Table
+  ansible.builtin.import_playbook: L2_ev05_create_table.yaml
+
+- name: Insert Table
+  ansible.builtin.import_playbook: L2_ev06_insert_table.yaml
+
+- name: End Provisioning
+  ansible.builtin.import_playbook: L2_ev07_end_provisioning.yaml
+

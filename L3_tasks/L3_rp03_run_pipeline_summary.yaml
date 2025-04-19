@@ -1,0 +1,25 @@
+---
+# Tasks: L3_rp03_run_pipeline_summary
+# Extra vars: test_result_seq, test_id, test_group, test_pipeline, simulation_date
+# Inventry: result_manager_url
+- name: Run pipeline_summary
+  ansible.builtin.uri:
+    url: https://{{ result_manager_url }}/api/pipeline_summary
+    method: POST
+    body_format: json
+    status_code: 201
+    headers:
+      Content-Type: application/json
+    body: |-
+      {
+        "test_result_seq": "{{ test_result_seq }}",
+        "test_id": "{{ test_id }}",
+        "test_group": "{{ test_group }}",
+        "test_pipeline": "{{ test_pipeline }}",
+        "simulation_date": "{{ simulation_date }}"
+      }
+  register: result
+
+- name: Show pipeline_summary
+  ansible.builtin.debug:
+    var: result.json

@@ -1,0 +1,12 @@
+---
+# JobTemplate: L2_rp10_delete_namespace
+# Delete ROSA NameSpace
+# Survey: namespace_name
+- hosts: localhost
+  tasks:
+    - name: Delete a NameSpace
+      kubernetes.core.k8s:
+        name: "{{ namespace_name }}"
+        api_version: v1
+        kind: Namespace
+        state: absent

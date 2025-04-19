@@ -1,0 +1,21 @@
+---
+# JobTemplate L2_rp11_delete_database
+# Delete Database
+# Survey: namespace_name, database_app_name
+- hosts: localhost
+  tasks:
+    - name: Delete Database Service
+      kubernetes.core.k8s:
+        state: absent
+        api_version: v1
+        kind: Service
+        namespace: "{{ namespace_name }}"
+        name: "{{ database_app_name }}"
+
+    - name: Delete Database Deployment
+      kubernetes.core.k8s:
+        state: absent
+        api_version: v1
+        kind: Deployment
+        namespace: "{{ namespace_name }}"
+        name: "{{ database_app_name }}"

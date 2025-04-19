@@ -1,0 +1,67 @@
+---
+# Tasks: L3_st04_delete_online_app
+# Extra vars: 
+# - namespace_name, delete_online_app_name
+# - test_result_seq, test_id, test_group, test_pipeline, simulation_date
+- name: Start timestamp
+  set_fact: 
+    start_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
+
+- name: Remove block
+  block:
+    - name: Delete Service
+      kubernetes.core.k8s:
+        state: absent
+        api_version: v1
+        kind: Service
+        namespace: "{{ namespace_name }}"
+        name: "{{ delete_online_app_name }}"
+
+    - name: Delete Route
+      kubernetes.core.k8s:
+        state: absent
+        api_version: v1
+        kind: Route
+        namespace: "{{ namespace_name }}"
+        name: "{{ delete_online_app_name }}"
+
+    - name: Delete Deployment
+      kubernetes.core.k8s:
+        state: absent
+        api_version: v1
+        kind: Deployment
+        namespace: "{{ namespace_name }}"
+        name: "{{ delete_online_app_name }}"
+
+    - name: Set test_result OK
+      set_fact:
+        test_result: "OK"
+
+  rescue:
+    - name: Set test_result NG
+      set_fact:
+        test_result: "NG"
+
+- name: End timestamp
+  set_fact:
+    end_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
+
+# Add test_task
+- name: Add test_task
+  ansible.builtin.import_tasks:
+    file: L3_rp02_add_test_task.yaml
+  vars:
+    test_result_seq: "{{ test_result_seq }}"
+    test_id: "{{ test_id }}"
+    test_group: "{{ test_group }}"
+    test_pipeline: "{{ test_pipeline }}"
+    test_task: "{{ delete_online_app_name }}"
+    simulation_date: "{{ simulation_date }}"
+    start_time: "{{ start_timestamp }}"
+    end_time: "{{ end_timestamp }}"
+    test_result: "{{ test_result }}"
+    evidence_link: "-"
+    sw_category: ""
+    sw_id: ""
+    sw_name: ""
+    sw_version: ""

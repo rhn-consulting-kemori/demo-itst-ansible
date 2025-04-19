@@ -1,0 +1,37 @@
+---
+# JobTemplate: L2_rp04_create_table
+# Create Table
+# Survey: namespace_name, create_table_image
+# Inventry: database_app_name, image_pull_secret_name, pg_user, pg_password, pg_port
+- hosts: localhost
+  tasks:
+    - name: Create Table
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: batch/v1
+          kind: Job
+          metadata:
+            name: create-table-job
+            namespace: "{{ namespace_name }}"
+            labels:
+              app: create-table-app
+          spec:
+            template:
+              spec:
+                restartPolicy: Never
+                containers:
+                  - name: create-table-app
+                    image: quay.io/rhn_consulting_kemori/{{ create_table_image }}:latest
+                    imagePullPolicy: Always
+                    env:
+                      - name: DB_USER
+                        value: "{{ pg_user }}"
+                      - name: DB_PASSWORD
+                        value: "{{ pg_password }}"
+                      - name: DB_SERVERNAME
+                        value: "{{ database_app_name }}.{{ namespace_name }}.svc.cluster.local"
+                      - name: DB_PORTNUMBER
+                        value: "{{ pg_port }}"
+                imagePullSecrets:
+                  - name: "{{ image_pull_secret_name }}"

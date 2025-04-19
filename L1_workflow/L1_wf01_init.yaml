@@ -1,0 +1,5 @@
+---
+# WorkFlow: L1_wf01_init
+# Survey: test_id
+- name: L2_ut01_init_job
+  ansible.builtin.import_playbook: L2_ut01_init_job.yaml

@@ -1,0 +1,72 @@
+---
+# Tasks: L3_st01_apply_openshift
+# Extra vars: source_yaml_path, namespace_name, app_name
+# Output:
+# - start_timestamp, end_timestamp, test_result, podname, imageid, image, phase
+- name: Start timestamp
+  set_fact: 
+    start_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
+
+- name: Apply block
+  block:
+    # Apply
+    # * source_yaml_path
+    - name: Apply Yaml
+      kubernetes.core.k8s:
+        state: present
+        src: "{{ source_yaml_path }}"
+
+    # Search Pods
+    # * namespace_name, app_name
+    - name: Search Pods
+      kubernetes.core.k8s_info:
+        kind: Pod
+        namespace: "{{ namespace_name }}"
+        label_selectors:
+          - "{{ pod_search_type }} = {{ app_name }}"
+      register: l3_st01_result_pod
+
+    # Get Podname
+    - name: Get Podname
+      set_fact: 
+        podname: "{{ l3_st01_result_pod.resources[0].metadata.name }}"
+
+    # Wait Pod Creation
+    - name: Get Pod Info
+      kubernetes.core.k8s_info:
+        kind: Pod
+        name: "{{ podname }}"
+        namespace: "{{ namespace_name }}"
+      register: l3_st01_result_pod
+      until: l3_st01_result_pod.resources[0].status.phase == "{{ phase_criteria }}"
+      retries: 5
+      delay: 10
+
+    - name: Get imageID
+      set_fact: 
+        imageid: "{{ l3_st01_result_pod.resources[0].status.containerStatuses[0].imageID }}"
+        image: "{{ l3_st01_result_pod.resources[0].status.containerStatuses[0].image }}"
+        phase: "{{ l3_st01_result_pod.resources[0].status.phase }}"
+
+    - name: Set test_result OK
+      set_fact:
+        test_result: "OK"
+      when: phase == "{{ phase_criteria }}"
+
+    - name: Set test_result NG
+      set_fact:
+        test_result: "NG"
+      when: phase != "{{ phase_criteria }}"
+
+  rescue:
+    - name: Set test_result NG
+      set_fact:
+        test_result: "NG"
+
+- name: End timestamp
+  set_fact:
+    end_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
+
+- name: print vars
+  debug:
+    msg: "podname={{ podname }}, phase={{ phase }}, imageid={{ imageid }}, image={{ image }}"

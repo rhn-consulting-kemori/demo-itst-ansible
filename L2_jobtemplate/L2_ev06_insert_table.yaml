@@ -1,0 +1,88 @@
+---
+# JobTemplate: L2_ev06_insert_table
+# Insert Table
+# Survey: namespace_name, insert_table_image, insert_table_request
+# Inventry: database_app_name, image_pull_secret_name, pg_user, pg_password, pg_port
+- name: Insert Table
+  hosts: localhost
+  tasks:
+    - name: Start timestamp
+      ansible.builtin.debug:
+        var: start_timestamp
+      vars:
+        start_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
+      register: l2_ev06_start_timestamp
+
+    - name: Insert Table
+      when: insert_table_request
+      block:
+        - name: Insert Table
+          kubernetes.core.k8s:
+            state: present
+            definition:
+              apiVersion: batch/v1
+              kind: Job
+              metadata:
+                name: insert-table-job
+                namespace: "{{ namespace_name }}"
+                labels:
+                  app: insert-table-app
+              spec:
+                template:
+                  spec:
+                    restartPolicy: Never
+                    containers:
+                      - name: insert-table-app
+                        image: quay.io/rhn_consulting_kemori/{{ insert_table_image }}:latest
+                        imagePullPolicy: Always
+                        env:
+                          - name: DB_USER
+                            value: "{{ pg_user }}"
+                          - name: DB_PASSWORD
+                            value: "{{ pg_password }}"
+                          - name: DB_SERVERNAME
+                            value: "{{ database_app_name }}.{{ namespace_name }}.svc.cluster.local"
+                          - name: DB_PORTNUMBER
+                            value: "{{ pg_port }}"
+                    imagePullSecrets:
+                      - name: "{{ image_pull_secret_name }}"
+
+        - name: Set test_result
+          ansible.builtin.debug:
+            var: test_result
+          vars:
+            test_result: "OK"
+          register: l2_ev06_result
+
+      rescue:
+        - name: Set test_result
+          ansible.builtin.debug:
+            var: test_result
+          vars:
+            test_result: "NG"
+          register: l2_ev06_result
+        
+    - name: End timestamp
+      ansible.builtin.debug:
+        var: end_timestamp
+      vars:
+        end_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
+      register: l2_ev06_end_timestamp
+
+    - name: Add test_task OK
+      when: insert_table_request
+      ansible.builtin.import_tasks:
+        file: L3_rp02_add_test_task.yaml
+      vars:
+        test_group: "環境立上"
+        test_pipeline: "環境構築"
+        test_task: "データロード"
+        simulation_date: ""
+        start_time: "{{ l2_ev06_start_timestamp.start_timestamp }}"
+        end_time: "{{ l2_ev06_end_timestamp.end_timestamp }}"
+        test_result: "{{ l2_ev06_result.test_result }}"
+        evidence_link: "-"
+        sw_category: ""
+        sw_id: ""
+        sw_name: ""
+        sw_version: ""

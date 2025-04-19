@@ -1,0 +1,40 @@
+---
+# Tasks: L3_st07_delete_namespace
+# Extra vars: namespace_name
+- name: Start timestamp
+  ansible.builtin.debug:
+    var: start_timestamp
+  vars:
+    start_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
+  register: l3_ev02_start_timestamp
+
+- name: Delete a NameSpace
+  kubernetes.core.k8s:
+    name: "{{ namespace_name }}"
+    api_version: v1
+    kind: Namespace
+    state: absent
+
+- name: End timestamp
+  ansible.builtin.debug:
+    var: end_timestamp
+  vars:
+    end_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
+  register: l3_ev02_end_timestamp
+
+- name: Add test_task OK
+  ansible.builtin.import_tasks:
+    file: L3_rp02_add_test_task.yaml
+  vars:
+    test_group: "クロージング"
+    test_pipeline: "環境スクラップ"
+    test_task: "NameSpace削除"
+    simulation_date: ""
+    start_time: "{{ l3_ev02_start_timestamp.start_timestamp }}"
+    end_time: "{{ l3_ev02_end_timestamp.end_timestamp }}"
+    test_result: "OK"
+    evidence_link: "-"
+    sw_category: ""
+    sw_id: ""
+    sw_name: ""
+    sw_version: ""

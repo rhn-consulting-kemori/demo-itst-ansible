@@ -1,0 +1,19 @@
+---
+# Tasks: L3_ut03_template_j2
+# Extra vars: source_j2_path, source_yaml_path
+# --------------    
+# Template replace
+- name: Replace Template to Yaml
+  template:
+    src: "{{ source_j2_path }}"
+    dest: "{{ source_yaml_path }}"
+
+# Cat Yaml
+- name: cat yaml
+  ansible.builtin.command: cat {{ source_yaml_path }}
+  register: l3_ut03_result
+    
+# Display Yaml
+- name: Set source_yaml_path
+  ansible.builtin.debug:
+    var: l3_ut03_result.stdout
