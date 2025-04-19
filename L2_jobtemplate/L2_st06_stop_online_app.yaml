@@ -8,7 +8,7 @@
     # Git clone
     - name: Git clone
       ansible.builtin.import_tasks:
-        file: L3_ut01_gitclone.yaml
+        file: L3_tasks/L3_ut01_gitclone.yaml
 
     # Include Vars
     - name: include_vars
@@ -21,7 +21,7 @@
     # * test_result_seq, test_id, test_group, test_pipeline, simulation_date
     - name: Stop online App
       ansible.builtin.include_tasks:
-        file: L3_st04_delete_online_app.yaml
+        file: L3_tasks/L3_st04_delete_online_app.yaml
       vars:
         namespace_name: "{{ pipeline_vars.namespace_name }}"
         delete_online_app_name: "{{ item.name }}"
@@ -35,7 +35,7 @@
     # Report Summary
     - name: Report Pipeline Summary
       ansible.builtin.import_tasks:
-        file: L3_rp03_run_pipeline_summary.yaml
+        file: L3_tasks/L3_rp03_run_pipeline_summary.yaml
       vars:
         test_group: "テストシナリオ"
         test_pipeline: "オンライン停止"

@@ -49,7 +49,7 @@
 # Add test_task
 - name: Add test_task
   ansible.builtin.import_tasks:
-    file: L3_rp02_add_test_task.yaml
+    file: L3_tasks/L3_rp02_add_test_task.yaml
   vars:
     test_result_seq: "{{ test_result_seq }}"
     test_id: "{{ test_id }}"

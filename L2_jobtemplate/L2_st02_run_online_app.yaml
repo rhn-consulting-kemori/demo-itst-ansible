@@ -8,7 +8,7 @@
     # Git clone
     - name: Git clone
       ansible.builtin.import_tasks:
-        file: L3_ut01_gitclone.yaml
+        file: L3_tasks/L3_ut01_gitclone.yaml
 
     # Find j2 file
     - name: Find j2 files
@@ -21,7 +21,7 @@
     # Delegate apply task
     - name: Run Online App
       ansible.builtin.include_tasks:
-        file: L3_st00_apply_task.yaml
+        file: L3_tasks/L3_st00_apply_task.yaml
       vars:
         source_j2_path: "{{ item.path }}"
         namespace_name: "{{ pipeline_vars.namespace_name }}"
@@ -38,7 +38,7 @@
     # Report Summary
     - name: Report Pipeline Summary
       ansible.builtin.import_tasks:
-        file: L3_rp03_run_pipeline_summary.yaml
+        file: L3_tasks/L3_rp03_run_pipeline_summary.yaml
       vars:
         test_group: "テストシナリオ"
         test_pipeline: "オンライン立上"

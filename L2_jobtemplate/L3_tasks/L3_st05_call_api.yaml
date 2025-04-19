@@ -6,7 +6,7 @@
 # * source_j2_path
 - name: Template j2 to yaml
   ansible.builtin.import_tasks:
-    file: L3_ut03_template_j2.yaml
+    file: L3_tasks/L3_ut03_template_j2.yaml
   vars:
     source_j2_path: "{{ source_j2_path }}"
     source_yaml_path: "{{ source_j2_path | regex_replace('.j2', '.yaml') }}"
@@ -32,7 +32,7 @@
   block:
     - name: Call API Unit
       ansible.builtin.include_tasks:
-        file: L3_st06_call_api_unit.yaml
+        file: L3_tasks/L3_st06_call_api_unit.yaml
       vars:
         call_api_data: "{{ data_item }}"
       loop: "{{ call_api_vars.data_list }}"
@@ -52,7 +52,7 @@
 # * test_result_seq, test_id, test_group, test_pipeline, simulation_date
 - name: Add test_task
   ansible.builtin.import_tasks:
-    file: L3_rp02_add_test_task.yaml
+    file: L3_tasks/L3_rp02_add_test_task.yaml
   vars:
     test_result_seq: "{{ test_result_seq }}"
     test_id: "{{ test_id }}"

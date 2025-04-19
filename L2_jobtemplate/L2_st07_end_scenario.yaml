@@ -10,17 +10,17 @@
   tasks:
     - name: Git clone
       ansible.builtin.import_tasks:
-        file: L3_ut01_gitclone.yaml
+        file: L3_tasks/L3_ut01_gitclone.yaml
 
     - name: Complete Notification
       ansible.builtin.import_tasks:
-        file: L3_rp05_run_complete_notification.yaml
+        file: L3_tasks/L3_rp05_run_complete_notification.yaml
       vars:
         text: "[test_result_seq={{ test_result_seq }}, test_id={{ test_id }}, simulation_date={{ simulation_date }}]\nシナリオが完了しました。\nhttps://{{ report_viewer_url }}/report?test_result_seq={{ test_result_seq }}"
 
     - name: Next Pipeline Kick
       ansible.builtin.import_tasks:
-        file: L3_ut02_kick_nextpipeline.yaml
+        file: L3_tasks/L3_ut02_kick_nextpipeline.yaml
       vars:
         seq: "{{ seq }}"
         test_id: "{{ test_id }}"

@@ -7,7 +7,7 @@
   tasks:
     - name: Git clone
       ansible.builtin.import_tasks:
-        file: L3_ut01_gitclone.yaml
+        file: L3_tasks/L3_ut01_gitclone.yaml
 
     - name: Set Parameter
       set_stats:
