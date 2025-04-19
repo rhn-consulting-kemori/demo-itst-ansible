@@ -1,5 +1,5 @@
 ---
-# JobTemplate: L1_ut02_closing_job
+# JobTemplate: L2_ut02_closing_job
 # Survey: test_id, test_result_seq
 # Inventry: google_chat_url, pipeline_repo_domain, pipeline_repo_name, result_manager_url, report_viewer_url
 - name: Closing-Job 
