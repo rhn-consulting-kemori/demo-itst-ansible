@@ -1,0 +1,14 @@
+---
+- name: Get Pod-log
+  hosts: localhost
+  tasks:
+    - name: Log a Pod matching a label selector
+      kubernetes.core.k8s_log:
+        namespace: demo-itst
+        label_selectors:
+          - job-name=demo-batch-job1
+      register: log
+
+    - name: print log
+      ansible.builtin.debug:
+        var: log
