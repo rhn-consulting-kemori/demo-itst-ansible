@@ -35,3 +35,28 @@
                         value: "{{ pg_port }}"
                 imagePullSecrets:
                   - name: "{{ image_pull_secret_name }}"
+    
+    # Search Pods
+    - name: Search Pods
+      kubernetes.core.k8s_info:
+        kind: Pod
+        namespace: "{{ namespace_name }}"
+        label_selectors:
+          - app: create-table-app
+      register: l3_st01_result_pod
+
+    # Get Podname
+    - name: Get Podname
+      set_fact: 
+        podname: "{{ l3_st01_result_pod.resources[0].metadata.name }}"
+
+    # Wait Pod Creation
+    - name: Get Pod Info
+      kubernetes.core.k8s_info:
+        kind: Pod
+        name: "{{ podname }}"
+        namespace: "{{ namespace_name }}"
+      register: l3_st01_result_pod
+      until: l3_st01_result_pod.resources[0].status.phase == "Succeeded"
+      retries: 5
+      delay: 10              
