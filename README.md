@@ -13,3 +13,8 @@
 * Personal access token
 ## Inventory
 * inventory/inventory_all_vars.yaml
+## Ansible API URL
+### AAP2.5
+* {{ aap_controller_url }}/api/controller/v2/workflow_job_templates/{{ environment_pipeline_number }}/launch/
+### AAP2.4 Before
+* {{ aap_controller_url }}/api/v2/workflow_job_templates/{{ environment_pipeline_number }}/launch/

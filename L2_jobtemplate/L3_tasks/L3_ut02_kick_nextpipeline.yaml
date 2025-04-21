@@ -17,7 +17,7 @@
 # Environment kick
 - name: REST CALL for environment
   ansible.builtin.uri:
-    url: "{{ aap_controller_url }}/api/controller/v2/workflow_job_templates/{{ environment_pipeline_number }}/launch/"
+    url: "{{ aap_controller_url }}/{{ aap_api_url }}/workflow_job_templates/{{ environment_pipeline_number }}/launch/"
     method: POST
     body_format: json
     status_code: 201
@@ -40,7 +40,7 @@
 # Test_Scenario kick
 - name: REST CALL for test_scenario
   ansible.builtin.uri:
-    url: "{{ aap_controller_url }}/api/controller/v2/workflow_job_templates/{{ test_scenario_pipeline_number }}/launch/"
+    url: "{{ aap_controller_url }}/{{ aap_api_url }}/workflow_job_templates/{{ test_scenario_pipeline_number }}/launch/"
     method: POST
     body_format: json
     status_code: 201
@@ -63,7 +63,7 @@
 # Closing kick
 - name: REST CALL for closing pipeline
   ansible.builtin.uri:
-    url: "{{ aap_controller_url }}/api/controller/v2/workflow_job_templates/{{ closing_pipeline_number }}/launch/"
+    url: "{{ aap_controller_url }}/{{ aap_api_url }}/workflow_job_templates/{{ closing_pipeline_number }}/launch/"
     method: POST
     body_format: json
     status_code: 201
