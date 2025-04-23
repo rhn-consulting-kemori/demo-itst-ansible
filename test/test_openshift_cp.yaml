@@ -11,5 +11,5 @@
       kubernetes.core.k8s_cp:
         namespace: demo-itst
         pod: data-setup-84fc767c58-zttdd
-        remote_path: /mnt/data/assert/sql
+        remote_path: /mnt/data/assert/sql/
         local_path: /tmp/{{ pipeline_repo_name }}/EX-E001-00000003/test_scenario/D2025-03-12/p4_assert_result/sql
