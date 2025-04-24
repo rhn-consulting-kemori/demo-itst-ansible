@@ -23,4 +23,4 @@ all:
     pvc_name: demo-efs-pvc1
     pvc_access_mode: ReadWriteMany
     strage_class_name: efs-csi
-    pvc_strage_size: 1 GiB
+    pvc_strage_size: '1 GiB'
