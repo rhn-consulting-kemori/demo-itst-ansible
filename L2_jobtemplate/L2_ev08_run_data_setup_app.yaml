@@ -124,7 +124,6 @@
       register: l2_ev08_end_timestamp
 
     - name: Add test_task OK
-      when: database_request
       ansible.builtin.import_tasks:
         file: L3_tasks/L3_rp02_add_test_task.yaml
       vars:
