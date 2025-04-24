@@ -1,0 +1,142 @@
+---
+# JobTemplate: L2_ev08_run_data_setup_app
+# Create Database
+# Survey: test_id, test_result_seq, namespace_name
+# Inventry: 
+- name: Run data-setup app
+  hosts: localhost
+  tasks:
+    - name: Start timestamp
+      ansible.builtin.debug:
+        var: start_timestamp
+      vars:
+        start_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
+      register: l2_ev08_start_timestamp
+
+    - name: Run app
+      block:
+        - name: Create Deployment
+          kubernetes.core.k8s:
+            state: present
+            definition:
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                namespace: "{{ namespace_name }}"
+                name: data-setup
+                labels:
+                  app: data-setup
+              spec:
+                replicas: 1
+                selector:
+                  matchLabels:
+                    app: data-setup
+                template:
+                  metadata:
+                    labels:
+                      app: data-setup
+                  spec:
+                    containers:
+                      - name: data-setup
+                        image: quay.io/rhn_consulting_kemori/data-setup
+                        imagePullPolicy: "IfNotPresent"
+                        ports:
+                          - containerPort: 8090
+                            protocol: TCP
+                        volumeMounts:
+                          - name: data-setup-vol
+                            mountPath: /mnt/data
+                    volumes:
+                      - name: data-setup-vol
+                        persistentVolumeClaim:
+                          claimName: "{{ pvc_name }}"
+                    imagePullSecrets:
+                      - name: "{{ image_pull_secret_name }}"
+
+        - name: Create Service
+          kubernetes.core.k8s:
+            state: present
+            definition:
+              apiVersion: v1
+              kind: Service
+              metadata:
+                name: data-setup
+                namespace: "{{ namespace_name }}"
+                labels:
+                  app: data-setup
+              spec:
+                type: ClusterIP
+                ports:
+                  - name: 8090-tcp
+                    protocol: TCP
+                    port: 8090
+                    targetPort: 8090
+                sessionAffinity: None
+                selector:
+                  app: data-setup
+              status:
+                loadBalancer: {}
+
+        - name: Create Route
+          kubernetes.core.k8s:
+            state: present
+            definition:
+              apiVersion: route.openshift.io/v1
+              kind: Route
+              metadata:
+                name: data-setup
+                namespace: "{{ namespace_name }}"
+                labels:
+                  app: data-setup
+              spec:
+                host: data-setup-{{ namespace_name }}.{{ openshift_domain }}
+                to:
+                  kind: Service
+                  name: data-setup
+                  weight: 100
+                port:
+                  targetPort: 8090-tcp
+                tls:
+                  termination: edge
+                  insecureEdgeTerminationPolicy: Redirect
+                wildcardPolicy: None
+
+        - name: Set test_result
+          ansible.builtin.debug:
+            var: test_result
+          vars:
+            test_result: "OK"
+          register: l2_ev08_result
+
+      rescue:
+        - name: Set test_result
+          ansible.builtin.debug:
+            var: test_result
+          vars:
+            test_result: "NG"
+          register: l2_ev08_result
+        
+    - name: End timestamp
+      ansible.builtin.debug:
+        var: end_timestamp
+      vars:
+        end_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
+      register: l2_ev08_end_timestamp
+
+    - name: Add test_task OK
+      when: database_request
+      ansible.builtin.import_tasks:
+        file: L3_tasks/L3_rp02_add_test_task.yaml
+      vars:
+        test_group: "環境立上"
+        test_pipeline: "環境構築"
+        test_task: "データ設定アプリ立上"
+        simulation_date: ""
+        start_time: "{{ l2_ev08_start_timestamp.start_timestamp }}"
+        end_time: "{{ l2_ev08_end_timestamp.end_timestamp }}"
+        test_result: "{{ l2_ev08_result.test_result }}"
+        evidence_link: "-"
+        sw_category: ""
+        sw_id: ""
+        sw_name: ""
+        sw_version: ""
