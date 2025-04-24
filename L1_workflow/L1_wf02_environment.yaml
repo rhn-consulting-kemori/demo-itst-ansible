@@ -21,6 +21,12 @@
 - name: Insert Table
   ansible.builtin.import_playbook: L2_ev06_insert_table.yaml
 
+- name: Create PVC
+  ansible.builtin.import_playbook: L2_ev07_create_pvc.yaml
+
+- name: Run data-setup app
+  ansible.builtin.import_playbook: L2_ev08_run_data_setup_app
+
 - name: End Provisioning
-  ansible.builtin.import_playbook: L2_ev07_end_provisioning.yaml
+  ansible.builtin.import_playbook: L2_ev09_end_provisioning.yaml
 
