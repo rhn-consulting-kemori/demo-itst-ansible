@@ -1,5 +1,5 @@
 ---
-# JobTemplate: L2_ev07_end_provisioning
+# JobTemplate: L2_ev09_end_provisioning
 # Survey: test_id, test_result_seq, seq(Integer)
 # Inventry: 
 # - result_manager_url, pipeline_repo_domain, pipeline_repo_name
