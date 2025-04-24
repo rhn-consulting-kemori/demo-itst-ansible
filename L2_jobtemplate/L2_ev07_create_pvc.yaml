@@ -1,0 +1,73 @@
+---
+# JobTemplate: L2_ev07_create_pvc
+# Create a PVC
+# Survey: test_id, test_result_seq, namespace_name
+# Inventry: pvc_name, pvc_access_mode, strage_class_name, pvc_strage_size
+- name: Create Secret
+  hosts: localhost
+  tasks:
+    - name: Start timestamp
+      ansible.builtin.debug:
+        var: start_timestamp
+      vars:
+        start_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
+      register: l2_ev07_start_timestamp
+
+    - name: Create PVC Block
+      block:
+        - name: Create PVC
+          kubernetes.core.k8s:
+            state: present
+            definition:
+              apiVersion: v1
+              kind: PersistentVolumeClaim
+              metadata:
+                name: "{{ pvc_name }}"
+                namespace: "{{ namespace_name }}"
+              spec:
+                accessModes:
+                  - "{{ pvc_access_mode }}"
+                resources:
+                  requests:
+                    storage: "{{ pvc_strage_size }}"
+                storageClassName: "{{ strage_class_name }}"
+                volumeMode: Filesystem
+
+        - name: Set test_result
+          ansible.builtin.debug:
+            var: test_result
+          vars:
+            test_result: "OK"
+          register: l2_ev07_result
+
+      rescue:
+        - name: Set test_result
+          ansible.builtin.debug:
+            var: test_result
+          vars:
+            test_result: "NG"
+          register: l2_ev07_result
+        
+    - name: End timestamp
+      ansible.builtin.debug:
+        var: end_timestamp
+      vars:
+        end_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
+      register: l2_ev07_end_timestamp
+
+    - name: Add test_task OK
+      ansible.builtin.import_tasks:
+        file: L3_tasks/L3_rp02_add_test_task.yaml
+      vars:
+        test_group: "環境立上"
+        test_pipeline: "環境構築"
+        test_task: "PVC作成"
+        simulation_date: ""
+        start_time: "{{ l2_ev07_start_timestamp.start_timestamp }}"
+        end_time: "{{ l2_ev07_end_timestamp.end_timestamp }}"
+        test_result: "{{ l2_ev07_result.test_result }}"
+        evidence_link: "-"
+        sw_category: ""
+        sw_id: ""
+        sw_name: ""
+        sw_version: ""

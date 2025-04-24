@@ -20,3 +20,7 @@ all:
     closing_pipeline_number: 64       # WorkFlow Number: L1_wf04_closing
     ansible_token: manual setup       # ToDo
     google_chat_url: manual setup     # ToDo
+    pvc_name: demo-efs-pvc1
+    pvc_access_mode: ReadWriteMany
+    strage_class_name: efs-csi
+    pvc_strage_size: 1 GiB
