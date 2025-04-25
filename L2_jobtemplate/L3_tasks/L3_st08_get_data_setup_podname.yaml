@@ -1,0 +1,17 @@
+---
+# Tasks: L3_st08_get_data_setup_podname
+# Extra vars: namespace_name
+# ---
+# Search Pods
+- name: Search Pods
+  kubernetes.core.k8s_info:
+    kind: Pod
+    namespace: "{{ namespace_name }}"
+    label_selectors:
+      - app = data-setup
+  register: l3_st08_result_pod
+
+# Get Podname
+- name: Get Podname
+  set_fact: 
+    podname: "{{ l3_st08_result_pod.resources[0].metadata.name }}"

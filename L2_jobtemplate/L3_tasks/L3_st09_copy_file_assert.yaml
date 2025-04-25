@@ -1,0 +1,54 @@
+---
+# Tasks: L3_st09_copy_file_assert
+# Extra vars: namespace_name, test_id, test_result_seq, name, simulation_date
+- name: Start timestamp
+  set_fact: 
+    start_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
+
+- name: Copy block
+  block:
+    - name: Copy local sql-file to remote pod
+      kubernetes.core.k8s_cp:
+        namespace: "{{ namespace_name }}"
+        pod: "{{ podname }}"
+        remote_path: /mnt/data/assert/sql
+        local_path: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p4_assert_result/sql/
+
+    - name: Copy local expected-file to remote pod
+      kubernetes.core.k8s_cp:
+        namespace: "{{ namespace_name }}"
+        pod: "{{ podname }}"
+        remote_path: /mnt/data/assert/expected
+        local_path: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p4_assert_result/expected/
+
+    - name: Set test_result OK
+      set_fact:
+        test_result: "OK"
+
+  rescue:
+    - name: Set test_result NG
+      set_fact:
+        test_result: "NG"
+
+- name: End timestamp
+  set_fact:
+    end_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
+
+- name: Add test_task
+  ansible.builtin.import_tasks:
+    file: L3_tasks/L3_rp02_add_test_task.yaml
+  vars:
+    test_result_seq: "{{ test_result_seq }}"
+    test_id: "{{ test_id }}"
+    test_group: "テストシナリオ"
+    test_pipeline: "結果検証"
+    test_task: "データコピー"
+    simulation_date: "{{ simulation_date }}"
+    start_time: "{{ start_timestamp }}"
+    end_time: "{{ end_timestamp }}"
+    test_result: "{{ test_result }}"
+    evidence_link: "-"
+    sw_category: ""
+    sw_id: ""
+    sw_name: ""
+    sw_version: ""

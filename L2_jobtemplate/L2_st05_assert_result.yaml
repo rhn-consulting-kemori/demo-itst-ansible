@@ -1,0 +1,22 @@
+---
+# JobTemplate: L2_st05_assert_result
+# Survey: test_id, test_result_seq, name, simulation_date
+# Inventry: pipeline_repo_domain, pipeline_repo_name
+- name: Start Scenario
+  hosts: localhost
+  tasks:
+    - name: Git clone
+      ansible.builtin.import_tasks:
+        file: L3_tasks/L3_ut01_gitclone.yaml
+
+    - name: Get data-setup podname
+      ansible.builtin.import_tasks:
+        file: L3_tasks/L3_st08_get_data_setup_podname.yaml
+      vars:
+        namespace_name: "{{ pipeline_vars.namespace_name }}"
+
+    - name: Copy sql and expected
+      ansible.builtin.import_tasks:
+        file: L3_tasks/L3_st09_copy_file_assert.yaml
+      vars:
+        namespace_name: "{{ pipeline_vars.namespace_name }}"
