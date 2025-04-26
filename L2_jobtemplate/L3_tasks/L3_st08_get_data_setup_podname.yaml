@@ -14,4 +14,4 @@
 # Get Podname
 - name: Get Podname
   set_fact: 
-    podname: "{{ l3_st08_result_pod.resources[0].metadata.name }}"
+    data_setup_podname: "{{ l3_st08_result_pod.resources[0].metadata.name }}"

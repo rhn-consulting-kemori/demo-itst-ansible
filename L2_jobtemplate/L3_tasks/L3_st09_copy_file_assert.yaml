@@ -10,7 +10,7 @@
     - name: Copy local data-file to remote pod
       kubernetes.core.k8s_cp:
         namespace: "{{ namespace_name }}"
-        pod: "{{ podname }}"
+        pod: "{{ data_setup_podname }}"
         remote_path: /mnt/data/assert
         local_path: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p4_assert_result/data/
     

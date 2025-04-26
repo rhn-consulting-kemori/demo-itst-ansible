@@ -1,0 +1,87 @@
+---
+# Tasks: L3_st10_assert_task
+# Extra vars: namespace_name, assert_task_name, assert_type, test_id, test_result_seq, name, simulation_date
+- name: Start timestamp
+  set_fact: 
+    start_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
+
+- name: Assert block
+  block:
+    - name: Set test_result OK
+      set_fact:
+        test_result: "OK"
+
+    - name: get-database-task j2 convert yaml
+      ansible.builtin.import_tasks:
+        file: L3_tasks/L3_ut03_template_j2.yaml
+      vars:
+        source_j2_path: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p4_assert_result/task/format/get_database_result.j2
+        source_yaml_path: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p4_assert_result/task/get-database-{{ assert_task_name }}.yaml
+      when: assert_type == "sql"
+
+    - name: Run get-database-task
+      ansible.builtin.import_tasks:
+        file: L3_tasks/L3_st11_apply_job_only.yaml
+      vars:
+        source_yaml_path: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p4_assert_result/task/get-database-{{ assert_task_name }}.yaml
+        job_name: get-database-{{ assert_task_name }}
+      when: assert_type == "sql"
+
+    - name: diff-task j2 convert yaml
+      ansible.builtin.import_tasks:
+        file: L3_tasks/L3_ut03_template_j2.yaml
+      vars:
+        source_j2_path: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p4_assert_result/task/format/diff_result.j2
+        source_yaml_path: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p4_assert_result/task/diff-{{ assert_task_name }}.yaml
+
+    - name: Run diff-result-task
+      ansible.builtin.import_tasks:
+        file: L3_tasks/L3_st11_apply_job_only.yaml
+      vars:
+        source_yaml_path: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p4_assert_result/task/diff-{{ assert_task_name }}.yaml
+        job_name: diff-{{ assert_task_name }}
+
+    - name: Copy remote pod to local
+      kubernetes.core.k8s_cp:
+        namespace: "{{ namespace_name }}"
+        pod: "{{ data_setup_podname }}"
+        remote_path: /mnt/data/assert/diff/
+        local_path: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p4_assert_result/data/diff
+        state: from_pod
+
+    - name: Diff file count
+      ansible.builtin.command:
+        cmd: wc -l /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p4_assert_result/data/diff/diff-{{ assert_task_name }}.txt
+      register: L3_st10_diff_count
+
+    - name: print diff count
+      ansible.builtin.debug:
+        var: L3_st10_diff_count
+    
+  rescue:
+    - name: Set test_result NG
+      set_fact:
+        test_result: "NG"
+
+- name: End timestamp
+  set_fact:
+    end_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
+
+- name: Add test_task
+  ansible.builtin.import_tasks:
+    file: L3_tasks/L3_rp02_add_test_task.yaml
+  vars:
+    test_result_seq: "{{ test_result_seq }}"
+    test_id: "{{ test_id }}"
+    test_group: "テストシナリオ"
+    test_pipeline: "結果検証"
+    test_task: "{{ assert_task_name }}"
+    simulation_date: "{{ simulation_date }}"
+    start_time: "{{ start_timestamp }}"
+    end_time: "{{ end_timestamp }}"
+    test_result: "{{ test_result }}"
+    evidence_link: "-"
+    sw_category: ""
+    sw_id: ""
+    sw_name: ""
+    sw_version: ""

@@ -15,36 +15,28 @@
       vars:
         namespace_name: "{{ pipeline_vars.namespace_name }}"
 
-    - name: Copy sql and expected
+    - name: Copy file
       ansible.builtin.import_tasks:
         file: L3_tasks/L3_st09_copy_file_assert.yaml
       vars:
         namespace_name: "{{ pipeline_vars.namespace_name }}"
 
-    # Find j2 file
-    - name: Find j2 files
-      ansible.builtin.find:
-        paths: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p4_assert_result/task
-        patterns: "*.j2"
-        file_type: file
-      register: found_files
+    - name: include_vars
+      include_vars: 
+        file: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p4_assert_result/task/assert_task.yaml
+        name: assert_vars
 
-    # Delegate apply task
-    - name: Run Batch App
+    # Assert Task
+    - name: Run Assert
       ansible.builtin.include_tasks:
-        file: L3_tasks/L3_st00_apply_task.yaml
+        file: L3_tasks/L3_st10_assert_task.yaml
       vars:
-        source_j2_path: "{{ item.path }}"
         namespace_name: "{{ pipeline_vars.namespace_name }}"
-        test_result_seq: "{{ test_result_seq }}"
-        test_id: "{{ test_id }}"
-        test_group: "テストシナリオ"
-        test_pipeline: "結果検証"
-        simulation_date: "{{ simulation_date }}"
-        sw_category: "バッチ"
-      loop: "{{ found_files.files }}"
+        assert_task_name: "{{ assert_task.name }}"
+        assert_type: "{{ assert_task.type }}"
+      loop: "{{ assert_vars.tasks }}"
       loop_control:
-        label: "{{ item.path }}"
+        loop_var: assert_task
 
     # Report Summary
     - name: Report Pipeline Summary
