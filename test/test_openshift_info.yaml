@@ -11,4 +11,5 @@
 
     - name: print log
       ansible.builtin.debug:
-        var: job_list
+        var: item.metadata.name
+      loop: "{{ job_list.resources }}"
