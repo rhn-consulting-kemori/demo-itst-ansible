@@ -21,7 +21,8 @@
         api_version: batch/v1
         kind: Job
         namespace: "{{ namespace_name }}"
-        delete_all: true
+        name:  "{{ item.metadata.name }}"
+      loop: "{{ job_list.resources }}"
 
     - name: Set test_result OK
       set_fact:
