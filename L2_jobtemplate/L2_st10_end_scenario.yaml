@@ -1,5 +1,5 @@
 ---
-# JobTemplate: L2_st07_end_scenario
+# JobTemplate: L2_st10_end_scenario
 # Survey: test_result_seq, test_id, seq(Integer), simulation_date
 # Inventry:
 # - result_manager_url, pipeline_repo_domain, pipeline_repo_name

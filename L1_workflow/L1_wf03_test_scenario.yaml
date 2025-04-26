@@ -20,5 +20,8 @@
 - name: Stop Online App
   ansible.builtin.import_playbook: L2_st06_stop_online_app.yaml
 
+- name: Delete Jobs
+  ansible.builtin.import_playbook: L2_st07_delete_job_all.yaml
+
 - name: End Scenario
-  ansible.builtin.import_playbook: L2_st07_end_scenario.yaml
+  ansible.builtin.import_playbook: L2_st10_end_scenario.yaml
