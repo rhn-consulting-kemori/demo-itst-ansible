@@ -10,6 +10,7 @@
     # Delete Jobs
     - name: Delete Jobs
       kubernetes.core.k8s:
+        state: absent
         api_version: batch/v1
         kind: Job
         namespace: "{{ namespace_name }}"
