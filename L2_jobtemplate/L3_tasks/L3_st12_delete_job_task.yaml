@@ -7,6 +7,13 @@
 
 - name: Delete Job block
   block:
+    - name: Get a list
+      kubernetes.core.k8s_info:
+        api_version: batch/v1
+        kind: Job
+        namespace: "{{ namespace_name }}"
+      register: job_list
+
     # Delete Jobs
     - name: Delete Jobs
       kubernetes.core.k8s:

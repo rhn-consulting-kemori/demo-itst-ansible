@@ -1,0 +1,14 @@
+---
+- name: Get Job
+  hosts: localhost
+  tasks:
+    - name: Get a list
+      kubernetes.core.k8s_info:
+        api_version: batch/v1
+        kind: Job
+        namespace: "{{ namespace_name }}"
+      register: job_list
+
+    - name: print log
+      ansible.builtin.debug:
+        var: job_list
