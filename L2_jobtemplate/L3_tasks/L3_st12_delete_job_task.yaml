@@ -1,0 +1,48 @@
+---
+# Tasks: L3_st12_delete_job_task
+# Extra vars: namespace_name, test_result_seq, test_id, simulation_date
+- name: Start timestamp
+  set_fact: 
+    start_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
+
+- name: Delete Job block
+  block:
+    # Delete Jobs
+    - name: Delete Jobs
+      kubernetes.core.k8s:
+        api_version: batch/v1
+        kind: Job
+        namespace: "{{ namespace_name }}"
+        delete_all: true
+
+    - name: Set test_result OK
+      set_fact:
+        test_result: "OK"
+
+  rescue:
+    - name: Set test_result NG
+      set_fact:
+        test_result: "NG"
+
+- name: End timestamp
+  set_fact:
+    end_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
+
+- name: Add test_task
+  ansible.builtin.import_tasks:
+    file: L3_tasks/L3_rp02_add_test_task.yaml
+  vars:
+    test_result_seq: "{{ test_result_seq }}"
+    test_id: "{{ test_id }}"
+    test_group: "テストシナリオ"
+    test_pipeline: "ジョブ削除"
+    test_task: "想定日ジョブ削除"
+    simulation_date: "{{ simulation_date }}"
+    start_time: "{{ start_timestamp }}"
+    end_time: "{{ end_timestamp }}"
+    test_result: "{{ test_result }}"
+    evidence_link: "-"
+    sw_category: ""
+    sw_id: ""
+    sw_name: ""
+    sw_version: ""

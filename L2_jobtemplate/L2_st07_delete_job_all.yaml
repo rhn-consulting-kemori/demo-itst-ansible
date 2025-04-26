@@ -1,0 +1,26 @@
+---
+# JobTemplate L2_st07_delete_job_all
+# Delete Job
+# Survey: test_id, test_result_seq, simulation_date
+- hosts: localhost
+  tasks:
+    # Git clone
+    - name: Git clone
+      ansible.builtin.import_tasks:
+        file: L3_tasks/L3_ut01_gitclone.yaml
+    
+    # Delete Jobs
+    - name: Delete Jobs
+      ansible.builtin.import_tasks:
+        file: L3_tasks/L3_st12_delete_job_task.yaml
+      vars:
+        namespace_name: "{{ pipeline_vars.namespace_name }}"
+        
+    # Report Summary
+    - name: Report Pipeline Summary
+      ansible.builtin.import_tasks:
+        file: L3_tasks/L3_rp03_run_pipeline_summary.yaml
+      vars:
+        test_group: "テストシナリオ"
+        test_pipeline: "ジョブ削除"
+        simulation_date : "{{ simulation_date }}"
