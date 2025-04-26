@@ -6,7 +6,7 @@
       kubernetes.core.k8s_info:
         api_version: batch/v1
         kind: Job
-        namespace: "{{ namespace_name }}"
+        namespace: demo-itst
       register: job_list
 
     - name: print log
