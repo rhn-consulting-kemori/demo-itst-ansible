@@ -7,10 +7,6 @@
 
 - name: Assert block
   block:
-    - name: Set test_result OK
-      set_fact:
-        test_result: "OK"
-
     - name: get-database-task j2 convert yaml
       ansible.builtin.import_tasks:
         file: L3_tasks/L3_ut03_template_j2.yaml
@@ -54,10 +50,22 @@
         cmd: wc -l /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p4_assert_result/data/diff/diff-{{ assert_task_name }}.txt
       register: L3_st10_diff_count
 
-    - name: print diff count
-      ansible.builtin.debug:
-        var: L3_st10_diff_count
+    - name: Set Diff row count
+      set_fact: 
+        diff_row_count: "{{ diff_count_out[0] }}"
+      vars:
+        diff_count_out: "{{ L3_st10_diff_count.stdout | split(' ') }}"
+
+    - name: Set test_result OK
+      set_fact:
+        test_result: "OK"
+      when: diff_row_count == "0"
     
+    - name: Set test_result NG
+      set_fact:
+        test_result: "NG"
+      when: diff_row_count != "0"
+
   rescue:
     - name: Set test_result NG
       set_fact:
