@@ -7,33 +7,12 @@
 
 - name: Copy block
   block:
-    - name: Copy local sql-file to remote pod
+    - name: Copy local data-file to remote pod
       kubernetes.core.k8s_cp:
         namespace: "{{ namespace_name }}"
         pod: "{{ podname }}"
-        remote_path: /mnt/data/assert/sql
-        local_path: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p4_assert_result/sql/
-
-    - name: Copy local expected-file to remote pod
-      kubernetes.core.k8s_cp:
-        namespace: "{{ namespace_name }}"
-        pod: "{{ podname }}"
-        remote_path: /mnt/data/assert/expected
-        local_path: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p4_assert_result/expected/
-
-    - name: Copy local actual-file to remote pod
-      kubernetes.core.k8s_cp:
-        namespace: "{{ namespace_name }}"
-        pod: "{{ podname }}"
-        remote_path: /mnt/data/assert/actual
-        local_path: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p4_assert_result/actual/
-
-    - name: Copy local result-file to remote pod
-      kubernetes.core.k8s_cp:
-        namespace: "{{ namespace_name }}"
-        pod: "{{ podname }}"
-        remote_path: /mnt/data/assert/result
-        local_path: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p4_assert_result/result/
+        remote_path: /mnt/data/assert
+        local_path: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p4_assert_result/data/
     
     - name: Set test_result OK
       set_fact:
