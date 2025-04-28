@@ -1,6 +1,13 @@
 ---
 - name: Create a JobTemplate 
   hosts: localhost
+
+  environment:
+    CONTROLLER_HOST: "{{ aap_controller_url }}"
+    CONTROLLER_USERNAME: "{{ ansible_user }}"
+    CONTROLLER_PASSWORD: "{{ ansible_pw }}"
+    CONTROLLER_VERIFY_SSL: false
+
   tasks:
     - name: create job template
       ansible.controller.job_template:
