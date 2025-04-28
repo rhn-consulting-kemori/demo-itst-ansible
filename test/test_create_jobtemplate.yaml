@@ -28,12 +28,12 @@
           description: Description of the simple survey
           spec:
             - type: text
-    	        question_name: namespace_name
-    	        variable: namespace_name
-    	        required: true
+              question_name: namespace_name
+              variable: namespace_name
+              required: true
             - type: text
-    	        question_name: test_result_seq
-    	        variable: test_result_seq
-    	        required: true
+              question_name: test_result_seq
+              variable: test_result_seq
+              required: true
         extra_vars:
           test_id: EX-E001-00000001
