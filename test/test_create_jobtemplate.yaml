@@ -1,0 +1,14 @@
+---
+- name: Create a JobTemplate 
+  hosts: localhost
+  tasks:
+    - name: create job template
+      ansible.controller.job_template:
+        name: "test_openshift_info2"
+        job_type: "run"
+        inventory: "demo-itst-inventory"
+        project: "demo-itst-project"
+        playbook: "test/test_openshift_info.yaml"
+        state: "present"
+        credential: "OCP認証"
+        execution_environment: "Control Plane Execution Environment"
