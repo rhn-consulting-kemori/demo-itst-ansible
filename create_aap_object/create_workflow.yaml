@@ -26,7 +26,7 @@
         labels:
           - "{{ label_name }}"
         extra_vars:
-          namespace_name: demo-report
+          namespace_name: test-demo-report
           create_table_image: create_table
           insert_table_image: insert_table
 
@@ -36,3 +36,93 @@
         workflow_job_template: test_L1_wf00_create_demo_report
         unified_job_template: L2_rp01_create_namespace
         organization: Default
+
+    - name: L2_rp02_create_secret
+      ansible.controller.workflow_job_template_node:
+        identifier: L2_rp02_create_secret
+        workflow_job_template: test_L1_wf00_create_demo_report
+        unified_job_template: L2_rp02_create_secret
+        organization: Default
+
+    - name: L2_rp03_create_database
+      ansible.controller.workflow_job_template_node:
+        identifier: L2_rp03_create_database
+        workflow_job_template: test_L1_wf00_create_demo_report
+        unified_job_template: L2_rp03_create_database
+        organization: Default
+
+    - name: L2_rp04_create_table
+      ansible.controller.workflow_job_template_node:
+        identifier: L2_rp04_create_table
+        workflow_job_template: test_L1_wf00_create_demo_report
+        unified_job_template: L2_rp04_create_table
+        organization: Default
+
+    - name: L2_rp05_insert_table
+      ansible.controller.workflow_job_template_node:
+        identifier: L2_rp05_insert_table
+        workflow_job_template: test_L1_wf00_create_demo_report
+        unified_job_template: L2_rp05_insert_table
+        organization: Default
+
+    - name: L2_rp06_deploy_report-viewer
+      ansible.controller.workflow_job_template_node:
+        identifier: L2_rp06_deploy_report-viewer
+        workflow_job_template: test_L1_wf00_create_demo_report
+        unified_job_template: L2_rp06_deploy_report-viewer
+        organization: Default
+
+    - name: L2_rp07_deploy_result-manager
+      ansible.controller.workflow_job_template_node:
+        identifier: L2_rp07_deploy_result-manager
+        workflow_job_template: test_L1_wf00_create_demo_report
+        unified_job_template: L2_rp07_deploy_result-manager
+        organization: Default
+
+    - name: Link L2_rp01_create_namespace
+      ansible.controller.workflow_job_template_node:
+        identifier: L2_rp01_create_namespace
+        workflow_job_template: test_L1_wf00_create_demo_report
+        organization: Default
+        always_nodes:
+          - L2_rp02_create_secret
+
+    - name: Link L2_rp02_create_secret
+      ansible.controller.workflow_job_template_node:
+        identifier: L2_rp02_create_secret
+        workflow_job_template: test_L1_wf00_create_demo_report
+        organization: Default
+        always_nodes:
+          - L2_rp03_create_database
+
+    - name: Link L2_rp03_create_database
+      ansible.controller.workflow_job_template_node:
+        identifier: L2_rp03_create_database
+        workflow_job_template: test_L1_wf00_create_demo_report
+        organization: Default
+        always_nodes:
+          - L2_rp04_create_table
+
+    - name: Link L2_rp04_create_table
+      ansible.controller.workflow_job_template_node:
+        identifier: L2_rp04_create_table
+        workflow_job_template: test_L1_wf00_create_demo_report
+        organization: Default
+        always_nodes:
+          - L2_rp05_insert_table
+
+    - name: Link L2_rp05_insert_table
+      ansible.controller.workflow_job_template_node:
+        identifier: L2_rp05_insert_table
+        workflow_job_template: test_L1_wf00_create_demo_report
+        organization: Default
+        always_nodes:
+          - L2_rp06_deploy_report-viewer
+
+    - name: Link L2_rp06_deploy_report-viewer
+      ansible.controller.workflow_job_template_node:
+        identifier: L2_rp06_deploy_report-viewer
+        workflow_job_template: test_L1_wf00_create_demo_report
+        organization: Default
+        always_nodes:
+          - L2_rp07_deploy_result-manager
