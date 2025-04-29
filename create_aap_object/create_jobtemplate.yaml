@@ -315,10 +315,10 @@
         extra_vars:
           image_pull_secret_credential: "{{ image_pull_secret_credential }}"
 
-    - name: L3_rp03_create_database
+    - name: L2_rp03_create_database
       ansible.controller.job_template:
-        name: test_L3_rp03_create_database
-        playbook: L2_jobtemplate/L3_rp03_create_database.yaml
+        name: test_L2_rp03_create_database
+        playbook: L2_jobtemplate/L2_rp03_create_database.yaml
         job_type: run
         inventory: "{{ inventory_name }}"
         project: "{{ project_name }}"
