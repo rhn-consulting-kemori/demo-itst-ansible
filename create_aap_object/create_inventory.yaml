@@ -25,7 +25,7 @@
 
   tasks:
     - name: create a inventory
-      inventory:
+      awx.awx.inventory:
         name: "{{ inventory_name }}"
         description: "Variables Setting"
         organization: "Default"
