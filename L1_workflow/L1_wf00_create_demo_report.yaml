@@ -9,8 +9,8 @@
 - name: L2_rp02_create_secret
   ansible.builtin.import_playbook: L2_rp02_create_secret.yaml
 
-- name: L3_rp03_create_database
-  ansible.builtin.import_playbook: L3_rp03_create_database.yaml
+- name: L2_rp03_create_database
+  ansible.builtin.import_playbook: L2_rp03_create_database.yaml
 
 - name: L2_rp04_create_table
   ansible.builtin.import_playbook: L2_rp04_create_table.yaml

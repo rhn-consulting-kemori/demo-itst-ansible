@@ -1,4 +1,4 @@
 # WorkFlow: L1_wf04_closing 
 # Survey: test_id, test_result_seq
-- name: L1_ut02_closing_job
-  ansible.builtin.import_playbook: L1_ut02_closing_job.yaml
+- name: L2_ut02_closing_job
+  ansible.builtin.import_playbook: L2_ut02_closing_job.yaml
