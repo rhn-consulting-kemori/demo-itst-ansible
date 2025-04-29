@@ -19,7 +19,7 @@
   tasks:
     - name: L1_wf00_create_demo_report
       ansible.controller.workflow_job_template:
-        name: L1_wf00_create_demo_report
+        name: test_L1_wf00_create_demo_report
         organization: Default
         inventory: "{{ inventory_name }}"
         state: present
