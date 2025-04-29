@@ -454,3 +454,33 @@
         organization: Default
         always_nodes:
           - L2_st10_end_scenario
+
+    # L1_wf04_closing
+    - name: L1_wf04_closing
+      ansible.controller.workflow_job_template:
+        name: test_L1_wf04_closing
+        organization: Default
+        inventory: "{{ inventory_name }}"
+        state: present
+        labels:
+          - "{{ label_name }}"
+        survey_enabled: true
+        survey_spec:
+          name: Simple
+          description: Description of the simple survey
+          spec:
+            - type: text
+              question_name: test_id
+              variable: test_id
+              required: true
+            - type: text
+              question_name: test_result_seq
+              variable: test_result_seq
+              required: true
+    
+    - name: L2_ut02_closing_job
+      ansible.controller.workflow_job_template_node:
+        identifier: L2_ut02_closing_job
+        workflow_job_template: test_L1_wf04_closing
+        unified_job_template: L2_ut02_closing_job
+        organization: Default
