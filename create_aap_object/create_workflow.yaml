@@ -20,7 +20,7 @@
     # L1_wf00_create_demo_report
     - name: L1_wf00_create_demo_report
       ansible.controller.workflow_job_template:
-        name: test_L1_wf00_create_demo_report
+        name: L1_wf00_create_demo_report
         organization: Default
         inventory: "{{ inventory_name }}"
         state: present
@@ -34,56 +34,56 @@
     - name: L2_rp01_create_namespace
       ansible.controller.workflow_job_template_node:
         identifier: L2_rp01_create_namespace
-        workflow_job_template: test_L1_wf00_create_demo_report
+        workflow_job_template: L1_wf00_create_demo_report
         unified_job_template: L2_rp01_create_namespace
         organization: Default
 
     - name: L2_rp02_create_secret
       ansible.controller.workflow_job_template_node:
         identifier: L2_rp02_create_secret
-        workflow_job_template: test_L1_wf00_create_demo_report
+        workflow_job_template: L1_wf00_create_demo_report
         unified_job_template: L2_rp02_create_secret
         organization: Default
 
     - name: L2_rp03_create_database
       ansible.controller.workflow_job_template_node:
         identifier: L2_rp03_create_database
-        workflow_job_template: test_L1_wf00_create_demo_report
+        workflow_job_template: L1_wf00_create_demo_report
         unified_job_template: L2_rp03_create_database
         organization: Default
 
     - name: L2_rp04_create_table
       ansible.controller.workflow_job_template_node:
         identifier: L2_rp04_create_table
-        workflow_job_template: test_L1_wf00_create_demo_report
+        workflow_job_template: L1_wf00_create_demo_report
         unified_job_template: L2_rp04_create_table
         organization: Default
 
     - name: L2_rp05_insert_table
       ansible.controller.workflow_job_template_node:
         identifier: L2_rp05_insert_table
-        workflow_job_template: test_L1_wf00_create_demo_report
+        workflow_job_template: L1_wf00_create_demo_report
         unified_job_template: L2_rp05_insert_table
         organization: Default
 
     - name: L2_rp06_deploy_report-viewer
       ansible.controller.workflow_job_template_node:
         identifier: L2_rp06_deploy_report-viewer
-        workflow_job_template: test_L1_wf00_create_demo_report
+        workflow_job_template: L1_wf00_create_demo_report
         unified_job_template: L2_rp06_deploy_report-viewer
         organization: Default
 
     - name: L2_rp07_deploy_result-manager
       ansible.controller.workflow_job_template_node:
         identifier: L2_rp07_deploy_result-manager
-        workflow_job_template: test_L1_wf00_create_demo_report
+        workflow_job_template: L1_wf00_create_demo_report
         unified_job_template: L2_rp07_deploy_result-manager
         organization: Default
 
     - name: Link L2_rp01_create_namespace
       ansible.controller.workflow_job_template_node:
         identifier: L2_rp01_create_namespace
-        workflow_job_template: test_L1_wf00_create_demo_report
+        workflow_job_template: L1_wf00_create_demo_report
         organization: Default
         always_nodes:
           - L2_rp02_create_secret
@@ -91,7 +91,7 @@
     - name: Link L2_rp02_create_secret
       ansible.controller.workflow_job_template_node:
         identifier: L2_rp02_create_secret
-        workflow_job_template: test_L1_wf00_create_demo_report
+        workflow_job_template: L1_wf00_create_demo_report
         organization: Default
         always_nodes:
           - L2_rp03_create_database
@@ -99,7 +99,7 @@
     - name: Link L2_rp03_create_database
       ansible.controller.workflow_job_template_node:
         identifier: L2_rp03_create_database
-        workflow_job_template: test_L1_wf00_create_demo_report
+        workflow_job_template: L1_wf00_create_demo_report
         organization: Default
         always_nodes:
           - L2_rp04_create_table
@@ -107,7 +107,7 @@
     - name: Link L2_rp04_create_table
       ansible.controller.workflow_job_template_node:
         identifier: L2_rp04_create_table
-        workflow_job_template: test_L1_wf00_create_demo_report
+        workflow_job_template: L1_wf00_create_demo_report
         organization: Default
         always_nodes:
           - L2_rp05_insert_table
@@ -115,7 +115,7 @@
     - name: Link L2_rp05_insert_table
       ansible.controller.workflow_job_template_node:
         identifier: L2_rp05_insert_table
-        workflow_job_template: test_L1_wf00_create_demo_report
+        workflow_job_template: L1_wf00_create_demo_report
         organization: Default
         always_nodes:
           - L2_rp06_deploy_report-viewer
@@ -123,7 +123,7 @@
     - name: Link L2_rp06_deploy_report-viewer
       ansible.controller.workflow_job_template_node:
         identifier: L2_rp06_deploy_report-viewer
-        workflow_job_template: test_L1_wf00_create_demo_report
+        workflow_job_template: L1_wf00_create_demo_report
         organization: Default
         always_nodes:
           - L2_rp07_deploy_result-manager
@@ -131,7 +131,7 @@
     # L1_wf01_init
     - name: L1_wf01_init
       ansible.controller.workflow_job_template:
-        name: test_L1_wf01_init
+        name: L1_wf01_init
         organization: Default
         inventory: "{{ inventory_name }}"
         state: present
@@ -150,14 +150,14 @@
     - name: L2_ut01_init_job
       ansible.controller.workflow_job_template_node:
         identifier: L2_ut01_init_job
-        workflow_job_template: test_L1_wf01_init
+        workflow_job_template: L1_wf01_init
         unified_job_template: L2_ut01_init_job
         organization: Default
 
     # L1_wf02_environment
     - name: L1_wf02_environment
       ansible.controller.workflow_job_template:
-        name: test_L1_wf02_environment
+        name: L1_wf02_environment
         organization: Default
         inventory: "{{ inventory_name }}"
         state: present
@@ -188,70 +188,70 @@
     - name: L2_ev01_gitclone_setparam
       ansible.controller.workflow_job_template_node:
         identifier: L2_ev01_gitclone_setparam
-        workflow_job_template: test_L1_wf02_environment
+        workflow_job_template: L1_wf02_environment
         unified_job_template: L2_ev01_gitclone_setparam
         organization: Default
     
     - name: L2_ev02_create_namespace
       ansible.controller.workflow_job_template_node:
         identifier: L2_ev02_create_namespace
-        workflow_job_template: test_L1_wf02_environment
+        workflow_job_template: L1_wf02_environment
         unified_job_template: L2_ev02_create_namespace
         organization: Default
 
     - name: L2_ev03_create_secret
       ansible.controller.workflow_job_template_node:
         identifier: L2_ev03_create_secret
-        workflow_job_template: test_L1_wf02_environment
+        workflow_job_template: L1_wf02_environment
         unified_job_template: L2_ev03_create_secret
         organization: Default
 
     - name: L2_ev04_create_database
       ansible.controller.workflow_job_template_node:
         identifier: L2_ev04_create_database
-        workflow_job_template: test_L1_wf02_environment
+        workflow_job_template: L1_wf02_environment
         unified_job_template: L2_ev04_create_database
         organization: Default
 
     - name: L2_ev05_create_table
       ansible.controller.workflow_job_template_node:
         identifier: L2_ev05_create_table
-        workflow_job_template: test_L1_wf02_environment
+        workflow_job_template: L1_wf02_environment
         unified_job_template: L2_ev05_create_table
         organization: Default
 
     - name: L2_ev06_insert_table
       ansible.controller.workflow_job_template_node:
         identifier: L2_ev06_insert_table
-        workflow_job_template: test_L1_wf02_environment
+        workflow_job_template: L1_wf02_environment
         unified_job_template: L2_ev06_insert_table
         organization: Default
 
     - name: L2_ev07_create_pvc
       ansible.controller.workflow_job_template_node:
         identifier: L2_ev07_create_pvc
-        workflow_job_template: test_L1_wf02_environment
+        workflow_job_template: L1_wf02_environment
         unified_job_template: L2_ev07_create_pvc
         organization: Default
 
     - name: L2_ev08_run_data_setup_app
       ansible.controller.workflow_job_template_node:
         identifier: L2_ev08_run_data_setup_app
-        workflow_job_template: test_L1_wf02_environment
+        workflow_job_template: L1_wf02_environment
         unified_job_template: L2_ev08_run_data_setup_app
         organization: Default
 
     - name: L2_ev09_end_provisioning
       ansible.controller.workflow_job_template_node:
         identifier: L2_ev09_end_provisioning
-        workflow_job_template: test_L1_wf02_environment
+        workflow_job_template: L1_wf02_environment
         unified_job_template: L2_ev09_end_provisioning
         organization: Default
 
     - name: Link L2_ev01_gitclone_setparam
       ansible.controller.workflow_job_template_node:
         identifier: L2_ev01_gitclone_setparam
-        workflow_job_template: test_L1_wf02_environment
+        workflow_job_template: L1_wf02_environment
         organization: Default
         always_nodes:
           - L2_ev02_create_namespace
@@ -259,7 +259,7 @@
     - name: Link L2_ev02_create_namespace
       ansible.controller.workflow_job_template_node:
         identifier: L2_ev02_create_namespace
-        workflow_job_template: test_L1_wf02_environment
+        workflow_job_template: L1_wf02_environment
         organization: Default
         always_nodes:
           - L2_ev03_create_secret
@@ -267,7 +267,7 @@
     - name: Link L2_ev03_create_secret
       ansible.controller.workflow_job_template_node:
         identifier: L2_ev03_create_secret
-        workflow_job_template: test_L1_wf02_environment
+        workflow_job_template: L1_wf02_environment
         organization: Default
         always_nodes:
           - L2_ev04_create_database
@@ -275,7 +275,7 @@
     - name: Link L2_ev04_create_database
       ansible.controller.workflow_job_template_node:
         identifier: L2_ev04_create_database
-        workflow_job_template: test_L1_wf02_environment
+        workflow_job_template: L1_wf02_environment
         organization: Default
         always_nodes:
           - L2_ev05_create_table
@@ -283,7 +283,7 @@
     - name: Link L2_ev05_create_table
       ansible.controller.workflow_job_template_node:
         identifier: L2_ev05_create_table
-        workflow_job_template: test_L1_wf02_environment
+        workflow_job_template: L1_wf02_environment
         organization: Default
         always_nodes:
           - L2_ev06_insert_table
@@ -291,7 +291,7 @@
     - name: Link L2_ev06_insert_table
       ansible.controller.workflow_job_template_node:
         identifier: L2_ev06_insert_table
-        workflow_job_template: test_L1_wf02_environment
+        workflow_job_template: L1_wf02_environment
         organization: Default
         always_nodes:
           - L2_ev07_create_pvc
@@ -299,7 +299,7 @@
     - name: Link L2_ev07_create_pvc
       ansible.controller.workflow_job_template_node:
         identifier: L2_ev07_create_pvc
-        workflow_job_template: test_L1_wf02_environment
+        workflow_job_template: L1_wf02_environment
         organization: Default
         always_nodes:
           - L2_ev08_run_data_setup_app
@@ -307,7 +307,7 @@
     - name: Link L2_ev08_run_data_setup_app
       ansible.controller.workflow_job_template_node:
         identifier: L2_ev08_run_data_setup_app
-        workflow_job_template: test_L1_wf02_environment
+        workflow_job_template: L1_wf02_environment
         organization: Default
         always_nodes:
           - L2_ev09_end_provisioning
@@ -315,7 +315,7 @@
     # L1_wf03_test_scenario
     - name: L1_wf03_test_scenario
       ansible.controller.workflow_job_template:
-        name: test_L1_wf03_test_scenario
+        name: L1_wf03_test_scenario
         organization: Default
         inventory: "{{ inventory_name }}"
         state: present
@@ -346,63 +346,63 @@
     - name: L2_st01_start_scenario
       ansible.controller.workflow_job_template_node:
         identifier: L2_st01_start_scenario
-        workflow_job_template: test_L1_wf03_test_scenario
+        workflow_job_template: L1_wf03_test_scenario
         unified_job_template: L2_st01_start_scenario
         organization: Default
     
     - name: L2_st02_run_online_app
       ansible.controller.workflow_job_template_node:
         identifier: L2_st02_run_online_app
-        workflow_job_template: test_L1_wf03_test_scenario
+        workflow_job_template: L1_wf03_test_scenario
         unified_job_template: L2_st02_run_online_app
         organization: Default
 
     - name: L2_st03_data_entry
       ansible.controller.workflow_job_template_node:
         identifier: L2_st03_data_entry
-        workflow_job_template: test_L1_wf03_test_scenario
+        workflow_job_template: L1_wf03_test_scenario
         unified_job_template: L2_st03_data_entry
         organization: Default
 
     - name: L2_st04_run_batch_app
       ansible.controller.workflow_job_template_node:
         identifier: L2_st04_run_batch_app
-        workflow_job_template: test_L1_wf03_test_scenario
+        workflow_job_template: L1_wf03_test_scenario
         unified_job_template: L2_st04_run_batch_app
         organization: Default
 
     - name: L2_st05_assert_result
       ansible.controller.workflow_job_template_node:
         identifier: L2_st05_assert_result
-        workflow_job_template: test_L1_wf03_test_scenario
+        workflow_job_template: L1_wf03_test_scenario
         unified_job_template: L2_st05_assert_result
         organization: Default
 
     - name: L2_st06_stop_online_app
       ansible.controller.workflow_job_template_node:
         identifier: L2_st06_stop_online_app
-        workflow_job_template: test_L1_wf03_test_scenario
+        workflow_job_template: L1_wf03_test_scenario
         unified_job_template: L2_st06_stop_online_app
         organization: Default
 
     - name: L2_st07_delete_job_all
       ansible.controller.workflow_job_template_node:
         identifier: L2_st07_delete_job_all
-        workflow_job_template: test_L1_wf03_test_scenario
+        workflow_job_template: L1_wf03_test_scenario
         unified_job_template: L2_st07_delete_job_all
         organization: Default
 
     - name: L2_st10_end_scenario
       ansible.controller.workflow_job_template_node:
         identifier: L2_st10_end_scenario
-        workflow_job_template: test_L1_wf03_test_scenario
+        workflow_job_template: L1_wf03_test_scenario
         unified_job_template: L2_st10_end_scenario
         organization: Default
     
     - name: Link L2_st01_start_scenario
       ansible.controller.workflow_job_template_node:
         identifier: L2_st01_start_scenario
-        workflow_job_template: test_L1_wf03_test_scenario
+        workflow_job_template: L1_wf03_test_scenario
         organization: Default
         always_nodes:
           - L2_st02_run_online_app
@@ -410,7 +410,7 @@
     - name: Link L2_st02_run_online_app
       ansible.controller.workflow_job_template_node:
         identifier: L2_st02_run_online_app
-        workflow_job_template: test_L1_wf03_test_scenario
+        workflow_job_template: L1_wf03_test_scenario
         organization: Default
         always_nodes:
           - L2_st03_data_entry
@@ -418,7 +418,7 @@
     - name: Link L2_st03_data_entry
       ansible.controller.workflow_job_template_node:
         identifier: L2_st03_data_entry
-        workflow_job_template: test_L1_wf03_test_scenario
+        workflow_job_template: L1_wf03_test_scenario
         organization: Default
         always_nodes:
           - L2_st04_run_batch_app
@@ -426,7 +426,7 @@
     - name: Link L2_st04_run_batch_app
       ansible.controller.workflow_job_template_node:
         identifier: L2_st04_run_batch_app
-        workflow_job_template: test_L1_wf03_test_scenario
+        workflow_job_template: L1_wf03_test_scenario
         organization: Default
         always_nodes:
           - L2_st05_assert_result
@@ -434,7 +434,7 @@
     - name: Link L2_st05_assert_result
       ansible.controller.workflow_job_template_node:
         identifier: L2_st05_assert_result
-        workflow_job_template: test_L1_wf03_test_scenario
+        workflow_job_template: L1_wf03_test_scenario
         organization: Default
         always_nodes:
           - L2_st06_stop_online_app
@@ -442,7 +442,7 @@
     - name: Link L2_st06_stop_online_app
       ansible.controller.workflow_job_template_node:
         identifier: L2_st06_stop_online_app
-        workflow_job_template: test_L1_wf03_test_scenario
+        workflow_job_template: L1_wf03_test_scenario
         organization: Default
         always_nodes:
           - L2_st07_delete_job_all
@@ -450,7 +450,7 @@
     - name: Link L2_st07_delete_job_all
       ansible.controller.workflow_job_template_node:
         identifier: L2_st07_delete_job_all
-        workflow_job_template: test_L1_wf03_test_scenario
+        workflow_job_template: L1_wf03_test_scenario
         organization: Default
         always_nodes:
           - L2_st10_end_scenario
@@ -458,7 +458,7 @@
     # L1_wf04_closing
     - name: L1_wf04_closing
       ansible.controller.workflow_job_template:
-        name: test_L1_wf04_closing
+        name: L1_wf04_closing
         organization: Default
         inventory: "{{ inventory_name }}"
         state: present
@@ -481,6 +481,6 @@
     - name: L2_ut02_closing_job
       ansible.controller.workflow_job_template_node:
         identifier: L2_ut02_closing_job
-        workflow_job_template: test_L1_wf04_closing
+        workflow_job_template: L1_wf04_closing
         unified_job_template: L2_ut02_closing_job
         organization: Default
