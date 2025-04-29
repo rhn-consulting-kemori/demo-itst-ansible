@@ -17,6 +17,7 @@
     CONTROLLER_VERIFY_SSL: false
 
   tasks:
+    # L1_wf00_create_demo_report
     - name: L1_wf00_create_demo_report
       ansible.controller.workflow_job_template:
         name: test_L1_wf00_create_demo_report
@@ -126,3 +127,29 @@
         organization: Default
         always_nodes:
           - L2_rp07_deploy_result-manager
+
+    # L1_wf01_init
+    - name: L1_wf01_init
+      ansible.controller.workflow_job_template:
+        name: test_L1_wf01_init
+        organization: Default
+        inventory: "{{ inventory_name }}"
+        state: present
+        labels:
+          - "{{ label_name }}"
+        survey_enabled: true
+        survey_spec:
+          name: Simple
+          description: Description of the simple survey
+          spec:
+            - type: text
+              question_name: test_id
+              variable: test_id
+              required: true
+    
+    - name: L2_ut01_init_job
+      ansible.controller.workflow_job_template_node:
+        identifier: L2_ut01_init_job
+        workflow_job_template: test_L1_wf01_init
+        unified_job_template: L2_ut01_init_job
+        organization: Default
