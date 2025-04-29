@@ -29,3 +29,10 @@
           namespace_name: demo-report
           create_table_image: create_table
           insert_table_image: insert_table
+
+    - name: L2_rp01_create_namespace
+      ansible.controller.workflow_job_template_node:
+        identifier: L2_rp01_create_namespace
+        workflow_job_template: test_L1_wf00_create_demo_report
+        unified_job_template: L2_rp01_create_namespace
+        organization: Default
