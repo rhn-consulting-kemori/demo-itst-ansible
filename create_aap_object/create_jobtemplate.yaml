@@ -1,9 +1,17 @@
 ---
 # Create Job_Template
 # Extra_vars: 
-#  aap_controller_url, ansible_user, ansible_pw
-#  inventory_name, project_name, credential_name, execution_environment_name, label_name
-#  image_pull_secret_credential
+# ----------------------------------------------
+# aap_controller_url: ex) https://ansible-1.ckp7b.sandbox3023.opentlc.com
+# ansible_user: ex) admin
+# ansible_pw: Password
+# inventory_name: demo-itst-inventory
+# project_name: demo-itst-project
+# credential_name: ocp_credential
+# execution_environment_name: Control Plane Execution Environment
+# label_name: demo
+# image_pull_secret_credential: quay.io Credential
+# ----------------------------------------------
 - name: Create a JobTemplate 
   hosts: localhost
 

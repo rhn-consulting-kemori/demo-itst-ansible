@@ -1,0 +1,31 @@
+# Create Job_Template
+# Extra_vars: 
+# ----------------------------------------------
+# aap_controller_url: ex) https://ansible-1.ckp7b.sandbox3023.opentlc.com
+# ansible_user: ex) admin
+# ansible_pw: Password
+# inventory_name: demo-itst-inventory
+# label_name: demo
+# ----------------------------------------------
+- name: Create a Workflow 
+  hosts: localhost
+
+  environment:
+    CONTROLLER_HOST: "{{ aap_controller_url }}"
+    CONTROLLER_USERNAME: "{{ ansible_user }}"
+    CONTROLLER_PASSWORD: "{{ ansible_pw }}"
+    CONTROLLER_VERIFY_SSL: false
+
+  tasks:
+    - name: L1_wf00_create_demo_report
+      ansible.controller.workflow_job_template:
+        name: L1_wf00_create_demo_report
+        organization: Default
+        inventory: "{{ inventory_name }}"
+        state: present
+        labels:
+          - "{{ label_name }}"
+        extra_vars:
+          namespace_name: demo-report
+          create_table_image: create_table
+          insert_table_image: insert_table
