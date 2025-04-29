@@ -484,10 +484,10 @@
               variable: test_id
               required: true
 
-    - name: L1_ut02_closing_job
+    - name: L2_ut02_closing_job
       ansible.controller.job_template:
-        name: test_L1_ut02_closing_job
-        playbook: L2_jobtemplate/L1_ut02_closing_job.yaml
+        name: test_L2_ut02_closing_job
+        playbook: L2_jobtemplate/L2_ut02_closing_job.yaml
         job_type: run
         inventory: "{{ inventory_name }}"
         project: "{{ project_name }}"
