@@ -27,7 +27,7 @@
         labels:
           - "{{ label_name }}"
         extra_vars:
-          namespace_name: test-demo-report
+          namespace_name: demo-report
           create_table_image: create_table
           insert_table_image: insert_table
 
