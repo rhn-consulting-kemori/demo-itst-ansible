@@ -37,6 +37,7 @@
       loop: "{{ assert_vars.tasks }}"
       loop_control:
         loop_var: assert_task
+      when: pipeline_vars.parameters.test_scenario.{{ name }}.assert_result == true
 
     # Report Summary
     - name: Report Pipeline Summary
@@ -46,3 +47,4 @@
         test_group: "テストシナリオ"
         test_pipeline: "結果検証"
         simulation_date : "{{ simulation_date }}"
+      when: pipeline_vars.parameters.test_scenario.{{ name }}.assert_result == true
