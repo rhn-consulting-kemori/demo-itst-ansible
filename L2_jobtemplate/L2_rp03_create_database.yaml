@@ -15,8 +15,8 @@
             namespace: "{{ namespace_name }}"
             name: "{{ database_app_name }}"
             labels:
-              - app: postgresql
-              - app.openshift.io/runtime: postgresql
+              app: postgresql
+              app.openshift.io/runtime: postgresql
           spec:
             replicas: 1
             selector:

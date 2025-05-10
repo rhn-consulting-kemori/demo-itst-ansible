@@ -13,8 +13,8 @@
             namespace: "{{ namespace_name }}"
             name: result-manager
             labels:
-              - app: result-manager
-              - app.openshift.io/runtime: catalog
+              app: result-manager
+              app.openshift.io/runtime: catalog
           spec:
             replicas: 1
             selector:
