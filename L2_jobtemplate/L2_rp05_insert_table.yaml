@@ -15,8 +15,8 @@
             name: insert-table-job
             namespace: "{{ namespace_name }}"
             labels:
-              app: insert-table-app
-              app.openshift.io/runtime: other-linux
+              - app: insert-table-app
+              - app.openshift.io/runtime: other-linux
           spec:
             template:
               spec:

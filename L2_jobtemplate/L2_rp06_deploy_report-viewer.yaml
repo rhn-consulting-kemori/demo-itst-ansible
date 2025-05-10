@@ -13,8 +13,8 @@
             namespace: "{{ namespace_name }}"
             name: report-viewer
             labels:
-              app: report-viewer
-              app.openshift.io/runtime: catalog
+              - app: report-viewer
+              - app.openshift.io/runtime: catalog
           spec:
             replicas: 1
             selector:
