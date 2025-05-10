@@ -34,10 +34,11 @@
         namespace_name: "{{ pipeline_vars.namespace_name }}"
         assert_task_name: "{{ assert_task.name }}"
         assert_type: "{{ assert_task.type }}"
+        file_parameter: "{{ assert_task.file }}"
       loop: "{{ assert_vars.tasks }}"
       loop_control:
         loop_var: assert_task
-      when: assert_vars.tasks != None
+      when: assert_vars.require
 
     # Report Summary
     - name: Report Pipeline Summary

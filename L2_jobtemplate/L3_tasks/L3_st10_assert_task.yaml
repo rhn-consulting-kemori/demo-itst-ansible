@@ -1,6 +1,6 @@
 ---
 # Tasks: L3_st10_assert_task
-# Extra vars: namespace_name, assert_task_name, assert_type, test_id, test_result_seq, name, simulation_date
+# Extra vars: namespace_name, assert_task_name, assert_type, test_id, test_result_seq, name, simulation_date, file_parameter
 - name: Start timestamp
   set_fact: 
     start_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
@@ -29,6 +29,22 @@
       vars:
         source_j2_path: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p4_assert_result/task/format/diff_result.j2
         source_yaml_path: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p4_assert_result/task/diff-{{ assert_task_name }}.yaml
+      when: assert_type == "sql"
+
+    - name: set file parameter
+      set_fact: 
+        actual_file_path: "{{ file_parameter.actual_file_path }}"
+        actual_file_name: "{{ file_parameter.actual_file_name }}"
+        expected_file_type: "{{ file_parameter.expected_file_type }}"
+      when: assert_type == "file"
+
+    - name: diff-task j2 convert yaml
+      ansible.builtin.import_tasks:
+        file: L3_tasks/L3_ut03_template_j2.yaml
+      vars:
+        source_j2_path: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p4_assert_result/task/format/diff_result_file.j2
+        source_yaml_path: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p4_assert_result/task/diff-{{ assert_task_name }}.yaml
+      when: assert_type == "file"
 
     - name: Run diff-result-task
       ansible.builtin.import_tasks:
