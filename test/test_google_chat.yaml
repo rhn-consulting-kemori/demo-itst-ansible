@@ -12,6 +12,6 @@
           Content-Type: application/json
         body: |-
           {
-            "text": "*[想定日パイプライン]*\n'_Scenario Completed_'\n- test_result_seq: 4\n- test_id: EX-E001-00000001\n- simulation_date: 2025-03-01\n- URL: https://report-viewer-demo-report.apps.rosa.rosa-xmwsd.iabf.p3.openshiftapps.com/report?test_result_seq=4"
+            "text": "*[想定日パイプライン]*\n_Scenario Completed_\n- test_result_seq: 4\n- test_id: EX-E001-00000001\n- simulation_date: 2025-03-01\n- URL: https://report-viewer-demo-report.apps.rosa.rosa-xmwsd.iabf.p3.openshiftapps.com/report?test_result_seq=4"
           }
       register: result
