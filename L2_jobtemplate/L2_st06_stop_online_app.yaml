@@ -31,7 +31,7 @@
         test_pipeline: "オンライン停止"
         simulation_date: "{{ simulation_date }}"
       loop: "{{ stop_online_vars.delete_online_apps }}"
-      when: stop_online_vars.delete_online_apps != None
+      when: stop_online_vars.require
 
     # Report Summary
     - name: Report Pipeline Summary
