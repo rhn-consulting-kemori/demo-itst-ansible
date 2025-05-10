@@ -15,17 +15,17 @@
       vars:
         namespace_name: "{{ pipeline_vars.namespace_name }}"
 
+    - name: include_vars
+      include_vars: 
+        file: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p4_assert_result/task/assert_task.yaml
+        name: assert_vars
+
     - name: Copy file
       ansible.builtin.import_tasks:
         file: L3_tasks/L3_st09_copy_file_assert.yaml
       vars:
         namespace_name: "{{ pipeline_vars.namespace_name }}"
       when: assert_vars.require
-
-    - name: include_vars
-      include_vars: 
-        file: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/test_scenario/{{ name }}/p4_assert_result/task/assert_task.yaml
-        name: assert_vars
 
     # Assert Task
     - name: Run Assert
