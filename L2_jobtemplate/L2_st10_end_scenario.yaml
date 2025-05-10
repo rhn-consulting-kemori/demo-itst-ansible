@@ -16,7 +16,7 @@
       ansible.builtin.import_tasks:
         file: L3_tasks/L3_rp05_run_complete_notification.yaml
       vars:
-        text: "[test_result_seq={{ test_result_seq }}, test_id={{ test_id }}, simulation_date={{ simulation_date }}]\nシナリオが完了しました。\nhttps://{{ report_viewer_url }}/report?test_result_seq={{ test_result_seq }}"
+        text: "*[テストパイプライン]*\n_Scenario Completed_\n- test_result_seq: {{ test_result_seq }}\n- test_id: {{ test_id }}\n- simulation_date: {{ simulation_date }}\n- URL: https://{{ report_viewer_url }}/report?test_result_seq={{ test_result_seq }}"
 
     - name: Next Pipeline Kick
       ansible.builtin.import_tasks:

@@ -24,7 +24,7 @@
       ansible.builtin.import_tasks:
         file: L3_tasks/L3_rp05_run_complete_notification.yaml
       vars:
-        text: "[test_result_seq={{ test_result_seq }}, test_id={{ test_id }}]\n環境構築が完了しました。\nhttps://{{ report_viewer_url }}/report?test_result_seq={{ test_result_seq }}"
+        text: "*[テストパイプライン]*\n_Environment Provisioning Completed_\n- test_result_seq: {{ test_result_seq }}\n- test_id: {{ test_id }}\n- URL: https://{{ report_viewer_url }}/report?test_result_seq={{ test_result_seq }}"
 
     - name: Next Pipeline Kick
       ansible.builtin.import_tasks:
@@ -33,3 +33,4 @@
         seq: "{{ seq }}"
         test_id: "{{ test_id }}"
         test_result_seq: "{{ test_result_seq }}"
+
