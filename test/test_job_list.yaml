@@ -1,0 +1,14 @@
+---
+# Inventry: google_chat_url
+- name: Get Pod-log
+  hosts: localhost
+  tasks:
+    - name: List running jobs for the testing.yml playbook
+      job_list:
+        status: running
+        query: {"playbook": "test_job_list.yaml"}
+      register: testing_jobs
+
+    - name: print log
+      ansible.builtin.debug:
+        var: testing_jobs
