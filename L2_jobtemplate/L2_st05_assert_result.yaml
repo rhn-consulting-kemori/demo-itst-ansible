@@ -20,6 +20,7 @@
         file: L3_tasks/L3_st09_copy_file_assert.yaml
       vars:
         namespace_name: "{{ pipeline_vars.namespace_name }}"
+      when: assert_vars.require
 
     - name: include_vars
       include_vars: 

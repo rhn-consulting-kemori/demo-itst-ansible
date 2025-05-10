@@ -16,6 +16,7 @@
             namespace: "{{ namespace_name }}"
             labels:
               app: create-table-app
+              app.openshift.io/runtime: other-linux
           spec:
             template:
               spec:

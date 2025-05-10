@@ -26,6 +26,7 @@
                 name: data-setup
                 labels:
                   app: data-setup
+                  app.openshift.io/runtime: operator
               spec:
                 replicas: 1
                 selector:
