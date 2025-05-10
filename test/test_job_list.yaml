@@ -4,7 +4,7 @@
   hosts: localhost
   tasks:
     - name: List running jobs for the testing.yml playbook
-      job_list:
+      awx.awx.job_list:
         status: running
         query: {"playbook": "test_job_list.yaml"}
       register: testing_jobs
