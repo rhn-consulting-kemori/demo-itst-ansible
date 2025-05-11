@@ -3,12 +3,55 @@
 - name: Get Pod-log
   hosts: localhost
   tasks:
-    - name: List running jobs for the testing.yml playbook
-      awx.awx.job_list:
-        status: running
-        query: {"playbook": "test_job_list.yaml"}
-      register: testing_jobs
+    - name: Get cluster version
+      kubernetes.core.k8s_info:
+        api_version: v1
+        kind: ClusterVersion
+        name: version
+      register: cluster_version_info
+
+    - name: Get a list of all pods from any namespace
+      kubernetes.core.k8s_info:
+        kind: Namespace
+        name: demo-itst
+      register: namespace_data
+
+    - name: Get a list of all pods from any namespace
+      kubernetes.core.k8s_info:
+        kind: Pod
+        namespace: demo-itst
+      register: pod_list
+
+    - name: Get a list of all service objects
+      kubernetes.core.k8s_info:
+        api_version: v1
+        kind: Service
+        namespace: demo-itst
+      register: service_list
+
+    - name: Get a list of all service objects
+      kubernetes.core.k8s_info:
+        api_version: v1
+        kind: Job
+        namespace: demo-itst
+      register: job_list
 
     - name: print log
       ansible.builtin.debug:
-        var: testing_jobs
+        var: cluster_version_info
+
+    - name: print log
+      ansible.builtin.debug:
+        var: namespace_data
+
+    - name: print log
+      ansible.builtin.debug:
+        var: pod_list
+
+    - name: print log
+      ansible.builtin.debug:
+        var: service_list
+
+    - name: print log
+      ansible.builtin.debug:
+        var: job_list
