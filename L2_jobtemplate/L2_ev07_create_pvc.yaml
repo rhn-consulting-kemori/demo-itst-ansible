@@ -7,11 +7,8 @@
   hosts: localhost
   tasks:
     - name: Start timestamp
-      ansible.builtin.debug:
-        var: start_timestamp
-      vars:
+      set_fact: 
         start_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
-      register: l2_ev07_start_timestamp
 
     - name: Create PVC Block
       block:
@@ -33,27 +30,18 @@
                 storageClassName: "{{ strage_class_name }}"
                 volumeMode: Filesystem
 
-        - name: Set test_result
-          ansible.builtin.debug:
-            var: test_result
-          vars:
+        - name: Set test_result OK
+          set_fact:
             test_result: "OK"
-          register: l2_ev07_result
 
       rescue:
-        - name: Set test_result
-          ansible.builtin.debug:
-            var: test_result
-          vars:
+        - name: Set test_result NG
+          set_fact:
             test_result: "NG"
-          register: l2_ev07_result
         
     - name: End timestamp
-      ansible.builtin.debug:
-        var: end_timestamp
-      vars:
+      set_fact:
         end_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
-      register: l2_ev07_end_timestamp
 
     - name: Add test_task OK
       ansible.builtin.import_tasks:
@@ -63,10 +51,10 @@
         test_pipeline: "環境構築"
         test_task: "PVC作成"
         simulation_date: ""
-        start_time: "{{ l2_ev07_start_timestamp.start_timestamp }}"
-        end_time: "{{ l2_ev07_end_timestamp.end_timestamp }}"
-        test_result: "{{ l2_ev07_result.test_result }}"
-        evidence_link: "-"
+        start_time: "{{ start_timestamp }}"
+        end_time: "{{ end_timestamp }}"
+        test_result: "{{ test_result }}"
+        evidence_link: "https://console-openshift-console.{{ openshift_domain }}/k8s/ns/{{ namespace_name }}/persistentvolumeclaims/{{ pvc_name }}"
         sw_category: ""
         sw_id: ""
         sw_name: ""
