@@ -241,6 +241,13 @@
         unified_job_template: L2_ev08_run_data_setup_app
         organization: Default
 
+    - name: L2_ev10_create_kafka
+      ansible.controller.workflow_job_template_node:
+        identifier: L2_ev10_create_kafka
+        workflow_job_template: L1_wf02_environment
+        unified_job_template: L2_ev10_create_kafka
+        organization: Default
+
     - name: L2_ev09_end_provisioning
       ansible.controller.workflow_job_template_node:
         identifier: L2_ev09_end_provisioning
@@ -307,6 +314,14 @@
     - name: Link L2_ev08_run_data_setup_app
       ansible.controller.workflow_job_template_node:
         identifier: L2_ev08_run_data_setup_app
+        workflow_job_template: L1_wf02_environment
+        organization: Default
+        always_nodes:
+          - L2_ev10_create_kafka
+
+    - name: Link L2_ev10_create_kafka
+      ansible.controller.workflow_job_template_node:
+        identifier: L2_ev10_create_kafka
         workflow_job_template: L1_wf02_environment
         organization: Default
         always_nodes:
