@@ -50,7 +50,7 @@
     start_time: "{{ start_timestamp }}"
     end_time: "{{ end_timestamp }}"
     test_result: "{{ test_result }}"
-    evidence_link: "-"
+    evidence_link: "{{ oc_apply_evicence_txt }}"
     sw_category: "{{ sw_category }}"
     sw_id: "{{ sw_id }}"
     sw_name: "{{ sw_name }}"
