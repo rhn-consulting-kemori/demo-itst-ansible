@@ -28,7 +28,7 @@
                 containers:
                   - name: report-viewer
                     image: quay.io/rhn_consulting_kemori/report-viewer
-                    imagePullPolicy: "IfNotPresent"
+                    imagePullPolicy: "Always"
                     ports:
                       - containerPort: 8088
                         protocol: TCP
