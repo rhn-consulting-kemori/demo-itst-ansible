@@ -67,10 +67,6 @@
   set_fact:
     end_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
 
-- name: print vars
-  debug:
-    msg: "podname={{ podname }}, phase={{ phase }}, imageid={{ imageid }}, image={{ image }}"
-
-- name: Set Evicence
-  set_fact: 
-    oc_apply_evicence_txt: 'podname={{ podname }}\nphase={{ phase }}\ncontainerStatuses={{ l3_st01_result_pod.resources[0].status.containerStatuses[0] }}'
+#- name: print vars
+#  debug:
+#    msg: "podname={{ podname }}, phase={{ phase }}, imageid={{ imageid }}, image={{ image }}"

@@ -13,9 +13,9 @@
   vars:
     serch_line: "{{ grep_result.stdout_lines[0] | split(':') }}"
 
-- name: Show app_name
-  debug:
-    var: app_name
+#- name: Show app_name
+#  debug:
+#    var: app_name
 
 - name: Set pod_search_type app
   set_fact: 

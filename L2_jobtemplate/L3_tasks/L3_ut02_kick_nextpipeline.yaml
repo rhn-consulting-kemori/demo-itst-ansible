@@ -9,10 +9,10 @@
     next_pipeline: '{{ pipeline_vars.pipelines | selectattr("seq", "defined") | selectattr("seq", "eq", seq + 1) }}'
   register: search_result
 
-- name: Print Next Pipeline
-  debug:
-    msg: 'test_id={{ test_id }}, test_result_seq={{ test_result_seq }}, type={{ item.type }}, seq={{ item.seq }}, name={{ item.name }}'
-  loop: '{{ search_result.next_pipeline }}'
+#- name: Print Next Pipeline
+#  debug:
+#    msg: 'test_id={{ test_id }}, test_result_seq={{ test_result_seq }}, type={{ item.type }}, seq={{ item.seq }}, name={{ item.name }}'
+#  loop: '{{ search_result.next_pipeline }}'
 
 # Environment kick
 - name: REST CALL for environment
@@ -82,6 +82,6 @@
   when: item.type == "closing"
 
 # Print Result
-- name: Print Result
-  debug:
-    var: result
+#- name: Print Result
+#  debug:
+#    var: result

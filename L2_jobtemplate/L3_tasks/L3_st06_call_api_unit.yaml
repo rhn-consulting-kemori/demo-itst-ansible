@@ -12,6 +12,6 @@
     body: "{{ call_api_data }}"
   register: result
 
-- name: Print Response
-  ansible.builtin.debug:
-    var: result.json
+#- name: Print Response
+#  ansible.builtin.debug:
+#    var: result.json

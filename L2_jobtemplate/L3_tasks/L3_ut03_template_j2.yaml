@@ -9,11 +9,11 @@
     dest: "{{ source_yaml_path }}"
 
 # Cat Yaml
-- name: cat yaml
-  ansible.builtin.command: cat {{ source_yaml_path }}
-  register: l3_ut03_result
+#- name: cat yaml
+#  ansible.builtin.command: cat {{ source_yaml_path }}
+#  register: l3_ut03_result
     
 # Display Yaml
-- name: Set source_yaml_path
-  ansible.builtin.debug:
-    var: l3_ut03_result.stdout
+#- name: Set source_yaml_path
+#  ansible.builtin.debug:
+#    var: l3_ut03_result.stdout

@@ -20,6 +20,6 @@
       }
   register: result
 
-- name: Show pipeline_summary
-  ansible.builtin.debug:
-    var: result.json
+#- name: Show pipeline_summary
+#  ansible.builtin.debug:
+#    var: result.json

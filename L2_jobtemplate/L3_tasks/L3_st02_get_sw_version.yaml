@@ -10,6 +10,6 @@
   vars:
     image_obj: "{{ image | split(':') }}"
 
-- name: Print SW Version
-  debug:
-    msg: "sw_id={{ sw_id }}, sw_name={{ sw_name }}, sw_version={{ sw_version }}"
+#- name: Print SW Version
+#  debug:
+#    msg: "sw_id={{ sw_id }}, sw_name={{ sw_name }}, sw_version={{ sw_version }}"

@@ -13,6 +13,6 @@
     file: /tmp/{{ pipeline_repo_name }}/{{ test_id }}/pipeline.yaml
     name: pipeline_vars
 
-- name: print vars
-  debug:
-    msg: "{{ pipeline_vars }}"
+#- name: print vars
+#  debug:
+#    msg: "{{ pipeline_vars }}"
