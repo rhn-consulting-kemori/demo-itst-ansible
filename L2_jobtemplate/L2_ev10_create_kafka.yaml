@@ -1,0 +1,86 @@
+---
+# JobTemplate: L2_ev10_create_kafka
+# Create Kafka
+# Survey: namespace_name, kafka_request
+# Inventry: kafka_cluster_name
+# Etc: test_result_seq, test_id
+- name: Create Kafka
+  hosts: localhost
+  tasks:
+    - name: Start timestamp
+      set_fact: 
+        start_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
+
+    - name: Create Kafka
+      when: kafka_request
+      block:
+        - name: Create Database Deployment
+          kubernetes.core.k8s:
+            state: present
+            definition:
+              apiVersion: kafka.strimzi.io/v1beta2
+              kind: Kafka
+              metadata:
+                name: "{{ kafka_cluster_name }}"
+                namespace: "{{ namespace_name }}"
+              spec:
+                entityOperator:
+                  topicOperator: {}
+                  userOperator: {}
+                kafka:
+                  config:
+                    default.replication.factor: 3
+                    inter.broker.protocol.version: '3.9'
+                    min.insync.replicas: 2
+                    offsets.topic.replication.factor: 3
+                    transaction.state.log.min.isr: 2
+                    transaction.state.log.replication.factor: 3
+                  listeners:
+                    - name: plain
+                      port: 9092
+                      tls: false
+                      type: internal
+                    - name: tls
+                      port: 9093
+                      tls: true
+                      type: internal
+                  replicas: 3
+                  storage:
+                    type: ephemeral
+                  version: 3.9.0
+                zookeeper:
+                  replicas: 3
+                  storage:
+                    type: ephemeral
+
+        - name: Set test_result OK
+          set_fact:
+            test_result: "OK"
+
+      rescue:
+        - name: Set test_result NG
+          set_fact:
+            test_result: "NG"
+        
+    - name: End timestamp
+      set_fact:
+        end_timestamp: '{{ lookup(''pipe'', ''date "+%Y-%m-%d %H:%M:%S"'') }}'
+
+    - name: Add test_task OK
+      when: kafka_request
+      ansible.builtin.import_tasks:
+        file: L3_tasks/L3_rp02_add_test_task.yaml
+      vars:
+        test_group: "環境立上"
+        test_pipeline: "環境構築"
+        test_task: "Kafka作成"
+        simulation_date: ""
+        start_time: "{{ start_timestamp }}"
+        end_time: "{{ end_timestamp }}"
+        test_result: "{{ test_result }}"
+        evidence_link: "https://console-openshift-console.{{ openshift_domain }}/k8s/ns/{{ namespace_name }}/operators.coreos.com~v1alpha1~ClusterServiceVersion/amqstreams.v2.9.0-1/kafka.strimzi.io~v1beta2~Kafka"
+        sw_category: ""
+        sw_id: ""
+        sw_name: ""
+        sw_version: ""
+
