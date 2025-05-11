@@ -50,7 +50,7 @@
     start_time: "{{ start_timestamp }}"
     end_time: "{{ end_timestamp }}"
     test_result: "{{ test_result }}"
-    evidence_link: "-"
+    evidence_link: "https://console-openshift-console.{{ openshift_domain }}/k8s/ns/{{ namespace_name }}/pods/{{ podname }}/"
     sw_category: "{{ sw_category }}"
     sw_id: "{{ sw_id }}"
     sw_name: "{{ sw_name }}"
