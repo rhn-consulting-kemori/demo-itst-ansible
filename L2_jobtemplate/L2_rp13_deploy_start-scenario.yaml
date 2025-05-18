@@ -1,0 +1,95 @@
+---
+# JobTemplate: L2_rp13_deploy_start-scenario
+# Survey: namespace_name
+- hosts: localhost
+  tasks:
+    - name: Deploy start-scenario
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            namespace: "{{ namespace_name }}"
+            name: start-scenario
+            labels:
+              app: start-scenario
+              app.openshift.io/runtime: catalog
+          spec:
+            replicas: 1
+            selector:
+              matchLabels:
+                app: start-scenario
+            template:
+              metadata:
+                labels:
+                  app: start-scenario
+              spec:
+                containers:
+                  - name: start-scenario
+                    image: quay.io/rhn_consulting_kemori/start-scenario
+                    imagePullPolicy: "Always"
+                    ports:
+                      - containerPort: 8090
+                        protocol: TCP
+                    env:
+                      - name: REPORT_VIEWER_URL
+                        value: https://{{ report_viewer_url }}
+                      - name: AAP_URL
+                        value: "{{ aap_controller_url }}"
+                      - name: OPENSHIFT_URL
+                        value: https://console-openshift-console.{{ openshift_domain }}
+                      - name: AAP_API_URL
+                        value: "{{ aap_controller_url }}/{{ aap_api_url }}/workflow_job_templates/{{ init_pipeline_number }}/launch/"
+                      - name: AAP_TOKEN
+                        value: "{{ ansible_token }}"  
+                imagePullSecrets:
+                  - name: quayio
+
+    - name: Service start-scenario
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: start-scenario
+            namespace: "{{ namespace_name }}"
+            labels:
+              app: start-scenario
+          spec:
+            type: ClusterIP
+            ports:
+              - name: 8090-tcp
+                protocol: TCP
+                port: 8090
+                targetPort: 8090
+            sessionAffinity: None
+            selector:
+              app: start-scenario
+          status:
+            loadBalancer: {}
+
+    - name: Route start-scenario
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: route.openshift.io/v1
+          kind: Route
+          metadata:
+            name: start-scenario
+            namespace: "{{ namespace_name }}"
+            labels:
+              app: start-scenario
+          spec:
+            host: start-scenario-{{ namespace_name }}.{{ openshift_domain }}
+            to:
+              kind: Service
+              name: start-scenario
+              weight: 100
+            port:
+              targetPort: 8090-tcp
+            tls:
+              termination: edge
+              insecureEdgeTerminationPolicy: Redirect
+            wildcardPolicy: None

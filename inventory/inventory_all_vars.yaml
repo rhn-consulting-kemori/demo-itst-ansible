@@ -16,6 +16,7 @@ all:
     pipeline_repo_name: demo-itst-test
     aap_controller_url: https://controller.nht4t.sandbox2861.opentlc.com # Change your Ansible Environment
     aap_api_url: api/v2               # AAP2.5->api/controller/v2, Before->api/v2
+    init_pipeline_number: 39          # WorkFlow Number: L1_wf01_init
     environment_pipeline_number: 62   # WorkFlow Number: L1_wf02_environment
     test_scenario_pipeline_number: 63 # WorkFlow Number: L1_wf03_test_scenario
     closing_pipeline_number: 64       # WorkFlow Number: L1_wf04_closing
