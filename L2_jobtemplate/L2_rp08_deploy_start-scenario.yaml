@@ -1,5 +1,5 @@
 ---
-# JobTemplate: L2_rp13_deploy_start-scenario
+# JobTemplate: L2_rp08_deploy_start-scenario
 # Survey: namespace_name
 - hosts: localhost
   tasks:
