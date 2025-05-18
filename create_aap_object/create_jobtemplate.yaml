@@ -473,6 +473,29 @@
               variable: namespace_name
               required: true
 
+    - name: L2_rp08_deploy_start-scenario
+      ansible.controller.job_template:
+        name: L2_rp08_deploy_start-scenario
+        playbook: L2_jobtemplate/L2_rp08_deploy_start-scenario.yaml
+        job_type: run
+        inventory: "{{ inventory_name }}"
+        project: "{{ project_name }}"
+        state: present
+        credential: "{{ credential_name }}"
+        execution_environment: "{{ execution_environment_name }}"
+        organization: Default
+        labels:
+          - "{{ label_name }}"
+        survey_enabled: true
+        survey_spec:
+          name: Simple
+          description: Description of the simple survey
+          spec:
+            - type: text
+              question_name: namespace_name
+              variable: namespace_name
+              required: true
+
     - name: L2_rp10_delete_namespace
       ansible.controller.job_template:
         name: L2_rp10_delete_namespace

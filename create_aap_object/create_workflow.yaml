@@ -80,6 +80,13 @@
         unified_job_template: L2_rp07_deploy_result-manager
         organization: Default
 
+    - name: L2_rp08_deploy_start-scenario
+      ansible.controller.workflow_job_template_node:
+        identifier: L2_rp08_deploy_start-scenario
+        workflow_job_template: L1_wf00_create_demo_report
+        unified_job_template: L2_rp08_deploy_start-scenario
+        organization: Default
+
     - name: Link L2_rp01_create_namespace
       ansible.controller.workflow_job_template_node:
         identifier: L2_rp01_create_namespace
@@ -127,6 +134,14 @@
         organization: Default
         always_nodes:
           - L2_rp07_deploy_result-manager
+
+    - name: Link L2_rp07_deploy_result-manager
+      ansible.controller.workflow_job_template_node:
+        identifier: L2_rp07_deploy_result-manager
+        workflow_job_template: L1_wf00_create_demo_report
+        organization: Default
+        always_nodes:
+          - L2_rp08_deploy_start-scenario
 
     # L1_wf01_init
     - name: L1_wf01_init
